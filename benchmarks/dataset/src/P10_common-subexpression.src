@@ -1,0 +1,9 @@
+# P10 [common-subexpression] generated with seed 2026
+input a, b, c;
+u = (b - c) * b + (a + b);
+w = (b - c) - (a + b) * 3;
+z = (b - c) + (b + a) + u;
+y = (a + b) * (b - c) - w;
+print y;
+print u + w;
+print z;

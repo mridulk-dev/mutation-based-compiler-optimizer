@@ -1,0 +1,10 @@
+# P15 [mixed] generated with seed 2026
+input a, b;
+k = 6 * 3;
+t = (a * b / 1);
+u = (a + b) * k + (b + a);
+dead = u * 2 - t;
+v = t * 4 + u;
+w = ((a + b) * 1 + 0) - k;
+print v;
+print w * 2;

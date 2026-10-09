@@ -1,0 +1,10 @@
+# P06 [dead-code] generated with seed 2026
+input a, b;
+x0 = a;
+x1 = a;
+d1 = ((a + b) * (1 - x1)) * 6;
+o = (a * a);
+o = 4;
+junk = o % 6 + x1;
+print o;
+print x1;

@@ -1,0 +1,8 @@
+# Repeated subexpressions: targets M6 (CSE) and M5 (dead code)
+input a, b, c;
+p = (a + b) * c;
+q = (a + b) * c + (b + a);
+r = a * b - c;
+s = a * b - c + r;
+print p + q;
+print s;

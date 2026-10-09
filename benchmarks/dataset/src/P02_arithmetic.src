@@ -1,0 +1,7 @@
+# P02 [arithmetic] generated with seed 2026
+input a, b;
+v0 = ((((8 - b) + a) / 1) - 0);
+v1 = (((6 + b) - v0) / 1);
+v2 = ((a + 0) * 1);
+print (1 * v2);
+print v1 - b * 1;

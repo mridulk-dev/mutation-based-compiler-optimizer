@@ -1,0 +1,112 @@
+{
+  "source_files": [
+    "results/results.csv",
+    "results/candidate_log.csv"
+  ],
+  "programs": 15,
+  "average_cost_reduction_pct": 52.71,
+  "maximum_cost_reduction_pct": 89.56,
+  "maximum_cost_reduction_program": "P06",
+  "minimum_cost_reduction_pct": 15.65,
+  "minimum_cost_reduction_program": "P12",
+  "average_final_cost": 0.4729,
+  "average_candidates_explored": 222.87,
+  "total_candidates_explored": 3343,
+  "average_iterations_accepted_mutations": 19.33,
+  "average_search_rounds_incl_convergence_check": 20.13,
+  "candidate_validity_rate_pct": 100.0,
+  "candidates_rejected": 0,
+  "candidate_acceptance_rate_pct": 8.67,
+  "correctness": {
+    "dataset_tests_passed_optimized": 62,
+    "dataset_tests_total": 62,
+    "dataset_test_pass_rate_pct": 100.0,
+    "fresh_inputs_matching_reference": 4500,
+    "fresh_inputs_checked": 4500,
+    "fresh_input_agreement_pct": 100.0,
+    "programs_fully_correct": 15
+  },
+  "operator_hit_frequency": {
+    "M1": {
+      "name": "Zero-Add Removal",
+      "proposed": 79,
+      "valid": 79,
+      "accepted": 7,
+      "programs_applied_in": 5,
+      "hit_rate_pct": 8.86,
+      "share_of_accepted_pct": 2.41
+    },
+    "M2": {
+      "name": "One-Mul Removal",
+      "proposed": 70,
+      "valid": 70,
+      "accepted": 16,
+      "programs_applied_in": 5,
+      "hit_rate_pct": 22.86,
+      "share_of_accepted_pct": 5.52
+    },
+    "M3": {
+      "name": "Constant Folding",
+      "proposed": 48,
+      "valid": 48,
+      "accepted": 20,
+      "programs_applied_in": 7,
+      "hit_rate_pct": 41.67,
+      "share_of_accepted_pct": 6.9
+    },
+    "M4": {
+      "name": "Strength Reduction",
+      "proposed": 314,
+      "valid": 314,
+      "accepted": 17,
+      "programs_applied_in": 7,
+      "hit_rate_pct": 5.41,
+      "share_of_accepted_pct": 5.86
+    },
+    "M5": {
+      "name": "Dead Assignment Removal",
+      "proposed": 154,
+      "valid": 154,
+      "accepted": 51,
+      "programs_applied_in": 7,
+      "hit_rate_pct": 33.12,
+      "share_of_accepted_pct": 17.59
+    },
+    "M6": {
+      "name": "Common Subexpression Elimination",
+      "proposed": 345,
+      "valid": 345,
+      "accepted": 23,
+      "programs_applied_in": 7,
+      "hit_rate_pct": 6.67,
+      "share_of_accepted_pct": 7.93
+    },
+    "M7": {
+      "name": "Constant Propagation",
+      "proposed": 87,
+      "valid": 87,
+      "accepted": 31,
+      "programs_applied_in": 8,
+      "hit_rate_pct": 35.63,
+      "share_of_accepted_pct": 10.69
+    },
+    "M8": {
+      "name": "Instruction Reordering",
+      "proposed": 1553,
+      "valid": 1553,
+      "accepted": 31,
+      "programs_applied_in": 11,
+      "hit_rate_pct": 2.0,
+      "share_of_accepted_pct": 10.69
+    },
+    "M9": {
+      "name": "Copy Propagation",
+      "proposed": 693,
+      "valid": 693,
+      "accepted": 94,
+      "programs_applied_in": 15,
+      "hit_rate_pct": 13.56,
+      "share_of_accepted_pct": 32.41
+    }
+  }
+}

@@ -1,0 +1,293 @@
+{
+  "dataset": {
+    "path": "benchmarks/dataset/review1_dataset.json",
+    "sha256": "f7ba782516b4bfa5a1ec16b87c3cde245b996084c02eab5a05264174008bef21",
+    "seed": 2026,
+    "programs": 15,
+    "regenerated_identically": true,
+    "categories": {
+      "arithmetic": 2,
+      "constant-heavy": 2,
+      "dead-code": 3,
+      "common-subexpression": 3,
+      "strength-reduction": 2,
+      "mixed": 3
+    }
+  },
+  "config": {
+    "validation_cases": 25,
+    "validation_seed": 42,
+    "fresh_reference_inputs_per_program": 300,
+    "cost_weights": {
+      "instructions": 0.4,
+      "arith_ops": 0.3,
+      "temps": 0.2,
+      "cycles": 0.1
+    },
+    "cycle_model": {
+      "input": 1,
+      "print": 1,
+      "copy": 1,
+      "neg": 1,
+      "+": 1,
+      "-": 1,
+      "<<": 1,
+      "*": 3,
+      "/": 10,
+      "%": 10,
+      "raw_stall": 1
+    },
+    "search": "greedy best-improvement, stop when no valid candidate lowers cost",
+    "operators": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9"
+    ]
+  },
+  "environment": {
+    "python": "3.13.3",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "correctness": {
+    "dataset_tests_total": 62,
+    "dataset_tests_passed_original": 62,
+    "dataset_tests_passed_optimized": 62,
+    "fresh_inputs_checked": 4500,
+    "fresh_inputs_matching_reference": 4500,
+    "candidates_rejected_by_validator": 0
+  },
+  "totals": {
+    "candidates_evaluated": 3343,
+    "mutations_accepted": 290,
+    "mean_final_cost": 0.4729,
+    "mean_cost_reduction_pct": 52.7073,
+    "mean_instructions_change_pct": -51.3253,
+    "mean_arith_ops_change_pct": -50.7227,
+    "mean_temps_change_pct": -50.7227,
+    "mean_cycles_change_pct": -68.1447,
+    "optimizer_seconds": 0.885,
+    "wall_seconds": 0.949
+  },
+  "by_category": {
+    "arithmetic": {
+      "programs": [
+        "P01",
+        "P02"
+      ],
+      "mean_final_cost": 0.42,
+      "mean_cost_reduction_pct": 58.0,
+      "mean_instructions_change_pct": -53.59,
+      "mean_arith_ops_change_pct": -57.735,
+      "mean_temps_change_pct": -57.735,
+      "mean_cycles_change_pct": -76.975,
+      "mutations_accepted": 38
+    },
+    "constant-heavy": {
+      "programs": [
+        "P03",
+        "P04"
+      ],
+      "mean_final_cost": 0.3005,
+      "mean_cost_reduction_pct": 69.95,
+      "mean_instructions_change_pct": -65.945,
+      "mean_arith_ops_change_pct": -72.115,
+      "mean_temps_change_pct": -72.115,
+      "mean_cycles_change_pct": -75.13,
+      "mutations_accepted": 41
+    },
+    "dead-code": {
+      "programs": [
+        "P05",
+        "P06",
+        "P07"
+      ],
+      "mean_final_cost": 0.3014,
+      "mean_cost_reduction_pct": 69.8633,
+      "mean_instructions_change_pct": -64.6833,
+      "mean_arith_ops_change_pct": -72.1567,
+      "mean_temps_change_pct": -72.1567,
+      "mean_cycles_change_pct": -79.0933,
+      "mutations_accepted": 51
+    },
+    "common-subexpression": {
+      "programs": [
+        "P08",
+        "P09",
+        "P10"
+      ],
+      "mean_final_cost": 0.6359,
+      "mean_cost_reduction_pct": 36.4067,
+      "mean_instructions_change_pct": -35.8033,
+      "mean_arith_ops_change_pct": -33.7833,
+      "mean_temps_change_pct": -33.7833,
+      "mean_cycles_change_pct": -51.9333,
+      "mutations_accepted": 57
+    },
+    "strength-reduction": {
+      "programs": [
+        "P11",
+        "P12"
+      ],
+      "mean_final_cost": 0.6857,
+      "mean_cost_reduction_pct": 31.425,
+      "mean_instructions_change_pct": -36.03,
+      "mean_arith_ops_change_pct": -22.22,
+      "mean_temps_change_pct": -22.22,
+      "mean_cycles_change_pct": -59.03,
+      "mutations_accepted": 25
+    },
+    "mixed": {
+      "programs": [
+        "P13",
+        "P14",
+        "P15"
+      ],
+      "mean_final_cost": 0.4899,
+      "mean_cost_reduction_pct": 51.0167,
+      "mean_instructions_change_pct": -52.43,
+      "mean_arith_ops_change_pct": -46.2933,
+      "mean_temps_change_pct": -46.2933,
+      "mean_cycles_change_pct": -68.94,
+      "mutations_accepted": 78
+    }
+  },
+  "by_operator": {
+    "M1": {
+      "name": "Zero-Add Removal",
+      "proposed": 79,
+      "valid": 79,
+      "accepted": 7
+    },
+    "M2": {
+      "name": "One-Mul Removal",
+      "proposed": 70,
+      "valid": 70,
+      "accepted": 16
+    },
+    "M3": {
+      "name": "Constant Folding",
+      "proposed": 48,
+      "valid": 48,
+      "accepted": 20
+    },
+    "M4": {
+      "name": "Strength Reduction",
+      "proposed": 314,
+      "valid": 314,
+      "accepted": 17
+    },
+    "M5": {
+      "name": "Dead Assignment Removal",
+      "proposed": 154,
+      "valid": 154,
+      "accepted": 51
+    },
+    "M6": {
+      "name": "Common Subexpression Elimination",
+      "proposed": 345,
+      "valid": 345,
+      "accepted": 23
+    },
+    "M7": {
+      "name": "Constant Propagation",
+      "proposed": 87,
+      "valid": 87,
+      "accepted": 31
+    },
+    "M8": {
+      "name": "Instruction Reordering",
+      "proposed": 1553,
+      "valid": 1553,
+      "accepted": 31
+    },
+    "M9": {
+      "name": "Copy Propagation",
+      "proposed": 693,
+      "valid": 693,
+      "accepted": 94
+    }
+  },
+  "per_program": {
+    "P01": {
+      "category": "arithmetic",
+      "final_cost": 0.421104,
+      "iterations": 20
+    },
+    "P02": {
+      "category": "arithmetic",
+      "final_cost": 0.41886,
+      "iterations": 18
+    },
+    "P03": {
+      "category": "constant-heavy",
+      "final_cost": 0.318903,
+      "iterations": 25
+    },
+    "P04": {
+      "category": "constant-heavy",
+      "final_cost": 0.282143,
+      "iterations": 16
+    },
+    "P05": {
+      "category": "dead-code",
+      "final_cost": 0.249843,
+      "iterations": 23
+    },
+    "P06": {
+      "category": "dead-code",
+      "final_cost": 0.104374,
+      "iterations": 13
+    },
+    "P07": {
+      "category": "dead-code",
+      "final_cost": 0.54993,
+      "iterations": 15
+    },
+    "P08": {
+      "category": "common-subexpression",
+      "final_cost": 0.617199,
+      "iterations": 22
+    },
+    "P09": {
+      "category": "common-subexpression",
+      "final_cost": 0.665201,
+      "iterations": 14
+    },
+    "P10": {
+      "category": "common-subexpression",
+      "final_cost": 0.625381,
+      "iterations": 21
+    },
+    "P11": {
+      "category": "strength-reduction",
+      "final_cost": 0.528004,
+      "iterations": 11
+    },
+    "P12": {
+      "category": "strength-reduction",
+      "final_cost": 0.843478,
+      "iterations": 14
+    },
+    "P13": {
+      "category": "mixed",
+      "final_cost": 0.497908,
+      "iterations": 28
+    },
+    "P14": {
+      "category": "mixed",
+      "final_cost": 0.507804,
+      "iterations": 26
+    },
+    "P15": {
+      "category": "mixed",
+      "final_cost": 0.463846,
+      "iterations": 24
+    }
+  }
+}

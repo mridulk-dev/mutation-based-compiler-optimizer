@@ -1,0 +1,285 @@
+{
+  "benchmark": "b1_algebraic",
+  "base_metrics": {
+    "instructions": 16,
+    "arith_ops": 8,
+    "temps": 8,
+    "cycles": 43.0
+  },
+  "final_metrics": {
+    "instructions": 6,
+    "arith_ops": 3,
+    "temps": 3,
+    "cycles": 8.0
+  },
+  "final_cost": 0.3561046511627907,
+  "candidates_evaluated": 313,
+  "candidates_rejected": 121,
+  "rejected_by_operator": {
+    "MX": 121
+  },
+  "applied_by_operator": {
+    "M2": 3,
+    "M9": 10,
+    "M1": 2,
+    "M4": 2
+  },
+  "seconds": 0.05502359999809414,
+  "steps": [
+    {
+      "iteration": 1,
+      "op_id": "M2",
+      "description": "[12] t7 = t6 / 1  =>  t7 = t6",
+      "cost": 0.9415697674418605,
+      "metrics": {
+        "instructions": 16,
+        "arith_ops": 7,
+        "temps": 8,
+        "cycles": 34.0
+      },
+      "candidates": 27,
+      "rejected": 11,
+      "candidate_index": 3
+    },
+    {
+      "iteration": 2,
+      "op_id": "M9",
+      "description": "[12] t7 = t6: substituted t6 for t7 in 1 use(s), copy removed",
+      "cost": 0.8869186046511628,
+      "metrics": {
+        "instructions": 15,
+        "arith_ops": 7,
+        "temps": 7,
+        "cycles": 32.0
+      },
+      "candidates": 27,
+      "rejected": 11,
+      "candidate_index": 14
+    },
+    {
+      "iteration": 3,
+      "op_id": "M2",
+      "description": "[4] t2 = 1 * b  =>  t2 = b",
+      "cost": 0.8447674418604652,
+      "metrics": {
+        "instructions": 15,
+        "arith_ops": 6,
+        "temps": 7,
+        "cycles": 30.0
+      },
+      "candidates": 25,
+      "rejected": 10,
+      "candidate_index": 2
+    },
+    {
+      "iteration": 4,
+      "op_id": "M9",
+      "description": "[4] t2 = b: substituted b for t2 in 1 use(s), copy removed",
+      "cost": 0.7901162790697674,
+      "metrics": {
+        "instructions": 14,
+        "arith_ops": 6,
+        "temps": 6,
+        "cycles": 28.0
+      },
+      "candidates": 25,
+      "rejected": 10,
+      "candidate_index": 10
+    },
+    {
+      "iteration": 5,
+      "op_id": "M2",
+      "description": "[12] t8 = v * 1  =>  t8 = v",
+      "cost": 0.7479651162790699,
+      "metrics": {
+        "instructions": 14,
+        "arith_ops": 5,
+        "temps": 6,
+        "cycles": 26.0
+      },
+      "candidates": 23,
+      "rejected": 9,
+      "candidate_index": 2
+    },
+    {
+      "iteration": 6,
+      "op_id": "M9",
+      "description": "[12] t8 = v: substituted v for t8 in 1 use(s), copy removed",
+      "cost": 0.6933139534883721,
+      "metrics": {
+        "instructions": 13,
+        "arith_ops": 5,
+        "temps": 5,
+        "cycles": 24.0
+      },
+      "candidates": 23,
+      "rejected": 9,
+      "candidate_index": 13
+    },
+    {
+      "iteration": 7,
+      "op_id": "M1",
+      "description": "[2] t1 = a + 0  =>  t1 = a",
+      "cost": 0.6558139534883721,
+      "metrics": {
+        "instructions": 13,
+        "arith_ops": 4,
+        "temps": 5,
+        "cycles": 24.0
+      },
+      "candidates": 21,
+      "rejected": 8,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 8,
+      "op_id": "M9",
+      "description": "[2] t1 = a: substituted a for t1 in 1 use(s), copy removed",
+      "cost": 0.6011627906976744,
+      "metrics": {
+        "instructions": 12,
+        "arith_ops": 4,
+        "temps": 4,
+        "cycles": 22.0
+      },
+      "candidates": 21,
+      "rejected": 8,
+      "candidate_index": 7
+    },
+    {
+      "iteration": 9,
+      "op_id": "M1",
+      "description": "[6] t4 = y - 0  =>  t4 = y",
+      "cost": 0.5636627906976744,
+      "metrics": {
+        "instructions": 12,
+        "arith_ops": 3,
+        "temps": 4,
+        "cycles": 22.0
+      },
+      "candidates": 19,
+      "rejected": 7,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 10,
+      "op_id": "M9",
+      "description": "[6] t4 = y: substituted y for t4 in 1 use(s), copy removed",
+      "cost": 0.5090116279069767,
+      "metrics": {
+        "instructions": 11,
+        "arith_ops": 3,
+        "temps": 3,
+        "cycles": 20.0
+      },
+      "candidates": 19,
+      "rejected": 7,
+      "candidate_index": 9
+    },
+    {
+      "iteration": 11,
+      "op_id": "M9",
+      "description": "[5] z = t3: substituted t3 for z in 1 use(s), copy removed",
+      "cost": 0.47936046511627906,
+      "metrics": {
+        "instructions": 10,
+        "arith_ops": 3,
+        "temps": 3,
+        "cycles": 18.0
+      },
+      "candidates": 17,
+      "rejected": 6,
+      "candidate_index": 8
+    },
+    {
+      "iteration": 12,
+      "op_id": "M9",
+      "description": "[6] w = t5: substituted t5 for w in 1 use(s), copy removed",
+      "cost": 0.44970930232558143,
+      "metrics": {
+        "instructions": 9,
+        "arith_ops": 3,
+        "temps": 3,
+        "cycles": 16.0
+      },
+      "candidates": 15,
+      "rejected": 5,
+      "candidate_index": 8
+    },
+    {
+      "iteration": 13,
+      "op_id": "M9",
+      "description": "[7] v = t6: substituted t6 for v in 1 use(s), copy removed",
+      "cost": 0.42005813953488375,
+      "metrics": {
+        "instructions": 8,
+        "arith_ops": 3,
+        "temps": 3,
+        "cycles": 14.0
+      },
+      "candidates": 13,
+      "rejected": 4,
+      "candidate_index": 8
+    },
+    {
+      "iteration": 14,
+      "op_id": "M9",
+      "description": "[2] x = a: substituted a for x in 1 use(s), copy removed",
+      "cost": 0.3950581395348837,
+      "metrics": {
+        "instructions": 7,
+        "arith_ops": 3,
+        "temps": 3,
+        "cycles": 14.0
+      },
+      "candidates": 11,
+      "rejected": 3,
+      "candidate_index": 6
+    },
+    {
+      "iteration": 15,
+      "op_id": "M9",
+      "description": "[2] y = b: substituted b for y in 1 use(s), copy removed",
+      "cost": 0.3654069767441861,
+      "metrics": {
+        "instructions": 6,
+        "arith_ops": 3,
+        "temps": 3,
+        "cycles": 12.0
+      },
+      "candidates": 9,
+      "rejected": 4,
+      "candidate_index": 4
+    },
+    {
+      "iteration": 16,
+      "op_id": "M4",
+      "description": "[2] t3 = a * 2  =>  t3 = a + a",
+      "cost": 0.3607558139534884,
+      "metrics": {
+        "instructions": 6,
+        "arith_ops": 3,
+        "temps": 3,
+        "cycles": 10.0
+      },
+      "candidates": 7,
+      "rejected": 3,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 17,
+      "op_id": "M4",
+      "description": "[3] t5 = b * 8  =>  t5 = b << 3",
+      "cost": 0.3561046511627907,
+      "metrics": {
+        "instructions": 6,
+        "arith_ops": 3,
+        "temps": 3,
+        "cycles": 8.0
+      },
+      "candidates": 6,
+      "rejected": 3,
+      "candidate_index": 0
+    }
+  ]
+}

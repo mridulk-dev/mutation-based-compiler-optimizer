@@ -1,0 +1,10 @@
+# Unused computations: targets M5 (dead assignment removal)
+input x, y;
+unused1 = x * y * 17;
+unused2 = unused1 / 3 + x;
+t = x - y;
+tmp = t * t;
+tmp = x + y;
+result = tmp * 3;
+junk = result % 5;
+print result;

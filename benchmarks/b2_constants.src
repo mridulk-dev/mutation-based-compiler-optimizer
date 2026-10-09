@@ -1,0 +1,9 @@
+# Constant chains: targets M7 (propagation) + M3 (folding)
+input n;
+width = 4;
+height = 3 * 2;
+area = width * height;
+border = 2 * (width + height);
+scale = area - border + 10;
+print n * scale;
+print scale % 7;

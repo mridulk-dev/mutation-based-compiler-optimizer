@@ -1,0 +1,13 @@
+# Variable reuse and redefinition: stresses CSE / propagation kill rules
+input a, b;
+x = a + b;
+y = a + b;
+a = a + 1;
+z = a + b;
+x = x * 2 + y;
+c = 5;
+w = c * x;
+c = b - c;
+print x + z;
+print w - c;
+print a + b - 0;

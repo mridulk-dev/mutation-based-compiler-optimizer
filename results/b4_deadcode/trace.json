@@ -1,0 +1,238 @@
+{
+  "benchmark": "b4_deadcode",
+  "base_metrics": {
+    "instructions": 19,
+    "arith_ops": 9,
+    "temps": 9,
+    "cycles": 59.0
+  },
+  "final_metrics": {
+    "instructions": 5,
+    "arith_ops": 2,
+    "temps": 2,
+    "cycles": 10.0
+  },
+  "final_cost": 0.23332342154822083,
+  "candidates_evaluated": 231,
+  "candidates_rejected": 122,
+  "rejected_by_operator": {
+    "MX": 122
+  },
+  "applied_by_operator": {
+    "M5": 12,
+    "M9": 2
+  },
+  "seconds": 0.060067999991588295,
+  "steps": [
+    {
+      "iteration": 1,
+      "op_id": "M5",
+      "description": "[7] unused2 = t4  =>  (removed)",
+      "cost": 0.9755575379125782,
+      "metrics": {
+        "instructions": 18,
+        "arith_ops": 9,
+        "temps": 9,
+        "cycles": 57.0
+      },
+      "candidates": 25,
+      "rejected": 14,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 2,
+      "op_id": "M5",
+      "description": "[6] t4 = t3 + x  =>  (removed)",
+      "cost": 0.8955595202696006,
+      "metrics": {
+        "instructions": 17,
+        "arith_ops": 8,
+        "temps": 8,
+        "cycles": 55.0
+      },
+      "candidates": 24,
+      "rejected": 13,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 3,
+      "op_id": "M5",
+      "description": "[5] t3 = unused1 / 3  =>  (removed)",
+      "cost": 0.8003072653384875,
+      "metrics": {
+        "instructions": 16,
+        "arith_ops": 7,
+        "temps": 7,
+        "cycles": 44.0
+      },
+      "candidates": 23,
+      "rejected": 12,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 4,
+      "op_id": "M5",
+      "description": "[4] unused1 = t2  =>  (removed)",
+      "cost": 0.7758648032510654,
+      "metrics": {
+        "instructions": 15,
+        "arith_ops": 7,
+        "temps": 7,
+        "cycles": 42.0
+      },
+      "candidates": 21,
+      "rejected": 11,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 5,
+      "op_id": "M5",
+      "description": "[3] t2 = t1 * 17  =>  (removed)",
+      "cost": 0.6924769550996134,
+      "metrics": {
+        "instructions": 14,
+        "arith_ops": 6,
+        "temps": 6,
+        "cycles": 38.0
+      },
+      "candidates": 20,
+      "rejected": 10,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 6,
+      "op_id": "M5",
+      "description": "[2] t1 = x * y  =>  (removed)",
+      "cost": 0.6107840222023987,
+      "metrics": {
+        "instructions": 13,
+        "arith_ops": 5,
+        "temps": 5,
+        "cycles": 35.0
+      },
+      "candidates": 19,
+      "rejected": 9,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 7,
+      "op_id": "M5",
+      "description": "[5] tmp = t6  =>  (removed)",
+      "cost": 0.5863415601149767,
+      "metrics": {
+        "instructions": 12,
+        "arith_ops": 5,
+        "temps": 5,
+        "cycles": 33.0
+      },
+      "candidates": 17,
+      "rejected": 9,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 8,
+      "op_id": "M5",
+      "description": "[4] t6 = t * t  =>  (removed)",
+      "cost": 0.5029537119635247,
+      "metrics": {
+        "instructions": 11,
+        "arith_ops": 4,
+        "temps": 4,
+        "cycles": 29.0
+      },
+      "candidates": 16,
+      "rejected": 8,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 9,
+      "op_id": "M5",
+      "description": "[3] t = t5  =>  (removed)",
+      "cost": 0.47851124987610266,
+      "metrics": {
+        "instructions": 10,
+        "arith_ops": 4,
+        "temps": 4,
+        "cycles": 27.0
+      },
+      "candidates": 14,
+      "rejected": 7,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 10,
+      "op_id": "M5",
+      "description": "[2] t5 = x - y  =>  (removed)",
+      "cost": 0.40020814748736244,
+      "metrics": {
+        "instructions": 9,
+        "arith_ops": 3,
+        "temps": 3,
+        "cycles": 26.0
+      },
+      "candidates": 13,
+      "rejected": 6,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 11,
+      "op_id": "M5",
+      "description": "[7] junk = t9  =>  (removed)",
+      "cost": 0.3757656853999406,
+      "metrics": {
+        "instructions": 8,
+        "arith_ops": 3,
+        "temps": 3,
+        "cycles": 24.0
+      },
+      "candidates": 11,
+      "rejected": 6,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 12,
+      "op_id": "M5",
+      "description": "[6] t9 = result % 5  =>  (removed)",
+      "cost": 0.28220834572306475,
+      "metrics": {
+        "instructions": 7,
+        "arith_ops": 2,
+        "temps": 2,
+        "cycles": 14.0
+      },
+      "candidates": 10,
+      "rejected": 5,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 13,
+      "op_id": "M9",
+      "description": "[3] tmp = t7: substituted t7 for tmp in 1 use(s), copy removed",
+      "cost": 0.25776588363564285,
+      "metrics": {
+        "instructions": 6,
+        "arith_ops": 2,
+        "temps": 2,
+        "cycles": 12.0
+      },
+      "candidates": 8,
+      "rejected": 5,
+      "candidate_index": 0
+    },
+    {
+      "iteration": 14,
+      "op_id": "M9",
+      "description": "[4] result = t8: substituted t8 for result in 1 use(s), copy removed",
+      "cost": 0.23332342154822083,
+      "metrics": {
+        "instructions": 5,
+        "arith_ops": 2,
+        "temps": 2,
+        "cycles": 10.0
+      },
+      "candidates": 6,
+      "rejected": 4,
+      "candidate_index": 0
+    }
+  ]
+}

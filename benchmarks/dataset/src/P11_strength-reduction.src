@@ -1,0 +1,8 @@
+# P11 [strength-reduction] generated with seed 2026
+input a, b;
+s0 = b * 2 + b;
+s1 = b * 16 + s0;
+s2 = b * 8 + a;
+s3 = s2 * 2 + s2;
+print s3 * 2;
+print s2;

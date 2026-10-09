@@ -1,0 +1,890 @@
+{
+  "name": "review1-miniarith",
+  "seed": 2026,
+  "generator": "benchmarks/generate_dataset.py",
+  "expected_outputs_from": "execution/reference.py (AST interpreter)",
+  "categories": {
+    "arithmetic": 2,
+    "constant-heavy": 2,
+    "dead-code": 3,
+    "common-subexpression": 3,
+    "strength-reduction": 2,
+    "mixed": 3
+  },
+  "programs": [
+    {
+      "id": "P01",
+      "category": "arithmetic",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "source": "# P01 [arithmetic] generated with seed 2026\ninput a, b;\nv0 = (1 * (1 * b));\nv1 = (((3 + 8) - (a * b)) / 1);\nv2 = (((v0 + v0) + (b + v1)) * 1);\nv3 = (v0 / 1);\nprint (v3 - 0);\nprint v2 - a * 1;\n",
+      "tests": [
+        {
+          "inputs": [
+            10,
+            -17
+          ],
+          "expected_outputs": [
+            -17,
+            120
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -3,
+            -15
+          ],
+          "expected_outputs": [
+            -15,
+            -76
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            3,
+            5
+          ],
+          "expected_outputs": [
+            5,
+            8
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P02",
+      "category": "arithmetic",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "source": "# P02 [arithmetic] generated with seed 2026\ninput a, b;\nv0 = ((((8 - b) + a) / 1) - 0);\nv1 = (((6 + b) - v0) / 1);\nv2 = ((a + 0) * 1);\nprint (1 * v2);\nprint v1 - b * 1;\n",
+      "tests": [
+        {
+          "inputs": [
+            20,
+            15
+          ],
+          "expected_outputs": [
+            20,
+            -7
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -13,
+            -2
+          ],
+          "expected_outputs": [
+            -13,
+            9
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            3,
+            7
+          ],
+          "expected_outputs": [
+            3,
+            2
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -4,
+            18
+          ],
+          "expected_outputs": [
+            -4,
+            20
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P03",
+      "category": "constant-heavy",
+      "inputs": [
+        "n",
+        "m"
+      ],
+      "source": "# P03 [constant-heavy] generated with seed 2026\ninput n, m;\nk0 = 9;\nk1 = 1 - k0 + 9;\nk2 = k1 - 3 - 4;\nk3 = k2 + k1 - 3;\nr = n * k3 + k1;\nr = r - m * (k2 - 4);\nprint r;\nprint k3 % 7 + k0;\n",
+      "tests": [
+        {
+          "inputs": [
+            -10,
+            4
+          ],
+          "expected_outputs": [
+            121,
+            8
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            17,
+            3
+          ],
+          "expected_outputs": [
+            -105,
+            8
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -9,
+            19
+          ],
+          "expected_outputs": [
+            263,
+            8
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P04",
+      "category": "constant-heavy",
+      "inputs": [
+        "n"
+      ],
+      "source": "# P04 [constant-heavy] generated with seed 2026\ninput n;\nk0 = 8;\nk1 = k0 * 4 + 5;\nk2 = k1 * k0 + 7;\nr = n * k2 + k0;\nprint r;\nprint k2 % 7 + k2;\n",
+      "tests": [
+        {
+          "inputs": [
+            -9
+          ],
+          "expected_outputs": [
+            -2719,
+            305
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -16
+          ],
+          "expected_outputs": [
+            -4840,
+            305
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -5
+          ],
+          "expected_outputs": [
+            -1507,
+            305
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            15
+          ],
+          "expected_outputs": [
+            4553,
+            305
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            14
+          ],
+          "expected_outputs": [
+            4250,
+            305
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P05",
+      "category": "dead-code",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "source": "# P05 [dead-code] generated with seed 2026\ninput a, b;\nx0 = ((b * a) + (b - a));\nd0 = (b * x0) * 8;\nx1 = ((a + 2) * (a + 7));\nd1 = ((x0 + x1) + (x0 + b)) * 8;\no = (b + x0);\no = (a * (2 - 8));\njunk = o % 5 + b;\nprint o;\nprint x1;\n",
+      "tests": [
+        {
+          "inputs": [
+            13,
+            2
+          ],
+          "expected_outputs": [
+            -78,
+            300
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -6,
+            4
+          ],
+          "expected_outputs": [
+            36,
+            -4
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            9,
+            -17
+          ],
+          "expected_outputs": [
+            -54,
+            176
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P06",
+      "category": "dead-code",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "source": "# P06 [dead-code] generated with seed 2026\ninput a, b;\nx0 = a;\nx1 = a;\nd1 = ((a + b) * (1 - x1)) * 6;\no = (a * a);\no = 4;\njunk = o % 6 + x1;\nprint o;\nprint x1;\n",
+      "tests": [
+        {
+          "inputs": [
+            6,
+            -17
+          ],
+          "expected_outputs": [
+            4,
+            6
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -7,
+            -13
+          ],
+          "expected_outputs": [
+            4,
+            -7
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -13,
+            15
+          ],
+          "expected_outputs": [
+            4,
+            -13
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -10,
+            20
+          ],
+          "expected_outputs": [
+            4,
+            -10
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -5,
+            -12
+          ],
+          "expected_outputs": [
+            4,
+            -5
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P07",
+      "category": "dead-code",
+      "inputs": [
+        "a",
+        "b",
+        "c"
+      ],
+      "source": "# P07 [dead-code] generated with seed 2026\ninput a, b, c;\nx0 = ((c + b) + (a + c));\nx1 = ((x0 - 7) + (a - c));\nd1 = ((c - x1) - x1) * 4;\no = (x1 - 8);\no = ((x1 + a) - (x0 * 8));\njunk = o % 5 + b;\nprint o;\nprint x1;\n",
+      "tests": [
+        {
+          "inputs": [
+            13,
+            2,
+            -6
+          ],
+          "expected_outputs": [
+            4,
+            15
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -2,
+            -3,
+            17
+          ],
+          "expected_outputs": [
+            -231,
+            3
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -18,
+            4,
+            7
+          ],
+          "expected_outputs": [
+            -50,
+            -32
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -10,
+            -12,
+            13
+          ],
+          "expected_outputs": [
+            -68,
+            -26
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            19,
+            15,
+            -15
+          ],
+          "expected_outputs": [
+            18,
+            31
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P08",
+      "category": "common-subexpression",
+      "inputs": [
+        "a",
+        "b",
+        "c"
+      ],
+      "source": "# P08 [common-subexpression] generated with seed 2026\ninput a, b, c;\nu = (a * b) * c + (b - a);\nw = (b * a) - (b - a) * 2;\nz = (a * b) + (b - a) + u;\ny = (b - a) * (b * a) - w;\nprint y;\nprint u + w;\nprint z;\n",
+      "tests": [
+        {
+          "inputs": [
+            -17,
+            7,
+            -6
+          ],
+          "expected_outputs": [
+            -2689,
+            571,
+            643
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            17,
+            6,
+            20
+          ],
+          "expected_outputs": [
+            -1246,
+            2153,
+            2120
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -2,
+            -8,
+            14
+          ],
+          "expected_outputs": [
+            -124,
+            246,
+            228
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -15,
+            -3,
+            8
+          ],
+          "expected_outputs": [
+            519,
+            393,
+            429
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            15,
+            -7,
+            -19
+          ],
+          "expected_outputs": [
+            2371,
+            1912,
+            1846
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P09",
+      "category": "common-subexpression",
+      "inputs": [
+        "a",
+        "b",
+        "c"
+      ],
+      "source": "# P09 [common-subexpression] generated with seed 2026\ninput a, b, c;\nu = (c + a) * c + (c * b);\nw = (a + c) - (c * b) * 3;\nz = (c + a) + (b * c) + u;\nprint u + w;\nprint z;\n",
+      "tests": [
+        {
+          "inputs": [
+            -11,
+            19,
+            -1
+          ],
+          "expected_outputs": [
+            38,
+            -38
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -9,
+            -5,
+            15
+          ],
+          "expected_outputs": [
+            246,
+            -54
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            1,
+            -12,
+            3
+          ],
+          "expected_outputs": [
+            88,
+            -56
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            14,
+            -14,
+            13
+          ],
+          "expected_outputs": [
+            742,
+            14
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P10",
+      "category": "common-subexpression",
+      "inputs": [
+        "a",
+        "b",
+        "c"
+      ],
+      "source": "# P10 [common-subexpression] generated with seed 2026\ninput a, b, c;\nu = (b - c) * b + (a + b);\nw = (b - c) - (a + b) * 3;\nz = (b - c) + (b + a) + u;\ny = (a + b) * (b - c) - w;\nprint y;\nprint u + w;\nprint z;\n",
+      "tests": [
+        {
+          "inputs": [
+            -19,
+            -12,
+            -10
+          ],
+          "expected_outputs": [
+            -29,
+            84,
+            -40
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            9,
+            -13,
+            -5
+          ],
+          "expected_outputs": [
+            28,
+            104,
+            88
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -13,
+            1,
+            8
+          ],
+          "expected_outputs": [
+            55,
+            10,
+            -38
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -11,
+            15,
+            -14
+          ],
+          "expected_outputs": [
+            99,
+            456,
+            472
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            4,
+            18,
+            13
+          ],
+          "expected_outputs": [
+            171,
+            51,
+            139
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P11",
+      "category": "strength-reduction",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "source": "# P11 [strength-reduction] generated with seed 2026\ninput a, b;\ns0 = b * 2 + b;\ns1 = b * 16 + s0;\ns2 = b * 8 + a;\ns3 = s2 * 2 + s2;\nprint s3 * 2;\nprint s2;\n",
+      "tests": [
+        {
+          "inputs": [
+            18,
+            -2
+          ],
+          "expected_outputs": [
+            12,
+            2
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -5,
+            -4
+          ],
+          "expected_outputs": [
+            -222,
+            -37
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -17,
+            11
+          ],
+          "expected_outputs": [
+            426,
+            71
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P12",
+      "category": "strength-reduction",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "source": "# P12 [strength-reduction] generated with seed 2026\ninput a, b;\ns0 = b * 8 + b;\ns1 = a * 2 + s0;\ns2 = 8 * s1 + s0;\ns3 = s0 * 4 + s1;\ns4 = s1 * 4 + s2;\nprint s4 * 2;\nprint s3;\n",
+      "tests": [
+        {
+          "inputs": [
+            -5,
+            15
+          ],
+          "expected_outputs": [
+            3270,
+            665
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -4,
+            -12
+          ],
+          "expected_outputs": [
+            -3000,
+            -548
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -5,
+            1
+          ],
+          "expected_outputs": [
+            -6,
+            35
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -1,
+            18
+          ],
+          "expected_outputs": [
+            4164,
+            808
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P13",
+      "category": "mixed",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "source": "# P13 [mixed] generated with seed 2026\ninput a, b;\nk = 6 * 4;\nt = (b * a / 1);\nu = (b + a) * k + (a + b);\ndead = u * 4 - t;\nv = t * 2 + u;\nw = ((b + a) * 1 + 0) - 5;\nv = v - w * 2;\nprint v;\nprint w * 4;\n",
+      "tests": [
+        {
+          "inputs": [
+            -2,
+            6
+          ],
+          "expected_outputs": [
+            78,
+            -4
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            18,
+            -12
+          ],
+          "expected_outputs": [
+            -284,
+            4
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -10,
+            -6
+          ],
+          "expected_outputs": [
+            -238,
+            -84
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -16,
+            20
+          ],
+          "expected_outputs": [
+            -538,
+            -4
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P14",
+      "category": "mixed",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "source": "# P14 [mixed] generated with seed 2026\ninput a, b;\nk = 3 * 3;\nt = (b * a + 0);\nu = (b + a) * k + (a + b);\ndead = u * 2 - t;\nv = t * 2 + u;\nw = ((b + a) * 1 + 0) - 2;\nv = v - w * 3;\nprint v;\nprint w * 5;\n",
+      "tests": [
+        {
+          "inputs": [
+            5,
+            4
+          ],
+          "expected_outputs": [
+            109,
+            35
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -3,
+            3
+          ],
+          "expected_outputs": [
+            -12,
+            -10
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            1,
+            17
+          ],
+          "expected_outputs": [
+            166,
+            80
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -15,
+            -6
+          ],
+          "expected_outputs": [
+            39,
+            -115
+          ],
+          "expected_error": false
+        }
+      ]
+    },
+    {
+      "id": "P15",
+      "category": "mixed",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "source": "# P15 [mixed] generated with seed 2026\ninput a, b;\nk = 6 * 3;\nt = (a * b / 1);\nu = (a + b) * k + (b + a);\ndead = u * 2 - t;\nv = t * 4 + u;\nw = ((a + b) * 1 + 0) - k;\nprint v;\nprint w * 2;\n",
+      "tests": [
+        {
+          "inputs": [
+            -5,
+            14
+          ],
+          "expected_outputs": [
+            -109,
+            -18
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            7,
+            1
+          ],
+          "expected_outputs": [
+            180,
+            -20
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -19,
+            -19
+          ],
+          "expected_outputs": [
+            722,
+            -112
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            -20,
+            -16
+          ],
+          "expected_outputs": [
+            596,
+            -108
+          ],
+          "expected_error": false
+        },
+        {
+          "inputs": [
+            0,
+            5
+          ],
+          "expected_outputs": [
+            95,
+            -26
+          ],
+          "expected_error": false
+        }
+      ]
+    }
+  ]
+}

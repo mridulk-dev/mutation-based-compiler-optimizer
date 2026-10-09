@@ -1,0 +1,8 @@
+benchmark,instr_before,instr_after,arith_before,arith_after,temps_before,temps_after,cycles_before,cycles_after,final_cost,iterations,candidates,rejected,seconds
+b1_algebraic,16,6,8,3,8,3,43.0,8.0,0.3561,17,313,121,0.055
+b2_constants,16,4,8,1,8,1,44.0,8.0,0.1807,19,224,120,0.042
+b3_cse,21,12,12,7,12,7,40.0,17.0,0.5627,16,344,163,0.085
+b4_deadcode,19,5,9,2,9,2,59.0,10.0,0.2333,14,231,122,0.06
+b5_polynomial,30,13,18,9,18,9,79.0,19.0,0.4474,31,878,388,0.326
+b6_redefinition,25,14,12,9,12,9,44.0,17.0,0.6376,18,454,208,0.124
+b7_edgecases,24,14,13,8,13,8,75.4,40.84,0.5952,18,439,213,0.111

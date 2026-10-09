@@ -1,0 +1,10 @@
+# P03 [constant-heavy] generated with seed 2026
+input n, m;
+k0 = 9;
+k1 = 1 - k0 + 9;
+k2 = k1 - 3 - 4;
+k3 = k2 + k1 - 3;
+r = n * k3 + k1;
+r = r - m * (k2 - 4);
+print r;
+print k3 % 7 + k0;

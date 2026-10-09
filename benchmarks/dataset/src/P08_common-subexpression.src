@@ -1,0 +1,9 @@
+# P08 [common-subexpression] generated with seed 2026
+input a, b, c;
+u = (a * b) * c + (b - a);
+w = (b * a) - (b - a) * 2;
+z = (a * b) + (b - a) + u;
+y = (b - a) * (b * a) - w;
+print y;
+print u + w;
+print z;

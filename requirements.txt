@@ -1,0 +1,1 @@
+matplotlib>=3.5  # optional: only needed for plots (use --no-plots without it)

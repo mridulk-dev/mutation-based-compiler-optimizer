@@ -1,0 +1,12 @@
+# Polynomial / mixed workload: exercises most operators incl. M8 reordering
+input x, y;
+k = 2;
+one = 1;
+a = x * x;
+b = y * y;
+c = a * k + b * k;
+d = (x * x + 0) * one;
+e = c + d * 4 - (y * y);
+f = e / one + 0;
+print f;
+print (x * x) - (y * y) * k;

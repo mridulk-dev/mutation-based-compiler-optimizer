@@ -1,0 +1,11 @@
+# Division/modulo with negatives and a possible divide-by-zero on input 0
+input p, q;
+d = p / q;
+m = p % q;
+safe = (p * 1 + 0) / 4;
+neg = -(-p);
+n2 = -q * 2;
+print d;
+print m;
+print safe + neg;
+print n2 / (2 - 2 + 1);

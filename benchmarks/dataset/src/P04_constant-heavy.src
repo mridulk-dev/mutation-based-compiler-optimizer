@@ -1,0 +1,8 @@
+# P04 [constant-heavy] generated with seed 2026
+input n;
+k0 = 8;
+k1 = k0 * 4 + 5;
+k2 = k1 * k0 + 7;
+r = n * k2 + k0;
+print r;
+print k2 % 7 + k2;

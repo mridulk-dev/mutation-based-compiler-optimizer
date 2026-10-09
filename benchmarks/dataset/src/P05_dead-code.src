@@ -1,0 +1,11 @@
+# P05 [dead-code] generated with seed 2026
+input a, b;
+x0 = ((b * a) + (b - a));
+d0 = (b * x0) * 8;
+x1 = ((a + 2) * (a + 7));
+d1 = ((x0 + x1) + (x0 + b)) * 8;
+o = (b + x0);
+o = (a * (2 - 8));
+junk = o % 5 + b;
+print o;
+print x1;

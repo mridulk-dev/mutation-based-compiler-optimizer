@@ -387,6 +387,13 @@ def check(cfg, use_gcc):
         committed = [json.loads(line) for line in fh]
     records, _, _ = build(cfg, use_gcc=use_gcc, log=lambda *_: None)
     fresh = json.loads(json.dumps(records))
+    # whether the *complete* upstream Jotai file builds depends on the platform's C
+    # headers (MinGW rejects its size_t typedef, glibc accepts it): not compared
+    for r in committed + fresh:
+        cc = r.get("conversion", {}).get("crosscheck")
+        if cc:
+            for k in ("upstream_file_built", "upstream_file_note", "upstream_cases_checked", "message"):
+                cc.pop(k, None)
     if not use_gcc or external.find_gcc() is None:
         committed, fresh = strip_crosscheck(committed), strip_crosscheck(fresh)
         # without gcc, external fragments cannot be re-cross-checked; compare everything else

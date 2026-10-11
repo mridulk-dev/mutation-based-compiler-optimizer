@@ -1,0 +1,58 @@
+{
+  "note": "Every bug found during development becomes a case here; tests/test_regressions.py replays them.",
+  "cases": [
+    {
+      "id": "REG-001",
+      "found_by": "Review-1 fuzzing (tests/fuzz.py)",
+      "kind": "operator-soundness",
+      "description": "M5 removed a dead division whose divisor can be zero, hiding a division-by-zero error",
+      "source": "input a;\nx = 5 / a;\nprint a;\n",
+      "inputs": [
+        [
+          0
+        ],
+        [
+          3
+        ]
+      ]
+    },
+    {
+      "id": "REG-002",
+      "found_by": "Review-1 fuzzing (tests/fuzz.py)",
+      "kind": "operator-soundness",
+      "description": "M8 moved a possibly-trapping modulo across a print, changing how many values print before the error",
+      "source": "input a;\nprint a;\nx = 5 % a;\nprint x;\n",
+      "inputs": [
+        [
+          0
+        ],
+        [
+          2
+        ]
+      ]
+    },
+    {
+      "id": "REG-003",
+      "found_by": "tests/test_semantics.py (this release)",
+      "kind": "interpreter-crash",
+      "description": "TAC interpreter raised KeyError (crashing the search) on a jump to an undefined label instead of reporting a runtime error",
+      "tac": "goto L9\nprint 1",
+      "expect_error_contains": "undefined label"
+    },
+    {
+      "id": "REG-004",
+      "found_by": "tests/test_property.py roundtrip property (this release)",
+      "kind": "ir-format",
+      "description": "negation of a constant printed as 't1 = -5' and re-parsed as a copy of -5; now printed as 't1 = -(5)'",
+      "source": "input a;\nx = -5 + a;\ny = -(-3);\nprint x * y;\n"
+    },
+    {
+      "id": "REG-005",
+      "found_by": "experiments/validator_eval.py (this release)",
+      "kind": "validator-miss",
+      "description": "Review-1 validation vectors accepted a wrong mutant (operand swap) of SYN-CSE-006 that traps when exactly one input is 0; protocol v2 structured vectors reject it",
+      "source": "# SYN-CSE-006 [common-subexpression, large, high redundancy] template v1.0\ninput a, b, c;\nu0 = (b + c) + (c + a) + b;\nu1 = (c + b) - (a + c) * 3;\nu2 = (a / b) - (a + c) * 3;\nu3 = (a + c) * (a / b) - b;\nb = b + 1;\nu4 = (b + c) + (c + a) + c;\nu5 = (a / b) + (c + a) + u4;\nu6 = (a / b) * (c + b) - a;\nu7 = (b + c) + (c + a) + a;\nu8 = (c + a) - (b + c) * 2;\nprint u6 + u7 + u8;\nprint u8;\n",
+      "mutant_tac": "input a\ninput b\ninput c\nt1 = b + c\nt2 = c + a\nt3 = t1 + t2\nt4 = t3 + b\nu0 = t4\nt5 = c + b\nt6 = a + c\nt7 = t6 * 3\nt8 = t5 - t7\nu1 = t8\nt9 = b / a\nt10 = a + c\nt11 = t10 * 3\nt12 = t9 - t11\nu2 = t12\nt13 = a + c\nt14 = a / b\nt15 = t13 * t14\nt16 = t15 - b\nu3 = t16\nt17 = b + 1\nb = t17\nt18 = b + c\nt19 = c + a\nt20 = t18 + t19\nt21 = t20 + c\nu4 = t21\nt22 = a / b\nt23 = c + a\nt24 = t22 + t23\nt25 = t24 + u4\nu5 = t25\nt26 = a / b\nt27 = c + b\nt28 = t26 * t27\nt29 = t28 - a\nu6 = t29\nt30 = b + c\nt31 = c + a\nt32 = t30 + t31\nt33 = t32 + a\nu7 = t33\nt34 = c + a\nt35 = b + c\nt36 = t35 * 2\nt37 = t34 - t36\nu8 = t37\nt38 = u6 + u7\nt39 = t38 + u8\nprint t39\nprint u8"
+    }
+  ]
+}

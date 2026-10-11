@@ -1,2 +1,9 @@
 __pycache__/
 *.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+tests/regressions/found/
+results/smoke/
+node_modules/

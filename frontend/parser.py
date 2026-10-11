@@ -5,10 +5,18 @@ Grammar:
     stmt    := 'input' ID (',' ID)* ';'
              | ID '=' expr ';'
              | 'print' expr ';'
+             | 'if' '(' cond ')' block ('else' block)?      (staged extension)
+    block   := '{' stmt* '}'
+    cond    := expr (RELOP expr)?          RELOP in < <= > >= == !=
     expr    := term (('+' | '-') term)*
     term    := unary (('*' | '/' | '%') unary)*
     unary   := '-' unary | atom
     atom    := NUM | ID | '(' expr ')'
+
+Relational operators are only allowed as the top-level operator of an `if`
+condition; they yield 1 or 0. A variable is "defined" after an if/else only if
+both branches define it (definite assignment), so a program accepted by the
+parser can never read an undefined variable.
 """
 
 from dataclasses import dataclass
@@ -56,6 +64,16 @@ class Assign:
 @dataclass(frozen=True)
 class Print:
     expr: object
+
+
+@dataclass(frozen=True)
+class If:
+    cond: object
+    then: tuple
+    orelse: tuple
+
+
+RELOPS = ("<", "<=", ">", ">=", "==", "!=")
 
 
 @dataclass(frozen=True)
@@ -117,7 +135,39 @@ class Parser:
             self.expect("OP", ";")
             self.defined.add(name)
             return Assign(name, expr)
+        if tok.kind == "IF":
+            return self.parse_if()
         raise ParseError(f"line {tok.line}: unexpected {tok.value or tok.kind!r} at start of statement")
+
+    def parse_block(self):
+        self.expect("OP", "{")
+        stmts = []
+        while not self.at_op("}"):
+            if self.peek().kind == "EOF":
+                raise ParseError(f"line {self.peek().line}: expected '}}' before end of input")
+            stmts.append(self.parse_stmt())
+        self.advance()
+        return tuple(stmts)
+
+    def parse_if(self):
+        self.advance()
+        self.expect("OP", "(")
+        cond = self.parse_expr()
+        if self.at_op(*RELOPS):
+            op = self.advance().value
+            cond = BinOp(op, cond, self.parse_expr())
+        self.expect("OP", ")")
+        before = set(self.defined)
+        then = self.parse_block()
+        then_defined = self.defined
+        self.defined = set(before)
+        orelse = ()
+        if self.peek().kind == "ELSE":
+            self.advance()
+            orelse = self.parse_block()
+        # definite assignment: defined afterwards only if defined on both paths
+        self.defined = before | (then_defined & self.defined)
+        return If(cond, then, orelse)
 
     def parse_expr(self):
         node = self.parse_term()

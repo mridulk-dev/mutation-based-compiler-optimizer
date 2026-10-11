@@ -1,10 +1,13 @@
 """Lexer for the MiniArith language.
 
-Language summary (straight-line, integer only):
+Language summary (integer only):
 
     input a, b;          # read values from the input stream
     x = (a + 2) * b;     # assignment with + - * / % and unary minus
     print x - 1;         # emit a value to the output stream
+    if (x < b) { print x; } else { print b; }   # staged extension: if/else
+
+Straight-line programs (no `if`) are the core, fully evaluated subset.
 
 Identifiers of the form t<digits> are reserved for compiler temporaries.
 """
@@ -12,12 +15,12 @@ Identifiers of the form t<digits> are reserved for compiler temporaries.
 import re
 from dataclasses import dataclass
 
-KEYWORDS = {"input", "print"}
+KEYWORDS = {"input", "print", "if", "else"}
 
 TOKEN_SPEC = [
     ("NUM", r"\d+"),
     ("ID", r"[A-Za-z_][A-Za-z_0-9]*"),
-    ("OP", r"[+\-*/%=(),;]"),
+    ("OP", r"==|!=|<=|>=|[<>+\-*/%=(),;{}]"),
     ("COMMENT", r"#[^\n]*"),
     ("NEWLINE", r"\n"),
     ("SKIP", r"[ \t\r]+"),
@@ -33,7 +36,7 @@ class LexError(Exception):
 
 @dataclass(frozen=True)
 class Token:
-    kind: str  # NUM, ID, OP, INPUT, PRINT, EOF
+    kind: str  # NUM, ID, OP, INPUT, PRINT, IF, ELSE, EOF
     value: str
     line: int
 

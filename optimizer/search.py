@@ -55,13 +55,14 @@ class SearchResult:
         return [1.0] + [step.cost for step in self.steps]
 
 
-def optimize(program, operators=OPERATORS, max_iters=500, n_cases=25, seed=42, log=None, on_candidate=None):
+def optimize(program, operators=OPERATORS, max_iters=500, n_cases=25, seed=42, log=None, on_candidate=None,
+             weights=None, structured=False):
     """on_candidate, if given, is called once per evaluated candidate with a dict
     (iteration, index, mutation, valid, metrics, cost, improves) for logging."""
     start = time.perf_counter()
-    validator = Validator(program, n_cases=n_cases, seed=seed)
+    validator = Validator(program, n_cases=n_cases, seed=seed, structured=structured)
     base_metrics = measure(program, validator.reference)
-    result = SearchResult(program, program, base_metrics, base_metrics, cost(base_metrics, base_metrics))
+    result = SearchResult(program, program, base_metrics, base_metrics, cost(base_metrics, base_metrics, weights))
     current, current_cost = program, result.final_cost
 
     for iteration in range(1, max_iters + 1):
@@ -83,7 +84,7 @@ def optimize(program, operators=OPERATORS, max_iters=500, n_cases=25, seed=42, l
                                       metrics=None, cost=None, improves=False))
                 continue
             metrics = measure(mutation.program, runs)
-            c = cost(metrics, base_metrics)
+            c = cost(metrics, base_metrics, weights)
             improves = c < current_cost - EPSILON
             if on_candidate:
                 on_candidate(dict(iteration=iteration, index=index, mutation=mutation, valid=True,

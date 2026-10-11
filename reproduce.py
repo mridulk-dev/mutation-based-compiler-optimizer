@@ -55,7 +55,7 @@ def sh(args, timeout=None):
 def git_info():
     try:
         commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
-        dirty = bool(subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout.strip())
+        dirty = bool(subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], cwd=ROOT, capture_output=True, text=True).stdout.strip())
         return {"commit": commit or None, "dirty_worktree": dirty}
     except OSError:
         return {"commit": None, "dirty_worktree": None}

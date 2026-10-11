@@ -180,7 +180,7 @@ def write_csv(path, rows):
 def git_commit():
     try:
         out = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, timeout=10)
-        dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True, timeout=10)
+        dirty = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], cwd=ROOT, capture_output=True, text=True, timeout=10)
         return {"commit": out.stdout.strip() or None, "dirty_worktree": bool(dirty.stdout.strip())}
     except (OSError, subprocess.SubprocessError):
         return {"commit": None, "dirty_worktree": None}

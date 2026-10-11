@@ -1,0 +1,10 @@
+group,tac_instructions,accepted_programs
+controlled,21-40,150
+controlled,11-20,39
+controlled,41-80,61
+controlled,>80,2
+randomized,41-80,64
+randomized,21-40,101
+randomized,11-20,29
+randomized,0-10,1
+external,0-10,7

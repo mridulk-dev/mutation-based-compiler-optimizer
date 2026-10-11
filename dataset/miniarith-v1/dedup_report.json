@@ -1,0 +1,51 @@
+{
+  "rule": "first record in build order (controlled > randomized > external; Review-1 first; then id) is the canonical representative; later records with the same normalised source or the same canonical (alpha-renamed) TAC are marked duplicate and kept in the manifest",
+  "duplicate_groups": [
+    {
+      "canonical": "EXT-JOTAI-158",
+      "duplicates": [
+        {
+          "id": "EXT-JOTAI-168",
+          "match": "normalized-source",
+          "group": "external"
+        }
+      ]
+    },
+    {
+      "canonical": "EXT-JOTAI-183",
+      "duplicates": [
+        {
+          "id": "EXT-JOTAI-184",
+          "match": "normalized-source",
+          "group": "external"
+        },
+        {
+          "id": "EXT-JOTAI-189",
+          "match": "normalized-source",
+          "group": "external"
+        }
+      ]
+    },
+    {
+      "canonical": "EXT-JOTAI-176",
+      "duplicates": [
+        {
+          "id": "EXT-JOTAI-187",
+          "match": "canonical-tac",
+          "group": "external"
+        }
+      ]
+    },
+    {
+      "canonical": "EXT-JOTAI-181",
+      "duplicates": [
+        {
+          "id": "EXT-JOTAI-190",
+          "match": "normalized-source",
+          "group": "external"
+        }
+      ]
+    }
+  ],
+  "n_duplicate_records": 5
+}

@@ -1,0 +1,32 @@
+{
+  "name": "miniarith-v1",
+  "description": "MiniArith optimisation benchmark, first complete release",
+  "dataset_seed": 20261012,
+  "review1": {
+    "path": "benchmarks/dataset/review1_dataset.json",
+    "seed": 2026
+  },
+  "synthetic": {
+    "per_category": 40,
+    "sizes": ["small", "medium", "large"],
+    "redundancy": ["low", "high"]
+  },
+  "random": {
+    "count": 240
+  },
+  "external": {
+    "jotai": true,
+    "use_gcc": true
+  },
+  "tests": {
+    "edge_vectors": [[0], [1], [-1], [3, -2], [1000, -999]],
+    "random_vectors": 5,
+    "random_range": [-50, 50]
+  },
+  "limits": {
+    "max_tac_instructions": 200,
+    "min_compute_instructions": 2,
+    "max_abs_value": 9223372036854775807
+  },
+  "output_dir": "dataset/miniarith-v1"
+}

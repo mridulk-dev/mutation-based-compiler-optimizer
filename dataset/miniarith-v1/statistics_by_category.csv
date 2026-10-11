@@ -1,0 +1,15 @@
+group,subgroup,category,accepted,rejected,duplicate,incompatible
+controlled,review1,arithmetic,2,0,0,0
+controlled,review1,constant-heavy,2,0,0,0
+controlled,review1,dead-code,3,0,0,0
+controlled,review1,common-subexpression,3,0,0,0
+controlled,review1,strength-reduction,2,0,0,0
+controlled,review1,mixed,3,0,0,0
+controlled,synthetic-template,arithmetic,40,0,0,0
+controlled,synthetic-template,constant-heavy,37,3,0,0
+controlled,synthetic-template,common-subexpression,40,0,0,0
+controlled,synthetic-template,dead-code,40,0,0,0
+controlled,synthetic-template,mixed,40,0,0,0
+controlled,synthetic-template,strength-reduction,40,0,0,0
+randomized,random-grammar,random,195,45,0,0
+external,jotai-anghaleaves,external-c,7,0,5,288

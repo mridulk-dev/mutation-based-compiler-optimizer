@@ -1,0 +1,23 @@
+group,reason,count
+controlled,always-fails,3
+randomized,always-fails,36
+randomized,magnitude-exceeds-int64,9
+external,array access,3
+external,bitwise/address-of,3
+external,branch,39
+external,char type,3
+external,comparison,9
+external,duplicate-canonical-tac,1
+external,duplicate-normalized-source,4
+external,floating point,8
+external,loop,3
+external,parameter type other than int,5
+external,pointer/struct access,21
+external,qualifier,8
+external,return type void (only int supported),2
+external,shift,2
+external,struct,2
+external,struct access,1
+external,unsigned type,166
+external,unsupported character '#' in function,12
+external,void type,1

@@ -232,6 +232,7 @@ def main(argv=None):
         ap.error("--quick and --skip-experiments are mutually exclusive")
 
     os.makedirs(args.out, exist_ok=True)
+    provenance = git_info()  # before any step rewrites the (tracked) result files
     started = time.time()
     steps = []
     for name, fn in STEPS:
@@ -257,7 +258,7 @@ def main(argv=None):
         "passed": passed, "mode": "quick" if args.quick else "full", "results_dir": rel(args.out),
         "started_unix": round(started), "seconds": round(time.time() - started, 1),
         "python": platform.python_version(), "platform": platform.platform(), "gcc": shutil.which("gcc") is not None,
-        **git_info(),
+        **provenance,
         "steps": [{"name": s.name, "status": s.status, "seconds": round(s.seconds, 1), "detail": s.detail} for s in steps],
         "note": "Timing measurements and *_seconds fields are the only nondeterministic outputs.",
     }

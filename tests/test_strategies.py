@@ -51,6 +51,13 @@ class StrategyTests(unittest.TestCase):
             for c in cases:
                 self.assertEqual(run(program, c).observable, run(res.optimized, c).observable)
 
+    def test_experiment_config_is_deterministic(self):
+        # a wall-clock cutoff would make results depend on machine speed (found in the
+        # final verification run: two beam searches were cut short on a slowed machine)
+        from experiments.run_experiments import SEARCH_CONFIG
+        self.assertIsNone(SEARCH_CONFIG["time_limit_seconds"])
+        self.assertEqual(SEARCH_CONFIG["validation_protocol"], "v3")
+
     def test_evaluator_caches(self):
         program = compile_source("input a; print a * 2;")
         ev = Evaluator(program)

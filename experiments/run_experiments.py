@@ -57,7 +57,10 @@ STRATEGY_NAMES = ("unoptimized", "fixed", "greedy", "beam")
 METRICS = ("instructions", "arith_ops", "temps", "cycles")
 SEARCH_CONFIG = {"validation_cases": 25, "validation_seed": 42, "validation_protocol": "v3",
                  "beam_width": 4, "beam_patience": 3,
-                 "time_limit_seconds": 120, "fixed_order": list(FIXED_ORDER)}
+                 # No wall-clock cutoff: results must not depend on machine speed or load.
+                 # Every strategy is bounded by deterministic budgets instead (greedy 500
+                 # iterations, fixed 5000 steps / 50 rounds, beam 50000 evaluations).
+                 "time_limit_seconds": None, "fixed_order": list(FIXED_ORDER)}
 NO_M8 = [(op, fn) for op, fn in OPERATORS if op != "M8"]
 
 
@@ -231,6 +234,7 @@ def main(argv=None):
 
     from experiments.summarize import build_summary  # local import keeps worker start-up light
 
+    provenance = git_commit()  # before any output is written (outputs are tracked files)
     t0 = time.perf_counter()
     records = load_manifest(args.manifest, args.limit, set(args.ids) if args.ids else None)
     with open(args.manifest, "rb") as fh:
@@ -270,7 +274,7 @@ def main(argv=None):
 
     env = {"python": platform.python_version(), "implementation": platform.python_implementation(),
            "platform": platform.platform(), "processor": platform.processor(), "cpu_count": os.cpu_count(),
-           **git_commit()}
+           **provenance}
     config = {**SEARCH_CONFIG, "heldout_inputs": args.fresh, "heldout_seed": args.seed,
               "cost_weights_baseline": WEIGHTS, "weight_configs": WEIGHT_CONFIGS,
               "cycle_model": {**CYCLES, "raw_stall": STALL_CYCLES},

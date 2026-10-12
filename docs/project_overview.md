@@ -1,3 +1,7 @@
+> **Historical (Review-1) document.** It describes the Review-1 prototype and is kept for provenance.
+> The current system is described in [architecture.md](architecture.md), [methodology.md](methodology.md) and
+> [results.md](results.md); [architecture.mmd](architecture.mmd) now shows the current architecture.
+
 # Automated Mutation-Based Compiler Code Optimization: Project Overview
 
 This prototype optimises **three-address code (TAC)** by search rather than a fixed pass order.

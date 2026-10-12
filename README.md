@@ -1,126 +1,147 @@
-# Automated Mutation-Based Compiler Code Optimization (Review-1 prototype)
+# Automated Mutation-Based Compiler Code Optimization
 
-Search-based optimiser for three-address code (TAC). Rewrite rules ("mutations") only
-*propose* changes. A change is kept only when differential testing shows it still behaves
-like the original program and it lowers a weighted cost.
-
-```
-source (.src) -> lexer/parser -> naive TAC -> [ mutate -> validate -> cost -> pick best ]* -> optimised TAC -> results + plots
-```
-
-Architecture and workflow diagrams, plus a 1–2 sentence description of every module, are in
-[docs/project_overview.md](docs/project_overview.md).
-
-## Run
+This project is a search-based optimiser for three-address code (TAC). A small compiler
+turns **MiniArith** programs into deliberately naive TAC. Rewrite rules ("mutations")
+*propose* changes, and a differential-testing validator rejects any candidate whose printed
+output or runtime error differs from the original program. A search strategy then keeps the
+cheapest valid program under a weighted cost model.
 
 ```
-pip install -r requirements.txt          # matplotlib, only for plots
-python main.py                           # all benchmarks: trace, before/after TAC, metrics, plots
-python main.py benchmarks/b5_polynomial.src
-python main.py --unsafe --quiet          # adds a deliberately wrong operator; shows validator rejections
-python -m unittest discover -s tests -t . -v
-python verify_pipeline.py                # stage-by-stage check of every benchmark
-python -m tests.fuzz 1000 77             # random-program fuzzing against an AST oracle
-python -m benchmarks.generate_dataset    # regenerate the 15-program Review-1 dataset (seed 2026)
-python run_dataset.py                    # optimise all 15 -> results/results.csv, candidate_log.csv, summary.json
+source → lexer/parser → naive TAC → [ mutate → validate → cost → select ]* → optimised TAC
 ```
 
-## Review-1 dataset
+This release takes the Review-1 prototype to a complete, reproducible project. It adds:
 
-`benchmarks/generate_dataset.py` builds 15 programs with seeded template generators: arithmetic (2),
-constant-heavy (2), dead-code (3), common-subexpression (3), strength-reduction (2), mixed (3). Each
-entry in `benchmarks/dataset/review1_dataset.json` has an id, a category, the source, 3-5 test
-inputs, and the expected outputs. Those outputs come from running the source on the reference AST
-interpreter (`execution/reference.py`), which shares no code with the TAC generator or optimiser.
-The same seed always produces a byte-identical file, and `run_dataset.py` checks this before running.
+- a validated **454-program dataset** in three separately reported groups;
+- **fair baselines** that share operators, validator and cost function: unoptimised, a
+  fixed-order pass pipeline, greedy search and beam search;
+- **measured wall-clock time** alongside the simulated cost;
+- a **local web dashboard** wired to the real compiler and artifacts;
+- a staged **if/else + CFG** extension;
+- a one-command reproducibility pipeline and CI.
 
-`run_dataset.py` writes:
-- `results/results.csv`: one row per program, with before/after metrics, final cost, iterations,
-  candidates evaluated/valid/rejected, operators applied, dataset tests passed, and unseen inputs
-  that match the reference.
-- `results/candidate_log.csv`: one row per candidate the search evaluated, with its operator,
-  description, validity, metrics, cost, and whether it was accepted.
-- `results/summary.json`: the dataset hash, config, environment, correctness totals, and
-  per-category and per-operator statistics.
+Results: [docs/results.md](docs/results.md) (generated from logs) · Report draft:
+[docs/report.md](docs/report.md) · Demo guide: [docs/demo_guide.md](docs/demo_guide.md)
 
-Two runs give identical files, except for the `runtime_seconds` and `*_seconds` timing fields.
+## Quick start
 
-Outputs go to `results/`: `summary.csv`, `<benchmark>/{original.tac, optimized.tac, trace.json}`,
-and `plots/{convergence, metrics_comparison, operator_usage}.png`.
+```bash
+pip install -r requirements.txt              # matplotlib (plots only); everything else is stdlib
+python -m dashboard.server                   # dashboard → http://127.0.0.1:8765
+python main.py benchmarks/b5_polynomial.src  # CLI: one program, full trace (Review-1 driver)
+python -m unittest discover -s tests -t .    # unit / property / regression / dataset / dashboard tests
+python reproduce.py                          # full pipeline (≈ 47 min on a 12-thread laptop): dataset check, tests, fuzzing,
+                                             #   experiments, plots, dashboard/data agreement
+python reproduce.py --quick                  # CI-sized version (small fuzz, 30-program subset)
+```
+
+Requirements: Python ≥ 3.10 (developed with 3.13.3). gcc is optional; it is used only to
+cross-check the C-derived dataset fragments.
+
+## Commands
+
+| Task | Command |
+|---|---|
+| Build the dataset / verify it reproduces | `python -m benchmarks.build` / `python -m benchmarks.build --check` |
+| Re-run deduplication on a manifest | `python -m benchmarks.dedup dataset/miniarith-v1/manifest.jsonl` |
+| Full experiments (all strategies, sensitivity, timing) | `python -m experiments.run_experiments` → `results/final/` |
+| Subset run | `python -m experiments.run_experiments --limit 40 --out results/smoke` |
+| Validator fault-injection study | `python -m experiments.validator_eval` |
+| Plots and results doc from saved logs | `python -m experiments.plots` then `python -m experiments.report` |
+| Fuzzing (separate correctness workload) | `python -m tests.fuzz 1300 77` · `python -m tests.fuzz 300 11 --cf --strategies greedy,fixed,beam` |
+| Review-1 artifacts (unchanged) | `python -m benchmarks.generate_dataset` · `python run_dataset.py` · `python verify_pipeline.py` |
 
 ## Source language (MiniArith)
 
-Straight-line, integer-only: `input a, b;`, `x = expr;`, `print expr;`. It supports `+ - * / %`,
-unary minus, parentheses and `#` comments. `/` and `%` follow C rules (they truncate toward zero).
-Names like `t1` are reserved for compiler temporaries.
+```
+input a, b;                     # read integers from the input stream
+x = (a + 2) * b - a / 3;        # + - * / % and unary minus; / and % truncate toward zero (C)
+print x % 5;                    # observable output
+if (a < b) { print a; } else { print b; }   # staged extension: if/else, < <= > >= == !=
+```
 
-## Layout
-
-| Directory | Contents |
-|---|---|
-| `frontend/` | `lexer.py`, `parser.py` (recursive descent -> AST), `tac.py` (TAC IR, naive generator, TAC text parser) |
-| `execution/` | `interpreter.py` (TAC interpreter + cycle model), `validator.py` (differential testing), `reference.py` (AST interpreter used as the oracle) |
-| `optimizer/` | `mutations.py` (operators), `cost.py`, `search.py` (greedy best-improvement) |
-| `visualization/` | `plots.py` |
-| `benchmarks/` | seven `.src` programs: b1-b5 each target particular operators; b6 covers variable redefinition, b7 covers negative division and division by zero |
-| `tests/` | unit tests (frontend, each operator, validator, cost, search) and `fuzz.py` (random-program fuzzer) |
-| `verify_pipeline.py` | per benchmark: TAC checked against an AST oracle, each operator run alone, the validator mutation-tested, cost recomputed by hand, and full search checked on 300 fresh inputs |
+Integers are unbounded. Division or modulo by zero is an observable runtime error, and
+values printed before it stay observable. Names like `t1` are reserved for compiler
+temporaries. Straight-line programs are the core subset. The dataset contains only
+straight-line programs; if/else is a tested extension.
 
 ## Mutation operators
 
 | ID | Operator | Rewrite |
 |---|---|---|
-| M1 | Zero-Add Removal | `a+0`, `0+a`, `a-0` -> `a` |
-| M2 | One-Mul Removal | `a*1`, `1*a`, `a/1` -> `a` |
-| M3 | Constant Folding | `c1 op c2` -> `c` (not folded when the result would be an error, e.g. `/0`) |
-| M4 | Strength Reduction | `a*2` -> `a+a`; `a*2^k` -> `a<<k` |
-| M5 | Dead Assignment Removal | removes an assignment whose value is never read (backward liveness); never removes `input` |
-| M6 | Common Subexpression Elimination | `x = a op b` with an earlier identical, still-valid expression -> `x = t` (treats `+` and `*` as commutative) |
-| M7 | Constant Propagation | `k = c` -> replaces later uses of `k` with `c` and removes the copy if it is now dead |
-| M8 | Instruction Reordering | swaps adjacent independent instructions (no RAW/WAR/WAW dependency, I/O order kept) |
-| M9 | Copy Propagation *(extra)* | `x = y` -> replaces later uses of `x` with `y` and removes the copy if it is now dead |
-| MX | Unchecked Reordering *(unsafe, `--unsafe` only)* | swaps *dependent* pairs, to show the validator at work |
+| M1 | Zero-Add Removal | `a+0`, `0+a`, `a-0` → `a` |
+| M2 | One-Mul Removal | `a*1`, `1*a`, `a/1` → `a` |
+| M3 | Constant Folding | `c1 op c2` → `c` (never folds a division by zero) |
+| M4 | Strength Reduction | `a*2` → `a+a`, `a*2^k` → `a<<k` |
+| M5 | Dead Assignment Removal | backward liveness; never removes `input` or a division that may trap |
+| M6 | Common Subexpression Elimination | reuses an available identical expression (commutative-aware, killed by redefinition) |
+| M7 | Constant Propagation | substitutes `k = c` into later uses and drops the copy if it becomes dead |
+| M8 | Instruction Reordering | swaps adjacent independent instructions (no RAW/WAR/WAW; I/O and traps keep their order; never across labels or jumps) |
+| M9 | Copy Propagation | substitutes `x = y` into later uses and drops the copy if it becomes dead |
+| M10 | Branch Folding (CFG) | `ifz <const>` → `goto` or fall-through, plus removal of unreachable code |
+| MX | Unchecked Reordering (*unsafe*) | demo only (`--unsafe`, or the dashboard toggle): shows the validator rejecting wrong candidates |
 
-Why M7/M9 remove the copy themselves: propagation on its own leaves the cost unchanged, so a
-strictly-improving greedy search would never take it. Combining "propagate + delete dead copy" into
-one mutation took b5 from cost 0.82 to 0.45.
+For programs with control flow, M1–M9 run one basic block at a time with a conservative
+`live_out` set (see [docs/architecture.md](docs/architecture.md)).
 
-## Cost model
+## Strategies compared
 
-`cost = 0.4·I/I0 + 0.3·A/A0 + 0.2·T/T0 + 0.1·C/C0` (the original program has cost 1.0).
-I = instructions, A = arithmetic ops, T = distinct temporaries, C = mean **simulated cycles**
-over the test suite. Execution time comes from a deterministic cycle model, not wall-clock time,
-so results are reproducible: `+ - << neg copy io` = 1, `*` = 3, `/ %` = 10, plus a 1-cycle stall
-when an instruction reads the result of the instruction just before it. The stall term is what
-gives M8 something to improve.
+| Strategy | Definition |
+|---|---|
+| unoptimized | Naive TAC from the compiler |
+| fixed | Classical pass order `M3 M7 M9 M1 M2 M6 M9 M4 M5 M10` applied to a fixpoint, then an M8 scheduling pass |
+| greedy | Review-1 best-improvement search |
+| beam | Width 4, patience 3 |
+| greedy w/o M8 | Ablation that isolates the effect of instruction reordering |
 
-## Correctness validation
+## Cost model and measurements
 
-The original program and each candidate both run on 25 deterministic input vectors (edge values
-0, ±1, ±2, 7, 1000, -999, then seeded random). Their printed output **and** error status (e.g.
-division by zero) must match exactly. This is testing, not proof. The test suite also re-checks
-each optimised benchmark against 40 fresh inputs the search never saw.
+`cost = 0.4·I/I₀ + 0.3·A/A₀ + 0.2·T/T₀ + 0.1·C/C₀`, where I is instructions, A arithmetic
+operations, T distinct temporaries and C **simulated** cycles. The cycle model is
+deterministic: `*` costs 3, `/ %` cost 10, everything else 1, plus a 1-cycle stall when an
+instruction reads the previous instruction's result. Simulated cycles are **not** CPU cycles.
+Real time is measured separately: wall-clock medians on two Python executors, with warm-up,
+interleaved repeats, raw samples saved and IQR-based improvement classification. Six
+alternative weight configurations test sensitivity. See
+[docs/methodology.md](docs/methodology.md).
 
-### Runtime errors are observable
+## Correctness
 
-Division or modulo by a non-constant divisor may fail with a division-by-zero error, and that
-error is part of the program's behaviour. M5 therefore never deletes such an instruction, and M8
-never moves one across `input`/`print`. Fuzzing found this: before the rule, 19 of 300 random
-programs were optimised incorrectly, because the 25 validation inputs often missed the exact
-input that divides by zero. After the fix, 1,300 fuzzed programs (about 20k accepted mutations)
-showed 0 wrong results and 0 invalid proposals. The lesson is that operators have to be sound on
-their own; test-based validation is a safety net, not a guarantee.
+- **Validator.** Candidates are tested against the original on 25 seeded vectors plus
+  structured vectors (one input set to zero, equal pairs).
+- **Independent final check.** Every result is compared with an AST reference interpreter,
+  which has its own arithmetic, on fixture tests and 200 held-out inputs, and through a
+  second (compiled) backend.
+- **Operator soundness.** Every operator is checked by exhaustive enumeration on hazard
+  programs.
+- **Further checks.** Seeded property tests, fuzzing, regression cases for every bug found,
+  and a fault-injection study of the validator.
 
-## Search
+This is **testing, not proof**: the validator self-test measures 86 missed faults out of
+14,805 non-equivalent mutants.
 
-Greedy best-improvement. Each iteration generates every single-site mutation of the current
-program, removes duplicates, rejects the ones that fail validation, scores the rest, and moves
-to the cheapest one if it strictly lowers the cost. The search stops at a local optimum.
+## Layout
 
-## Current limitations (planned for later reviews)
+| Path | Contents |
+|---|---|
+| `frontend/` | lexer, parser (AST, definite assignment), TAC IR + naive generator, basic blocks/CFG, canonical TAC |
+| `execution/` | TAC interpreter + cycle model, AST reference interpreter, TAC→Python backend, validator, timing harness |
+| `optimizer/` | mutation operators, cost model, greedy search, fixed/beam strategies |
+| `benchmarks/` | Review-1 generator (unchanged), template/random generators, Jotai extractor, dataset build/dedup/stats, configs |
+| `dataset/` | released dataset `miniarith-v1` + [README](dataset/README.md) |
+| `jotai_unique_300/` | upstream source collection: 300 Jotai C files (GPL-3.0 collection; not benchmarks by themselves) |
+| `experiments/` | runner, aggregation, validator evaluation, plots, report generator |
+| `results/final/` | experiment logs (CSV/JSONL/JSON), plots, verification summary |
+| `results/` (top level) | Review-1 artifacts, kept unchanged for provenance |
+| `dashboard/` | local web dashboard |
+| `tests/` | unit, semantics, mutation-safety, property, regression, strategy, dataset and dashboard tests; fuzzer; `regressions/` |
+| `docs/` | architecture, methodology, results, report, slides outline, demo guide, limitations |
+| `reproduce.py` | end-to-end pipeline |
 
-- Straight-line code only: no branches or loops, so no CFG or data-flow across blocks.
-- Unbounded Python integers; 32-bit overflow is not modelled.
-- Greedy search can get stuck in local optima; simulated annealing or beam search would be the
-  natural next step.
-- Validation is test-based and does not prove equivalence.
+## Limitations (summary)
+
+Straight-line integer language, plus if/else without loops. Unbounded integers. Validation
+is finite testing. Measured speed-ups compare against deliberately naive TAC on Python
+executors, not native code. The simulated stall model behind M8 has no measurable
+counterpart on the interpreter. The external (C-derived) group has only 7 programs. Full
+list: [docs/limitations.md](docs/limitations.md).

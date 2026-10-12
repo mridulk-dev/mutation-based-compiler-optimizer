@@ -19,10 +19,20 @@ Baseline commands: `python -m unittest discover -s tests -t .`, `python verify_p
 
 ## Checklist
 
-- [x] Phase 1 – audit, baseline tests recorded, feature branch
-- [ ] Phase 2 – independent reference arithmetic, configurable cost weights, expanded semantic/mutation-safety/property tests, regression-case directory, validator self-evaluation
-- [ ] Phase 3 – dataset v1: controlled (Review-1 15 kept unchanged + expanded templates), randomized, external (Jotai, conservative extraction, gcc cross-check); manifest, dedup, validation, statistics, README
-- [ ] Phase 4 – baselines (unoptimized, fixed-order pipeline, greedy, beam), wall-clock timing, sensitivity analysis, per-group reporting, plots
-- [ ] Phase 5 – local web dashboard connected to the real compiler and artifacts
-- [ ] Phase 6 – beam search; staged `if/else` + basic blocks + CFG with block-local optimisation (only if phases 2–5 are done)
-- [ ] Phase 7 – docs, report draft, slides outline, demo guide, reproducibility script, CI, commits
+- [x] Phase 1 – audit, baseline tests recorded (36 tests OK, verify_pipeline OK), feature branch
+- [x] Phase 2 – independent reference arithmetic; configurable cost weights; semantics, mutation-safety
+      (exhaustive), property, regression, strategy, dataset and dashboard tests (109 total); validator
+      self-evaluation and protocol v2; 3 bugs found and fixed as regression cases
+- [x] Phase 3 – dataset miniarith-v1: 795 candidates, 454 accepted (252 controlled incl. Review-1 15
+      unchanged, 195 randomized, 7 external); manifest, dedup, validation, statistics, README; `--check`
+- [x] Phase 4 – unoptimized / fixed / greedy / beam / greedy-w/o-M8 on all 454 programs; held-out
+      correctness checks; wall-clock timing on two backends; 6-config sensitivity; plots; generated report
+- [x] Phase 5 – local dashboard (overview, compiler, dataset, experiments, methodology) on real
+      compiler calls and artifacts; API tests; screenshots checked at desktop and narrow widths
+- [x] Phase 6 – beam search; if/else + basic blocks + CFG + block-local optimisation + M10 (tested;
+      not in the dataset); loops / iterative data-flow NOT implemented
+- [x] Phase 7 – docs (architecture, methodology, results, report, slides outline, demo guide,
+      limitations), reproduce.py, GitHub Actions CI, commits on feature/final-submission
+
+Not done / out of scope: formal equivalence checking, native backend, loops, ExeBench integration
+(investigated only conceptually; not downloaded), a LICENSE file (the authors' decision).

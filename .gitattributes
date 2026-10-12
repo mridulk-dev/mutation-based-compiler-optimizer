@@ -5,3 +5,5 @@ results/final/** text eol=lf
 benchmarks/configs/*.json text eol=lf
 tests/regressions/*.json text eol=lf
 *.png binary
+# Upstream source collection: keep the exact bytes (SHA-256 checked against manifest.csv).
+jotai_unique_300/** -text

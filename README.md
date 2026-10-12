@@ -38,6 +38,10 @@ python reproduce.py --quick                  # CI-sized version (small fuzz, 30-
 Requirements: Python ≥ 3.10 (developed with 3.13.3). gcc is optional; it is used only to
 cross-check the C-derived dataset fragments.
 
+On Windows, some file names in `jotai_unique_300/` exceed the default path-length limit when the
+repository sits in a deep folder. Clone with `git clone -c core.longpaths=true <url>`, or clone
+into a short path.
+
 ## Commands
 
 | Task | Command |

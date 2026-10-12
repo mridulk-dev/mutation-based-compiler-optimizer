@@ -7,7 +7,8 @@
 Steps (each recorded with status, duration and detail):
   1  environment      Python version, required modules, config files, optional gcc
   2  dataset          rebuild dataset in memory and compare with the committed manifest;
-                      Review-1 generator still reproduces the committed 15-program file
+                      Review-1 generator still reproduces the committed 15-program file;
+                      independent audit (benchmarks.audit) -> dataset_audit.json
   3  dedup            re-run deduplication on the committed manifest == committed dedup_report.json
   4  unit tests       python -m unittest discover -s tests -t .
   5  fuzzing          straight-line + control-flow random programs (separate correctness workload)
@@ -94,7 +95,10 @@ def step_dataset(args):
     from benchmarks.generate_dataset import DATASET_PATH, generate
     with open(DATASET_PATH, encoding="utf-8") as fh:
         review1_ok = json.load(fh) == generate(2026)
-    return review1_ok, out[-1] + f"; Review-1 file reproduces: {review1_ok}"
+    acode, aout = sh(["-m", "benchmarks.audit", "--json", os.path.join(args.out, "dataset_audit.json")], timeout=1800)
+    audit = next((ln for ln in aout if ln.startswith("{")), "")
+    return review1_ok and acode == 0, (out[-1] + f"; Review-1 file reproduces: {review1_ok}; independent audit "
+                                       f"{'passed' if acode == 0 else 'FAILED'} {audit}")
 
 
 def step_dedup(args):
@@ -226,6 +230,7 @@ def main(argv=None):
     if args.quick and args.skip_experiments:
         ap.error("--quick and --skip-experiments are mutually exclusive")
 
+    os.makedirs(args.out, exist_ok=True)
     started = time.time()
     steps = []
     for name, fn in STEPS:

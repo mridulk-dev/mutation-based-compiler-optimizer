@@ -1,0 +1,2530 @@
+{
+  "review1": {
+    "protocol": "review1 (25 vectors)",
+    "validation_vectors_example_3_inputs": 25,
+    "programs": 454,
+    "mutants": 25889,
+    "totals": {
+      "rejected": 14591,
+      "accepted_equivalent": 11106,
+      "accepted_but_different": 192
+    },
+    "by_kind": {
+      "const-change": {
+        "rejected": 1821,
+        "accepted_equivalent": 1533,
+        "accepted_but_different": 14
+      },
+      "drop-print": {
+        "rejected": 544
+      },
+      "drop-trap": {
+        "rejected": 230
+      },
+      "op-swap": {
+        "rejected": 3420,
+        "accepted_equivalent": 2850,
+        "accepted_but_different": 31
+      },
+      "operand-swap": {
+        "rejected": 1145,
+        "accepted_equivalent": 840,
+        "accepted_but_different": 56
+      },
+      "swap-prints": {
+        "rejected": 68,
+        "accepted_equivalent": 2
+      },
+      "unsafe-reorder": {
+        "rejected": 1108,
+        "accepted_equivalent": 54,
+        "accepted_but_different": 4
+      },
+      "wrong-var": {
+        "rejected": 6255,
+        "accepted_equivalent": 5827,
+        "accepted_but_different": 87
+      }
+    },
+    "detection_rate_on_nonequivalent": 0.987012,
+    "misses": [
+      {
+        "program_id": "SYN-ARI-035",
+        "kind": "operand-swap",
+        "witness_input": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-006",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          2,
+          3
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-006",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-006",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          2,
+          3
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-006",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-012",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-012",
+        "kind": "wrong-var",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-012",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-012",
+        "kind": "wrong-var",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-023",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-023",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-024",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-024",
+        "kind": "wrong-var",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-024",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-024",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-024",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-024",
+        "kind": "wrong-var",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-024",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-035",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          2,
+          3
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-035",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-035",
+        "kind": "const-change",
+        "witness_input": [
+          3,
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-035",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          2,
+          3
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-035",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-036",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-036",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-036",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-001",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-005",
+        "kind": "op-swap",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-005",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-005",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-007",
+        "kind": "unsafe-reorder",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-008",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-009",
+        "kind": "wrong-var",
+        "witness_input": [
+          0,
+          1
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-009",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          1
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-009",
+        "kind": "wrong-var",
+        "witness_input": [
+          0,
+          1
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-011",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-013",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-013",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-013",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-014",
+        "kind": "op-swap",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-014",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-014",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-015",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-017",
+        "kind": "operand-swap",
+        "witness_input": [
+          1,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-023",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-024",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-031",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-031",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-031",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-033",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-033",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-037",
+        "kind": "unsafe-reorder",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-039",
+        "kind": "operand-swap",
+        "witness_input": [
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-040",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0006",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0009",
+        "kind": "const-change",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0009",
+        "kind": "wrong-var",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0009",
+        "kind": "wrong-var",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0024",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0024",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0027",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0027",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0027",
+        "kind": "wrong-var",
+        "witness_input": [
+          -4859,
+          50280
+        ]
+      },
+      {
+        "program_id": "RND-0028",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          -2,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0028",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          -2,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0032",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0032",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0033",
+        "kind": "wrong-var",
+        "witness_input": [
+          -92938,
+          -59355,
+          -94367
+        ]
+      },
+      {
+        "program_id": "RND-0033",
+        "kind": "op-swap",
+        "witness_input": [
+          -92938,
+          -59355,
+          -94367
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "wrong-var",
+        "witness_input": [
+          76531,
+          -4972,
+          5708,
+          90412
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "op-swap",
+        "witness_input": [
+          2,
+          0,
+          3,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "op-swap",
+        "witness_input": [
+          2,
+          0,
+          3,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "op-swap",
+        "witness_input": [
+          2,
+          0,
+          3,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0040",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0044",
+        "kind": "const-change",
+        "witness_input": [
+          -21811,
+          -64092,
+          -37346
+        ]
+      },
+      {
+        "program_id": "RND-0056",
+        "kind": "op-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0056",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0056",
+        "kind": "const-change",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0056",
+        "kind": "op-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0062",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0062",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0063",
+        "kind": "wrong-var",
+        "witness_input": [
+          -19783,
+          -88101,
+          -86257,
+          -59609
+        ]
+      },
+      {
+        "program_id": "RND-0063",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0064",
+        "kind": "op-swap",
+        "witness_input": [
+          3,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0064",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0064",
+        "kind": "op-swap",
+        "witness_input": [
+          3,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0068",
+        "kind": "unsafe-reorder",
+        "witness_input": [
+          0,
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0068",
+        "kind": "unsafe-reorder",
+        "witness_input": [
+          3,
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0081",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0081",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0081",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0081",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0087",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1,
+          1,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0087",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1,
+          1,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0087",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0093",
+        "kind": "op-swap",
+        "witness_input": [
+          -2,
+          -2,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0093",
+        "kind": "wrong-var",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0093",
+        "kind": "op-swap",
+        "witness_input": [
+          0,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0106",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0106",
+        "kind": "operand-swap",
+        "witness_input": [
+          -2,
+          -2,
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0106",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0108",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0108",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0113",
+        "kind": "wrong-var",
+        "witness_input": [
+          0,
+          -2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0137",
+        "kind": "const-change",
+        "witness_input": [
+          1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0147",
+        "kind": "op-swap",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0148",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0149",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          1,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -2,
+          1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0162",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          1,
+          -1,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0162",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          1,
+          -1,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0162",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          1,
+          -1,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0168",
+        "kind": "wrong-var",
+        "witness_input": [
+          -92938,
+          -59355,
+          -94367
+        ]
+      },
+      {
+        "program_id": "RND-0174",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0175",
+        "kind": "op-swap",
+        "witness_input": [
+          3,
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0175",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0175",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0175",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0175",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0179",
+        "kind": "op-swap",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0179",
+        "kind": "wrong-var",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0179",
+        "kind": "const-change",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0179",
+        "kind": "wrong-var",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0182",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "wrong-var",
+        "witness_input": [
+          800
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "const-change",
+        "witness_input": [
+          -46060
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "operand-swap",
+        "witness_input": [
+          -46060
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "const-change",
+        "witness_input": [
+          5796
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "op-swap",
+        "witness_input": [
+          -46060
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "wrong-var",
+        "witness_input": [
+          -46060
+        ]
+      },
+      {
+        "program_id": "RND-0194",
+        "kind": "op-swap",
+        "witness_input": [
+          65848,
+          91299,
+          71507
+        ]
+      },
+      {
+        "program_id": "RND-0200",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0206",
+        "kind": "operand-swap",
+        "witness_input": [
+          -28299,
+          -73100
+        ]
+      },
+      {
+        "program_id": "RND-0213",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0213",
+        "kind": "wrong-var",
+        "witness_input": [
+          0,
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0213",
+        "kind": "op-swap",
+        "witness_input": [
+          3,
+          1,
+          0,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0213",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          -2,
+          3,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0213",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1,
+          3,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "const-change",
+        "witness_input": [
+          1,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "const-change",
+        "witness_input": [
+          1,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "op-swap",
+        "witness_input": [
+          -2,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "op-swap",
+        "witness_input": [
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "const-change",
+        "witness_input": [
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0230",
+        "kind": "operand-swap",
+        "witness_input": [
+          3,
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0232",
+        "kind": "operand-swap",
+        "witness_input": [
+          1,
+          1,
+          3,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0232",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          1,
+          3,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0232",
+        "kind": "op-swap",
+        "witness_input": [
+          0,
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0232",
+        "kind": "op-swap",
+        "witness_input": [
+          0,
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0232",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0236",
+        "kind": "const-change",
+        "witness_input": [
+          66414,
+          -1045
+        ]
+      },
+      {
+        "program_id": "RND-0238",
+        "kind": "const-change",
+        "witness_input": [
+          30503
+        ]
+      },
+      {
+        "program_id": "RND-0238",
+        "kind": "const-change",
+        "witness_input": [
+          3
+        ]
+      }
+    ],
+    "note": "accepted_equivalent mutants are equivalent on 300 held-out inputs (not proven equivalent); misses are validator false negatives that finite testing cannot exclude"
+  },
+  "v2": {
+    "protocol": "v2 (Review-1 vectors + structured vectors)",
+    "validation_vectors_example_3_inputs": 34,
+    "programs": 454,
+    "mutants": 25889,
+    "totals": {
+      "rejected": 14719,
+      "accepted_equivalent": 11084,
+      "accepted_but_different": 86
+    },
+    "by_kind": {
+      "const-change": {
+        "rejected": 1827,
+        "accepted_equivalent": 1529,
+        "accepted_but_different": 12
+      },
+      "drop-print": {
+        "rejected": 544
+      },
+      "drop-trap": {
+        "rejected": 230
+      },
+      "op-swap": {
+        "rejected": 3443,
+        "accepted_equivalent": 2843,
+        "accepted_but_different": 15
+      },
+      "operand-swap": {
+        "rejected": 1197,
+        "accepted_equivalent": 834,
+        "accepted_but_different": 10
+      },
+      "swap-prints": {
+        "rejected": 68,
+        "accepted_equivalent": 2
+      },
+      "unsafe-reorder": {
+        "rejected": 1112,
+        "accepted_equivalent": 54
+      },
+      "wrong-var": {
+        "rejected": 6298,
+        "accepted_equivalent": 5822,
+        "accepted_but_different": 49
+      }
+    },
+    "detection_rate_on_nonequivalent": 0.994191,
+    "misses": [
+      {
+        "program_id": "SYN-ARI-035",
+        "kind": "operand-swap",
+        "witness_input": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-006",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-006",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-035",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          2,
+          3
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-035",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-035",
+        "kind": "operand-swap",
+        "witness_input": [
+          0,
+          2,
+          3
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-035",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-CSE-036",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          -2,
+          2
+        ]
+      },
+      {
+        "program_id": "SYN-DEA-005",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0006",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0009",
+        "kind": "const-change",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0009",
+        "kind": "wrong-var",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0009",
+        "kind": "wrong-var",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0027",
+        "kind": "wrong-var",
+        "witness_input": [
+          -4859,
+          50280
+        ]
+      },
+      {
+        "program_id": "RND-0028",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          -2,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0028",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          -2,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0033",
+        "kind": "wrong-var",
+        "witness_input": [
+          -92938,
+          -59355,
+          -94367
+        ]
+      },
+      {
+        "program_id": "RND-0033",
+        "kind": "op-swap",
+        "witness_input": [
+          -92938,
+          -59355,
+          -94367
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "wrong-var",
+        "witness_input": [
+          76531,
+          -4972,
+          5708,
+          90412
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0034",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0040",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0044",
+        "kind": "const-change",
+        "witness_input": [
+          -21811,
+          -64092,
+          -37346
+        ]
+      },
+      {
+        "program_id": "RND-0063",
+        "kind": "wrong-var",
+        "witness_input": [
+          -19783,
+          -88101,
+          -86257,
+          -59609
+        ]
+      },
+      {
+        "program_id": "RND-0113",
+        "kind": "wrong-var",
+        "witness_input": [
+          0,
+          -2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0137",
+        "kind": "const-change",
+        "witness_input": [
+          1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0147",
+        "kind": "op-swap",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          1,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          3,
+          3,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "op-swap",
+        "witness_input": [
+          -2,
+          1,
+          2
+        ]
+      },
+      {
+        "program_id": "RND-0157",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          1,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0168",
+        "kind": "wrong-var",
+        "witness_input": [
+          -92938,
+          -59355,
+          -94367
+        ]
+      },
+      {
+        "program_id": "RND-0179",
+        "kind": "op-swap",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0179",
+        "kind": "wrong-var",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0179",
+        "kind": "const-change",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0179",
+        "kind": "wrong-var",
+        "witness_input": [
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "wrong-var",
+        "witness_input": [
+          800
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "const-change",
+        "witness_input": [
+          -46060
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "operand-swap",
+        "witness_input": [
+          -46060
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "const-change",
+        "witness_input": [
+          5796
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "op-swap",
+        "witness_input": [
+          -46060
+        ]
+      },
+      {
+        "program_id": "RND-0191",
+        "kind": "wrong-var",
+        "witness_input": [
+          -46060
+        ]
+      },
+      {
+        "program_id": "RND-0194",
+        "kind": "op-swap",
+        "witness_input": [
+          65848,
+          91299,
+          71507
+        ]
+      },
+      {
+        "program_id": "RND-0213",
+        "kind": "wrong-var",
+        "witness_input": [
+          -1,
+          -2,
+          3,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0213",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1,
+          3,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "operand-swap",
+        "witness_input": [
+          -1,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "const-change",
+        "witness_input": [
+          1,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "const-change",
+        "witness_input": [
+          1,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "wrong-var",
+        "witness_input": [
+          1,
+          0
+        ]
+      },
+      {
+        "program_id": "RND-0214",
+        "kind": "wrong-var",
+        "witness_input": [
+          3,
+          -1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "op-swap",
+        "witness_input": [
+          -2,
+          3
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "const-change",
+        "witness_input": [
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          -2,
+          1
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0228",
+        "kind": "wrong-var",
+        "witness_input": [
+          2,
+          -2
+        ]
+      },
+      {
+        "program_id": "RND-0236",
+        "kind": "const-change",
+        "witness_input": [
+          66414,
+          -1045
+        ]
+      },
+      {
+        "program_id": "RND-0238",
+        "kind": "const-change",
+        "witness_input": [
+          30503
+        ]
+      },
+      {
+        "program_id": "RND-0238",
+        "kind": "const-change",
+        "witness_input": [
+          3
+        ]
+      }
+    ],
+    "note": "accepted_equivalent mutants are equivalent on 300 held-out inputs (not proven equivalent); misses are validator false negatives that finite testing cannot exclude"
+  },
+  "blind_spot_demo": {
+    "original": "input a; print a + 1;",
+    "mutant_traps_only_at": 4242,
+    "validator_accepts_mutant": true,
+    "differs_at_4242": true
+  }
+}

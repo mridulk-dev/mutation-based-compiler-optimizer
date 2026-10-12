@@ -157,7 +157,8 @@ def step_experiments(args):
         vcmd += ["--limit", "30"]
     vcode, vout = sh(vcmd, timeout=3 * 3600)
     corr = next((ln.strip() for ln in out if "correctness:" in ln), "")
-    return vcode == 0, f"{corr}; validator: {vout[1] if len(vout) > 1 else vout}"
+    head = next((ln for ln in vout if ln.startswith("[v3|oracle_strong")), vout[-2] if len(vout) > 1 else vout)
+    return vcode == 0, f"{corr}; validator: {head}"
 
 
 def step_plots(args):

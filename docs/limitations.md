@@ -9,7 +9,7 @@
 | Dataset `miniarith-v1` (454 accepted programs, 3 groups, manifest, dedup, statistics) | Implemented, reproducible (`benchmarks.build --check`) |
 | Fixed-order pipeline, beam search, M8 ablation | Implemented; same operators, validator and cost function |
 | Wall-clock timing (2 Python backends), sensitivity analysis, plots, generated report | Implemented |
-| Validator fault-injection study; validation protocol v2 | Implemented |
+| Validator fault-injection study; validation protocols v2 and v3 | Implemented (see docs/validator_investigation.md) |
 | if/else, basic blocks, CFG, block-local optimisation, branch folding (M10) | Implemented as a staged extension and tested; **not** in the benchmark dataset |
 | Loops, functions, arrays, pointers, unsigned / fixed-width arithmetic | **Not implemented** |
 | Global data-flow analysis (iterative liveness and reaching definitions over cyclic CFGs) | **Not implemented**; not needed for acyclic if/else, which uses conservative `live_out` |
@@ -20,8 +20,9 @@
 ## Threats to validity
 
 **Correctness**
-- Differential testing is finite. The validator self-test shows that protocol v2 misses 86
-  of 14,805 injected non-equivalent faults, about 0.6%, and a constructed mutant that fails
+- Differential testing is finite. Against a strong independent oracle, the validator self-test
+  shows that protocol v3 still accepts 46 of 14,872 injected non-equivalent faults (0.3%). The
+  earlier protocol v2 accepts 150. A constructed mutant that fails
   only at `a = 4242` is accepted. All safe operators produced zero invalid candidates, so no
   accepted result in the experiments depended on the validator catching a fault. Soundness
   rests on the operator tests, which use exhaustive enumeration only over [−4, 4]ⁿ, and on

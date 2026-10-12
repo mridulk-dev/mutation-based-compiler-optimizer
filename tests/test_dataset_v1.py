@@ -97,6 +97,12 @@ class DatasetV1Tests(unittest.TestCase):
                 self.assertIn("conversion", r)
                 self.assertTrue(r["int32_safe_on_tests"])
 
+    def test_independent_audit_passes(self):
+        from benchmarks.audit import audit
+        result = audit()
+        self.assertTrue(result["passed"], result["problems"])
+        self.assertEqual(result["counts"]["accepted_by_group"], {"controlled": 252, "randomized": 195, "external": 7})
+
     def test_generated_records_reproducible(self):
         from benchmarks import randomgen, templates
         for r in self.accepted:

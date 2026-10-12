@@ -21,8 +21,11 @@ Baseline commands: `python -m unittest discover -s tests -t .`, `python verify_p
 
 - [x] Phase 1 – audit, baseline tests recorded (36 tests OK, verify_pipeline OK), feature branch
 - [x] Phase 2 – independent reference arithmetic; configurable cost weights; semantics, mutation-safety
-      (exhaustive), property, regression, strategy, dataset and dashboard tests (109 total); validator
+      (exhaustive), property, regression, strategy, dataset and dashboard tests; validator
       self-evaluation and protocol v2; 3 bugs found and fixed as regression cases
+- [x] Final verification phase – validator investigation: coverage defect fixed (protocol v3), stronger
+      oracle, 7 new regression cases, 46 documented remaining false acceptances; independent dataset
+      audit (benchmarks.audit); cross-drive path fix; THIRD_PARTY_NOTICES.md; 120 tests
 - [x] Phase 3 – dataset miniarith-v1: 795 candidates, 454 accepted (252 controlled incl. Review-1 15
       unchanged, 195 randomized, 7 external); manifest, dedup, validation, statistics, README; `--check`
 - [x] Phase 4 – unoptimized / fixed / greedy / beam / greedy-w/o-M8 on all 454 programs; held-out

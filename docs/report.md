@@ -27,8 +27,9 @@ executors, the optimised programs run 1.9–2.5× faster than the naive TAC (geo
 On the interpreter, measured time correlates with instruction count (ρ = 0.91) more strongly
 than with simulated cycles (ρ = 0.85). Instruction reordering lowers simulated cycles but has
 no established real-world benefit: it is slightly harmful on the interpreter and slightly
-helpful on the compiled backend, for reasons unrelated to the stall model. A fault-injection study puts the validator's detection rate at 99.42%
-(86 misses out of 14,805 non-equivalent mutants). Correctness is therefore established by
+helpful on the compiled backend, for reasons unrelated to the stall model. A fault-injection study found a coverage defect in the validator's test vectors.
+After the fix (protocol v3), a strong independent oracle still finds 46 accepted faults out of
+14,872 non-equivalent mutants (99.69% detection). Correctness is therefore established by
 testing, not proof.
 
 ## 1. Introduction and objectives
@@ -67,8 +68,9 @@ See [architecture.md](architecture.md) for component and workflow diagrams.
 - **Operators M1–M10** (see the README table). For if/else programs the local operators run
   on one basic block at a time with a conservative `live_out` set, and M10 folds constant
   branches and removes unreachable code.
-- **Validator.** Candidates run on 25 seeded vectors, plus structured vectors in protocol
-  v2. Printed values and the error kind must be identical to the original program's.
+- **Validator.** Candidates run under protocol v3: the 25 Review-1 vectors, structured
+  vectors, and coverage vectors (distinct-value specials, large random values, small-range
+  enumeration). Printed values and the error kind must be identical to the original program's.
 - **Cost.** `0.4·I/I₀ + 0.3·A/A₀ + 0.2·T/T₀ + 0.1·C/C₀`, where C is simulated cycles from a
   deterministic in-order model with a one-cycle read-after-write stall.
 - **Strategies.** A fixed pipeline (`M3 M7 M9 M1 M2 M6 M9 M4 M5 M10` to a fixpoint, then an
@@ -98,8 +100,13 @@ interpreter, TAC compiled to Python) must agree before a program is accepted.
 appears three times). **Incompatible.** 288 Jotai files use features outside the subset:
 `unsigned` 166, branches 39, pointers 21 and so on.
 
+All 7 accepted external records come from functions in **one** upstream file (path hint:
+`…/libiconv-1.15/tools/cjk_tab_to_h.c`). Group C is therefore not a diverse sample of real-world
+code.
+
 The build is deterministic, and `python -m benchmarks.build --check` regenerates the manifest
-byte for byte. The C-derived fragments are GPL-3.0 at collection level, and their upstream
+byte for byte. `python -m benchmarks.audit` independently recomputes every count, hash, TAC
+listing and expected output, and checks Review-1 identity against the pre-project commit. The C-derived fragments are GPL-3.0 at collection level, and their upstream
 licences are *unverified*.
 
 ## 4. Correctness methodology
@@ -123,7 +130,13 @@ Bugs found and fixed during this work (all now regression cases):
    now writes `-(5)`. This matters because timing re-parses TAC text.
 3. The Review-1 validator vectors missed faults that appear only when exactly one input is 0
    or two inputs are equal. Protocol v2 adds structured vectors for these cases.
-4. The two Review-1 fuzzing findings, about trapping divisions under M5 and M8, are kept as
+4. *(Final verification phase.)* The 8 special vectors gave every input the **same** value,
+   so a fault that swaps one input for another was invisible to them. The random range
+   [−100, 100] was also masked by later `x / 100` divisions, so some faults visible on about
+   80% of inputs passed validation. Protocol v3 adds rotated distinct specials, large random
+   vectors and small-range coverage (`docs/validator_investigation.md`; regression cases
+   REG-006 to REG-009).
+5. The two Review-1 fuzzing findings, about trapping divisions under M5 and M8, are kept as
    regression cases.
 
 ## 5. Results
@@ -136,8 +149,9 @@ Bugs found and fixed during this work (all now regression cases):
 | Fixture tests passed (per strategy) | 4,487 / 4,487 |
 | Candidates rejected by the validator (safe operators) | 0 |
 | Crashes / timeouts | 0 / 0 |
-| Validator fault injection, protocol v2 | 14,719 of 14,805 non-equivalent mutants rejected (**99.42%**); 86 missed |
-| Validator fault injection, Review-1 protocol | 98.70%; 192 missed |
+| Validator fault injection, protocol v3 (strong oracle) | 14,826 of 14,872 non-equivalent mutants rejected (**99.69%**); **46 accepted** |
+| Validator fault injection, protocol v2 (strong oracle) | 98.99%; 150 accepted (86 against the original 300-input oracle) |
+| Validator fault injection, Review-1 protocol (strong oracle) | 98.20%; 267 accepted |
 | Constructed blind spot (fails only at a = 4242) | accepted by the validator (expected; testing is not proof) |
 | Fuzzing workload (`reproduce.py`) | 1,300 straight-line programs with greedy (20,903 accepted mutations), 130 with fixed and beam (4,127), 260 if/else programs with greedy and fixed (10,151): **0 unsound proposals, 0 wrong results** |
 
@@ -283,7 +297,22 @@ The final run passed all eight steps in 2,814 s on code commit `cd396dc`. It is 
 `dirty_worktree` because documentation files were edited while it ran; no code changed. The
 previous run's `summary.json` is archived in `results/history/`.
 
-## 9. Limitations and future work
+## 9. Licensing recommendation
+
+The repository has no root `LICENSE` file. Recommendation (not legal advice):
+
+- **Project code and the project-generated data:** the compiler, optimiser, experiments,
+  dashboard and dataset groups A and B. Use **MIT**: short, permissive and common for
+  academic code. Apache-2.0 is an equally good choice if an explicit patent grant is wanted.
+- **Documentation and figures:** optionally CC BY 4.0. MIT is also acceptable.
+- **Explicit exclusion.** The licence text, or a NOTICE next to it, must state that
+  `jotai_unique_300/` and the group-C records (`EXT-JOTAI-*`) are third-party material. They
+  are **not** covered by the project licence. They come from a GPL-3.0 collection, and their
+  upstream function licences are unverified (see `THIRD_PARTY_NOTICES.md`).
+- **Single-licence alternative.** If the authors prefer one licence for everything, GPL-3.0
+  is the only option that matches the Jotai collection's declared licence.
+
+## 10. Limitations and future work
 
 See [limitations.md](limitations.md). The main points:
 

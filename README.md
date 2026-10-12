@@ -111,8 +111,10 @@ alternative weight configurations test sensitivity. See
 
 ## Correctness
 
-- **Validator.** Candidates are tested against the original on 25 seeded vectors plus
-  structured vectors (one input set to zero, equal pairs).
+- **Validator.** Candidates are tested against the original with validation protocol v3:
+  the 25 Review-1 vectors, structured vectors (one input set to zero, equal pairs), and
+  coverage vectors (distinct-value specials, large random values, small-range enumeration).
+  Review-1 (the default) and v2 remain available unchanged.
 - **Independent final check.** Every result is compared with an AST reference interpreter,
   which has its own arithmetic, on fixture tests and 200 held-out inputs, and through a
   second (compiled) backend.
@@ -121,8 +123,9 @@ alternative weight configurations test sensitivity. See
 - **Further checks.** Seeded property tests, fuzzing, regression cases for every bug found,
   and a fault-injection study of the validator.
 
-This is **testing, not proof**: the validator self-test measures 86 missed faults out of
-14,805 non-equivalent mutants.
+This is **testing, not proof**. Against a strong independent oracle, the validator self-test
+still finds 46 missed faults out of 14,872 non-equivalent mutants for v3 (v2: 150). See
+[docs/validator_investigation.md](docs/validator_investigation.md).
 
 ## Layout
 
@@ -141,6 +144,13 @@ This is **testing, not proof**: the validator self-test measures 86 missed fault
 | `tests/` | unit, semantics, mutation-safety, property, regression, strategy, dataset and dashboard tests; fuzzer; `regressions/` |
 | `docs/` | architecture, methodology, results, report, slides outline, demo guide, limitations |
 | `reproduce.py` | end-to-end pipeline |
+
+## Licence
+
+No licence has been chosen yet. The recommendation is in `docs/report.md` §9.
+`jotai_unique_300/` and the C-derived dataset records are third-party material (a GPL-3.0
+collection with unverified upstream function licences). Whatever licence is chosen, it does not
+cover them. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Limitations (summary)
 

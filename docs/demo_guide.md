@@ -6,7 +6,7 @@ The demo takes about 10–12 minutes. Every command runs from the repository roo
 
 ```bash
 pip install -r requirements.txt
-python -m unittest discover -s tests -t .        # 109 tests, under a minute; expect "OK"
+python -m unittest discover -s tests -t .        # 120 tests, 1–3 minutes; expect "OK"
 python -m benchmarks.build --check               # "OK: rebuilt dataset is identical ..."
 python -m dashboard.server                       # leave running; open http://127.0.0.1:8765
 ```

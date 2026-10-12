@@ -533,7 +533,7 @@ async function pageExperiments(el, params) {
   // timing
   if (summary.timing) {
     const t = summary.timing;
-    html += `<div class="card section"><div class="card-head"><h2>Measured wall-clock time</h2>${badge("measured", "ok")}</div>
+    html += `<div class="card section"><div class="card-head"><h2>Measured wall-clock time <span class="muted small">(Python executors, not native code)</span></h2>${badge("measured", "ok")}</div>
       <p class="card-sub">${esc(t.classification_rule)}. Speed-up = median time of the unoptimized TAC ÷ median time of the strategy's program, per program.</p>
       <div class="grid g2">${["interp", "compiled"].filter((b) => t[b]).map((b) => {
         const per = Object.entries(t[b].per_strategy).map(([k, v]) => ({ k, ...v }));

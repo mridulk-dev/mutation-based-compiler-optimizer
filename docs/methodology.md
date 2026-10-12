@@ -33,8 +33,12 @@ Three executors implement this specification:
    or the candidate is rejected and never applied.
    - *Review-1 protocol*: 8 special vectors (0, ±1, ±2, 7, 1000, −999, each repeated for
      every input) plus seeded random vectors in [−100, 100], 25 in total, seed 42.
-   - *Protocol v2* (used by every experiment in this release): the 25 vectors above, plus
-     structured vectors. These set one input to 0 with the others non-zero and of mixed sign,
+   - *Protocol v3* (used by the final experiments and the dashboard): v2 plus coverage vectors.
+     These are rotated distinct-value specials, 8 random vectors in ±10⁵, and small-range coverage
+     (exhaustive [−16, 16] for one input, [−3, 3]² for two, 40 samples from [−3, 3]ⁿ otherwise).
+     See [validator_investigation.md](validator_investigation.md).
+   - *Protocol v2*: the 25 vectors above, plus structured vectors. These set one input to 0
+     with the others non-zero and of mixed sign,
      and make every pair of inputs equal (with both signs). The validator self-test below
      motivated this addition.
 2. **After search (independent of the validator).** Each final program is compared with the
@@ -112,7 +116,7 @@ Review-1 values, kept for comparability.
 ## 5. Baselines and search strategies
 
 All strategies use the same operators (`optimizer/mutations.py`), the same validator
-(protocol v2, seed 42), the same cost function and the same programs.
+(protocol v3, seed 42), the same cost function and the same programs.
 
 | Strategy | Definition |
 |---|---|

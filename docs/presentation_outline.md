@@ -36,7 +36,9 @@ division that may trap, and never reorder across I/O.
 - **2,270 / 2,270** results correct on fixtures + 200 held-out inputs + a second backend.
 - Exhaustive operator tests; fuzzing finds 0 unsound proposals and 0 wrong results over
   1,690 programs.
-- Validator fault injection (`10_validator_selftest.png`): 99.42% detection, 86 misses.
+- Validator fault injection (`10_validator_selftest.png`): the investigation found a coverage
+  defect (all-equal special vectors, narrow random range) and fixed it with protocol v3. Misses
+  against the strong oracle fell from 150 (v2) to 46 (v3), i.e. 99.69% detection.
   *Testing ≠ proof* (the 4242 example).
 
 **8. Baselines and search (`01_cost_distribution_by_group.png`, `04_pairwise_scatter.png`).**

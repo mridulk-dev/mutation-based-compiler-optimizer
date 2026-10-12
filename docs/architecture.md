@@ -23,7 +23,7 @@ flowchart TB
         STRAT["Strategies<br/>fixed · greedy (search.py) · beam"]
     end
     subgraph EXE["Execution (execution/)"]
-        VAL["validator.py<br/>differential testing<br/>25 seeded + structured vectors"]
+        VAL["validator.py<br/>differential testing<br/>protocols review1 · v2 · v3"]
         INT["interpreter.py<br/>TAC interpreter + cycle model"]
         PYC["pycodegen.py<br/>TAC → Python function"]
         REF["reference.py<br/>AST interpreter<br/>(independent arithmetic)"]
@@ -70,7 +70,7 @@ flowchart TB
 | `execution/interpreter.py` | Executes TAC and counts **simulated cycles**. An undefined variable or jump target is reported as a runtime error, never a crash. |
 | `execution/reference.py` | The semantic oracle. It evaluates the AST directly, with its own C-style arithmetic, and imports nothing from the TAC side. This independence is checked by a unit test. |
 | `execution/pycodegen.py` | Compiles straight-line TAC to a Python function. It serves as a second executor for checks and as the second timing backend. |
-| `execution/validator.py` | Differential testing against the original program. It uses 25 seeded vectors (the Review-1 protocol), plus structured vectors in protocol v2. |
+| `execution/validator.py` | Differential testing against the original program. Three protocols: `review1` (25 seeded vectors, the default), `v2` (+ structured vectors) and `v3` (+ coverage vectors; used by the final experiments and the dashboard). |
 | `execution/timing.py` | Wall-clock timing: warm-up runs, interleaved rotating order, GC disabled, and raw samples returned. |
 | `optimizer/mutations.py` | Operators M1–M10 and the unsafe demo operator MX. `generate_mutations` applies local operators one basic block at a time. |
 | `optimizer/cost.py` | Metrics and the weighted cost. The baseline weights are those of Review-1. |

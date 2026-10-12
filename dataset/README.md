@@ -42,6 +42,7 @@ python -m benchmarks.build            # rebuild dataset/miniarith-v1 from the co
 python -m benchmarks.build --check    # rebuild in memory and compare with the committed manifest
 python -m benchmarks.build --check --no-gcc   # same, without a C compiler (skips only the gcc cross-check fields)
 python -m benchmarks.dedup dataset/miniarith-v1/manifest.jsonl   # re-run deduplication on a manifest
+python -m benchmarks.audit            # independent audit: counts, hashes, TAC, outputs, Review-1, provenance
 ```
 
 The build is deterministic. Each generated program is built from
@@ -85,6 +86,10 @@ record's `conversion` field. In short:
   the release build, these Linux-oriented files fail with a `size_t` typedef clash. Each record
   notes this, so on that platform the upstream harness cases were checked only through the
   verbatim-function harness.
+
+All 7 accepted external records derive from functions in a single upstream file (path hint
+`BGAQRCode-Android/zbar/src/main/jni/libiconv-1.15/tools/cjk_tab_to_h.c`). Group C is a
+demonstration of the extraction pipeline, not a diverse real-world sample.
 
 The Jotai collection is kept as a **source collection**. Its 300 files are not counted as
 benchmarks.

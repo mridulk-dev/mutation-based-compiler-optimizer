@@ -27,7 +27,8 @@ division that may trap, and never reorder across I/O.
 **6. Dataset (`11_dataset_composition.png`).**
 - 795 candidates → **454 accepted**.
 - Groups: A controlled 252 (incl. the unchanged Review-1 15), B randomized 195, C external 7.
-- 288 Jotai functions are incompatible (mostly `unsigned`).
+- 288 Jotai functions are incompatible (mostly `unsigned`). The 7 accepted external programs
+  are a small, single-source sample with unverified licences, not a real-world benchmark.
 - Every program has a manifest record, hashes, seed and provenance, and expected outputs
   from an independent AST interpreter.
 - Reproducible with `--check`.
@@ -43,8 +44,8 @@ division that may trap, and never reorder across I/O.
 
 **8. Baselines and search (`01_cost_distribution_by_group.png`, `04_pairwise_scatter.png`).**
 - Mean cost ≈ 0.41 for every strategy.
-- Fixed = greedy on 428 / 454 programs.
-- Beam is better on 201 programs, but only by 0.0009 on average, and needs 3.8× greedy's
+- Fixed = greedy on 429 / 454 programs.
+- Beam is better on 200 programs, but only by 0.0009 on average, and needs 3.8× greedy's
   evaluations and 52× the fixed pipeline's (`05_search_effort.png`).
 
 **9. Sensitivity (`06_weight_sensitivity.png`).** Robust under 5 of 6 weightings. Under
@@ -53,7 +54,8 @@ enabling moves are never taken. This is the most interesting finding about greed
 
 **10. Simulated vs measured (`07_measured_speedup.png`, `08_cycles_vs_time.png`,
 `09_reordering_effect.png`).**
-- Measured speed-up over naive TAC on Python executors (see results.md §4).
+- Measured speed-up over naive TAC on Python executors: greedy 2.47× on the interpreter and
+  2.04× compiled (geomean); 0 regressions on the interpreter.
 - Measured time tracks instruction count.
 - M8 helps simulated cycles but not interpreter time. Be explicit that this is not native
   code.

@@ -20,12 +20,12 @@ reported groups: controlled, randomized, and C-derived from Jotai.
 All **2,270 (program, strategy) results** match an independent AST reference interpreter on
 the fixture tests and on 200 held-out inputs per program. On the simulated cost model, every
 strategy lowers mean cost to about 0.41 of the naive TAC. The fixed pipeline and greedy
-search tie on 428 of 454 programs. Beam search finds slightly cheaper programs on 201
+search tie on 429 of 454 programs. Beam search finds slightly cheaper programs on 200
 programs, but the mean improvement is only 0.0009, and it needs about 3.8× more candidate
 evaluations than greedy and about 52× more than the fixed pipeline. Measured with Python
-executors, the optimised programs run 1.9–2.5× faster than the naive TAC (geometric mean).
-On the interpreter, measured time correlates with instruction count (ρ = 0.91) more strongly
-than with simulated cycles (ρ = 0.85). Instruction reordering lowers simulated cycles but has
+executors, the optimised programs run about 2.0–2.5× faster than the naive TAC (geometric mean).
+On the interpreter, measured time correlates with instruction count (ρ = 0.82) more strongly
+than with simulated cycles (ρ = 0.76). Instruction reordering lowers simulated cycles but has
 no established real-world benefit: it is slightly harmful on the interpreter and slightly
 helpful on the compiled backend, for reasons unrelated to the stall model. A fault-injection study found a coverage defect in the validator's test vectors.
 After the fix (protocol v3), a strong independent oracle still finds 46 accepted faults out of
@@ -136,7 +136,12 @@ Bugs found and fixed during this work (all now regression cases):
    80% of inputs passed validation. Protocol v3 adds rotated distinct specials, large random
    vectors and small-range coverage (`docs/validator_investigation.md`; regression cases
    REG-006 to REG-009).
-5. The two Review-1 fuzzing findings, about trapping divisions under M5 and M8, are kept as
+6. *(Final verification phase.)* The experiments used a 120 s wall-clock limit per search.
+   On a slowed machine this cut two beam searches short, so the results depended on machine
+   speed. Experiments now use deterministic budgets only, and a test guards this.
+7. *(Final verification phase.)* `dirty_worktree` was read after the pipeline had rewritten
+   its own tracked result files. Provenance is now captured at the start of a run.
+8. The two Review-1 fuzzing findings, about trapping divisions under M5 and M8, are kept as
    regression cases.
 
 ## 5. Results
@@ -166,26 +171,28 @@ Mean final cost (unoptimised = 1.0; lower is better), per group:
 | Group | n | Fixed | Greedy | Beam | Greedy w/o M8 |
 |---|---:|---:|---:|---:|---:|
 | A controlled | 252 | 0.4078 | 0.4078 | 0.4071 | 0.4117 |
-| B randomized | 195 | 0.3985 | 0.3985 | 0.3973 | 0.4019 |
+| B randomized | 195 | 0.3986 | 0.3986 | 0.3975 | 0.4020 |
 | C external | 7 | 0.9987 | 0.9987 | 0.9987 | 0.9991 |
 
 Per-metric changes (all groups, mean per program): instructions −57.1%, arithmetic ops
-−58.7%, temporaries −58.7%, simulated cycles −65.3% (fixed) / −65.2% (greedy) / −66.2%
+−58.7%, temporaries −58.7%, simulated cycles −65.2% (fixed) / −65.2% (greedy) / −66.1%
 (beam). In groups A and B every program improved. In group C only 1 of 7 did, because these
 are single-expression functions such as `print 33 + col` with nothing to optimise.
 
 **Per-program comparisons** (no averaging):
 
-- **Greedy vs fixed:** greedy better on 10, tied on 428, worse on 16. Every difference is at
-  most 0.0025 in cost. Instruction, arithmetic and temporary counts are identical on all 454
+- **Greedy vs fixed:** greedy better on 10, tied on 429, worse on 15. Every difference is at
+  most 0.0026 in cost. Instruction, arithmetic and temporary counts are identical on all 454
   programs, so every difference is in simulated cycles, i.e. in the instruction schedule.
-- **Beam vs greedy:** beam better on 201, tied on 252, worse on 1 (SYN-STR-012, +0.0011).
+- **Beam vs greedy:** beam better on 200, tied on 253, worse on 1 (SYN-STR-012, +0.0011).
 - **Greedy vs greedy w/o M8:** greedy better on 360 programs, tied on 94, through simulated
   cycles only (mean −2.9 cycles).
 
 **Search effort.** Mean candidate evaluations per program are 48 for fixed, 663 for greedy
-and 2,506 for beam. Total search time across all programs is 31 s, 539 s and 2,102 s
-respectively (CPU time summed over 11 parallel worker processes, final run).
+and 2,506 for beam. Total search time across all programs is 73 s, 1,340 s and 5,002 s
+respectively (CPU time summed over 11 parallel worker processes, final run, protocol v3).
+No strategy has a wall-clock cutoff; every search ran to its deterministic stopping rule
+(0 timeouts).
 
 **Interpretation.** For this operator set and naive TAC, a well-chosen fixed pass order
 already reaches the greedy optimum on almost every program, at a fraction of the cost. Beam
@@ -197,7 +204,7 @@ schedules.
 Greedy and fixed were re-run under six weightings. For baseline, uniform, size-heavy,
 cycles-heavy and no-temps weights, the raw metric changes are almost identical and greedy ≈
 fixed. Under **cycles-only** weights, greedy is **worse than fixed on 384 of 454 programs**
-(mean cost 0.455 vs 0.347; instruction reduction −40.9% vs about −57%). The reason is that
+(mean cost 0.455 vs 0.348; instruction reduction −40.9% vs −57.1%). The reason is that
 greedy accepts only strictly improving moves. Enabling moves such as CSE (`t2 = a+b` →
 `t2 = t1`, a copy costing the same one cycle) or copy propagation that leaves a live copy
 are cost-neutral under cycles-only, so greedy stops early. A fixed pipeline applies them
@@ -212,30 +219,33 @@ of the optimised program.
 
 | Strategy | Interpreter: geomean speed-up | improved / inconclusive / regressed | Compiled: geomean speed-up | improved / inconclusive / regressed |
 |---|---:|---:|---:|---:|
-| Fixed | 2.425× | 431 / 23 / 0 | 1.976× | 424 / 19 / 11 |
-| Greedy | 2.461× | 434 / 20 / 0 | 2.037× | 425 / 21 / 8 |
-| Beam | 2.467× | 436 / 18 / 0 | 1.994× | 420 / 21 / 13 |
-| Greedy w/o M8 | 2.474× | 437 / 16 / 1 | 1.946× | 419 / 21 / 14 |
+| Fixed | 2.43× | 422 / 32 / 0 | 1.98× | 415 / 29 / 10 |
+| Greedy | 2.47× | 425 / 29 / 0 | 2.04× | 418 / 28 / 8 |
+| Beam | 2.47× | 425 / 29 / 0 | 2.02× | 414 / 30 / 10 |
+| Greedy w/o M8 | 2.48× | 421 / 33 / 0 | 1.96× | 411 / 32 / 11 |
 
 - Correlation with measured time (Spearman ρ, all program × strategy points): simulated
-  cycles 0.8475 (interpreter) / 0.8571 (compiled); instruction count
-  0.9138 / 0.7995.
+  cycles 0.763 (interpreter) / 0.760 (compiled); instruction count
+  0.825 / 0.719.
 - Instruction reordering: among the 360 programs where M8 lowered simulated cycles, the
-  variant with fewer simulated cycles was also measured faster in 117 (32.5%; 145 = 40% in the earlier development run) of them on
-  the interpreter and in 341 (94.7%; 273 = 76% in the earlier run) on the compiled backend.
-- The external group shows no measurable change (≈1.0×), consistent with its simulated cost.
+  variant with fewer simulated cycles was also measured faster in 130 of them (36%) on the
+  interpreter and in 333 (92.5%) on the compiled backend. Across three full runs these rates
+  were 40% / 32.5% / 36% (interpreter) and 76% / 95% / 92.5% (compiled).
+- The external group shows no meaningful change (geomean 0.97–1.06× across strategies and
+  backends), consistent with its simulated cost.
 
 **Interpretation.** The optimised programs are measurably faster than naive TAC on both
-Python executors: 434 of 454 programs improve under greedy on the interpreter, and none regress.
+Python executors: 425 of 454 programs improve under greedy on the interpreter, 29 are
+inconclusive, and none regress.
 The gain comes mostly from executing fewer instructions, since measured time correlates more
 strongly with instruction count than with simulated cycles on the interpreter. For instruction
 reordering the two executors disagree:
 - On the **interpreter**, the variant with fewer simulated cycles was *slower* in most
   programs. Greedy without M8 even has a marginally higher geomean
-  (2.474× vs 2.461×).
+  (2.481× vs 2.468× at three decimals).
 - On the **compiled** backend, reordered programs were faster in most programs
-  (2.037× vs 1.946×). That agreement rate varied
-  between runs (76% and 95%).
+  (2.04× vs 1.96×). That agreement rate varied
+  between runs (76%, 95%, 92.5%).
 
 The mechanism is not the simulated stall (CPython has no such hazard); it is presumably a
 bytecode-level effect, which we have not analysed. Instruction reordering therefore has **no
@@ -280,9 +290,9 @@ dashboard's numbers equal the artifact files.
 
 `python reproduce.py` checks the environment, then:
 
-1. rebuilds and compares the dataset;
+1. rebuilds and compares the dataset, and runs the independent dataset audit;
 2. re-runs deduplication;
-3. runs the 109 tests;
+3. runs the 121 tests;
 4. fuzzes 1,300 straight-line programs with greedy, 130 with fixed and beam, and 260 if/else
    programs with greedy and fixed;
 5. re-runs every experiment and the validator study;
@@ -293,9 +303,12 @@ dashboard's numbers equal the artifact files.
 Everything except timing is deterministic. CI (GitHub Actions) runs the tests, the dataset
 check, the Review-1 verifier and small fuzzing runs.
 
-The final run passed all eight steps in 2,814 s on code commit `cd396dc`. It is flagged
-`dirty_worktree` because documentation files were edited while it ran; no code changed. The
-previous run's `summary.json` is archived in `results/history/`.
+The final run passed all eight steps in 2,125 s on commit `de6cdc5`, with no uncommitted
+changes (`dirty_worktree: false`) and validation protocol v3. Two earlier full runs are archived
+in `results/history/` and are not cited:
+- the v2 run at `cd396dc`, superseded by the protocol change;
+- the v3 run at `ede46c9`, where a 120 s wall-clock limit cut two beam searches short on a
+  slowed machine. Experiments now use deterministic budgets only.
 
 ## 9. Licensing recommendation
 

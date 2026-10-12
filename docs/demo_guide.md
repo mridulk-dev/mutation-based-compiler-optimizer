@@ -6,14 +6,15 @@ The demo takes about 10–12 minutes. Every command runs from the repository roo
 
 ```bash
 pip install -r requirements.txt
-python -m unittest discover -s tests -t .        # 120 tests, 1–3 minutes; expect "OK"
+python -m unittest discover -s tests -t .        # 121 tests, about 2 minutes; expect "OK"
 python -m benchmarks.build --check               # "OK: rebuilt dataset is identical ..."
 python -m dashboard.server                       # leave running; open http://127.0.0.1:8765
 ```
 
 The committed `results/final/` already holds the full experiment logs, so the dashboard shows
 real results immediately. To regenerate everything, run `python reproduce.py`, which takes
-about 47 minutes. Run it beforehand, not during the review.
+about 35–40 minutes on a 12-thread laptop. Run it beforehand, not during the review, with the
+machine plugged in and prevented from sleeping.
 
 ## 1. Overview page (1 minute)
 
@@ -22,8 +23,8 @@ about 47 minutes. Run it beforehand, not during the review.
 - Tiles: correct results, mean cost reduction (marked *simulated*), and measured speed-up
   (marked *measured*).
 - Dataset composition by group. Groups are always reported separately.
-- Head-to-head table: fixed vs greedy are nearly tied, and beam is slightly better on many
-  programs.
+- Head-to-head table: fixed vs greedy tie on 429 of 454 programs, and beam is slightly better
+  on 200 (by 0.0009 on average).
 - Plot gallery generated from the saved logs.
 
 ## 2. Interactive compiler (4 minutes)
@@ -50,7 +51,8 @@ about 47 minutes. Run it beforehand, not during the review.
 
 - Status filter **accepted** gives 454 records. Filter group = *C · External*, status = *All*
   to see the 300 Jotai records: 7 accepted, 5 duplicates, and 288 incompatible with a reason
-  (search for `unsigned`).
+  (search for `unsigned`). Say explicitly that the 7 are a small, single-source sample (one
+  upstream file) with unverified licences, not a real-world benchmark.
 - Click **P13**. Its Review-1 badge appears; the source and tests are unchanged.
 - Click **EXT-JOTAI-158**. It shows the upstream C function verbatim, the conversion steps,
   the gcc cross-check, and the licence status *unverified*. The tooling licence does not
@@ -65,7 +67,8 @@ about 47 minutes. Run it beforehand, not during the review.
 - Per-program comparisons: regressions are listed by id. Click one to open the drill-down.
 - Cost-weight sensitivity: the **cycles_only** row is where greedy falls behind the fixed
   pipeline. Explain cost-neutral enabling moves.
-- Measured wall-clock time: geomean speed-up and improved / inconclusive / regressed counts.
+- Measured wall-clock time (Python executors, not native code): greedy 2.47× on the interpreter
+  and 2.04× compiled (geomean), with improved / inconclusive / regressed counts.
   The *reordering check* shows that M8's simulated gain is not visible on the interpreter.
 
 ## 5. Methodology page (1 minute)

@@ -30,7 +30,7 @@ pip install -r requirements.txt              # matplotlib (plots only); everythi
 python -m dashboard.server                   # dashboard → http://127.0.0.1:8765
 python main.py benchmarks/b5_polynomial.src  # CLI: one program, full trace (Review-1 driver)
 python -m unittest discover -s tests -t .    # unit / property / regression / dataset / dashboard tests
-python reproduce.py                          # full pipeline (≈ 47 min on a 12-thread laptop): dataset check, tests, fuzzing,
+python reproduce.py                          # full pipeline (≈ 35–40 min on a 12-thread laptop): dataset check, tests, fuzzing,
                                              #   experiments, plots, dashboard/data agreement
 python reproduce.py --quick                  # CI-sized version (small fuzz, 30-program subset)
 ```

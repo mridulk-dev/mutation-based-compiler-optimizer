@@ -217,7 +217,7 @@ async function pageOverview(el) {
         <dt>Finished</dt><dd>${new Date(ex.results_mtime * 1000).toLocaleString()}</dd>
         <dt>Python</dt><dd>${esc(ex.environment.python)} (${esc(ex.environment.implementation)}) · ${esc(ex.environment.platform)}</dd>
         <dt>Git commit</dt><dd class="mono">${esc((ex.environment.commit || "–").slice(0, 10))}${ex.environment.dirty_worktree ? " (uncommitted changes)" : ""}</dd>
-        <dt>Validation</dt><dd>${esc(ex.config.validation_cases)} seeded vectors + structured vectors (${esc(ex.config.validation_protocol)})</dd>
+        <dt>Validation</dt><dd>protocol ${esc(ex.config.validation_protocol)} (seed ${esc(ex.config.validation_seed)}; see docs/validator_investigation.md)</dd>
         <dt>Wall time</dt><dd>${fmt(ex.seconds.total, 0)} s total</dd>
       </dl>
       ${ve && ve.headline ? `<div class="callout section">Validator self-test (protocol ${esc(ve.headline.protocol)}, ${esc(ve.headline.oracle.replace("_", " "))}):
@@ -665,7 +665,7 @@ async function pageMethodology(el) {
       <li>Integers are unbounded (Python int). 32-bit overflow is not modelled. External fragments are only tested where C behaviour is defined.</li>
       <li>The simulated cycle model drives M8 instruction reordering. Measured Python timings do not show the stall effect (see the reordering check on the Experiments page).</li>
       <li>Measured speed-ups are relative to deliberately naive TAC and are dominated by fewer interpreted instructions. They are not a statement about native code.</li>
-      <li>The external group is tiny (7 programs) because most real C uses pointers, loops, branches or unsigned types.</li>
+      <li>The external group is a small, single-source sample (7 programs, all from one upstream file) with unverified licences, not a real-world benchmark. Most real C uses pointers, loops, branches or unsigned types.</li>
     </ul></div>
     <div class="card section"><h2>Run it yourself</h2><pre class="block">pip install -r requirements.txt      # matplotlib (plots only)
 python reproduce.py                  # full pipeline: dataset check, tests, fuzzing, experiments, plots, verification

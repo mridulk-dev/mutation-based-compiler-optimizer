@@ -45,11 +45,11 @@
   operator and one copy per assignment. Most of the gain is the removal of redundancy that
   any standard compiler would never emit. The measurements run on Python executors, where
   per-instruction dispatch dominates, so on the interpreter speed-ups track instruction count
-  (Spearman ρ = 0.91, against 0.85 for simulated cycles). They say nothing about native code.
+  (Spearman ρ = 0.82, against 0.76 for simulated cycles). They say nothing about native code.
 - M8 lowers simulated cycles on 360 programs. On the interpreter, the variant with fewer
-  simulated cycles was faster in only 32.5% of those programs (40% in an earlier run), so M8
-  is neutral to slightly harmful there. On the compiled backend the figure is 95% (76% in an
-  earlier run), but the effect is small (geomean 2.037× vs 1.946×) and its mechanism is
+  simulated cycles was faster in only 36% of those programs (40% and 32.5% in earlier runs), so
+  M8 is neutral to slightly harmful there. On the compiled backend the figure is 92.5% (76% and
+  95% earlier), but the effect is small (geomean 2.04× vs 1.96×) and its mechanism is
   unknown. It is not pipeline stalls. The run-to-run variation itself shows how fragile
   small timing effects are.
 
@@ -63,7 +63,8 @@
 - 252 of 454 programs come from templates designed to contain the opportunities the
   operators target, so they favour the optimiser by construction. The randomized group (195)
   is less biased, but its programs are still synthetic.
-- Only 7 programs come from real code, and they are trivial, single-expression functions,
+- Only 7 programs come from real code. All 7 derive from a single upstream file, and they are
+  trivial, single-expression functions,
   because 288 of 300 Jotai functions use features outside MiniArith (`unsigned`, pointers,
   branches, loops). Results for group C carry little weight.
 - The upstream licences of the C-derived functions are unverified. The Jotai collection is

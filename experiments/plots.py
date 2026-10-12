@@ -295,31 +295,43 @@ def plot_all(res_dir):
 
     # 10. validator self-evaluation
     if veval:
-        for proto in ("v2",):
-            ve = veval[proto]
-            kinds = list(ve["by_kind"])
-            fig, ax = plt.subplots(figsize=(7.5, 3.2))
-            bottom = [0] * len(kinds)
-            for outcome, label in (("rejected", "rejected (detected)"), ("accepted_equivalent", "accepted, equivalent on held-out"),
-                                   ("accepted_but_different", "accepted but different (missed)")):
-                vals = [ve["by_kind"][k].get(outcome, 0) for k in kinds]
-                ax.bar(range(len(kinds)), vals, 0.6, bottom=bottom, color=STATUS[outcome], label=label,
-                       edgecolor="white", linewidth=1.5)
-                bottom = [b + v for b, v in zip(bottom, vals)]
-            for i, k in enumerate(kinds):
-                miss = ve["by_kind"][k].get("accepted_but_different", 0)
-                ax.text(i, bottom[i] + max(bottom) * 0.015, f"{miss} missed", ha="center", va="bottom", fontsize=7,
-                        color="#b42727" if miss else MUTED)
-            ax.set_xticks(range(len(kinds)), kinds, rotation=20)
-            ax.set_ylabel("mutants")
-            ax.legend(fontsize=7.5, loc="upper left")
-            r1 = veval["review1"]
-            ax.set_title(f"Validator self-test: detection {ve['detection_rate_on_nonequivalent']:.2%} "
-                         f"(Review-1 vectors: {r1['detection_rate_on_nonequivalent']:.2%})", loc="left",
-                         fontweight="bold", fontsize=10)
-            caption(fig, y=-0.12, text=f"{ve['mutants']} injected-fault mutants on {ve['programs']} programs; ground truth = 300 "
-                         "held-out inputs (itself finite). Source: validator_eval.json.")
-            p.save(fig, "10_validator_selftest.png", ["validator_eval.json"], "validator fault-injection outcomes")
+        evals = veval.get("evaluations") or {f"{k}|oracle300": veval[k] for k in ("review1", "v2")}
+        keys = list(evals)
+        fig, axes = plt.subplots(1, 2, figsize=(9.5, 3.4), gridspec_kw={"width_ratios": [1, 1.4]})
+        ax = axes[0]
+        missed = [evals[k]["totals"].get("accepted_but_different", 0) for k in keys]
+        labels = [k.replace("|oracle", "\n").replace("_strong", "strong") for k in keys]
+        colors = ["#2a78d6" if k.startswith("v3") else "#b4b2a7" for k in keys]
+        ax.bar(range(len(keys)), missed, 0.6, color=colors)
+        for i, (k, m) in enumerate(zip(keys, missed)):
+            ax.text(i, m + max(missed) * 0.02, f"{m}\n{100 * evals[k]['detection_rate_on_nonequivalent']:.2f}%",
+                    ha="center", va="bottom", fontsize=7, color=TEXT)
+        ax.set_xticks(range(len(keys)), labels, fontsize=7)
+        ax.set_ylabel("false acceptances (missed faults)")
+        ax.set_ylim(0, max(missed) * 1.35)
+        ax.set_title("missed faults by protocol / oracle (detection %)", fontsize=9)
+        head = evals.get("v3|oracle_strong") or evals[keys[-1]]
+        ax = axes[1]
+        kinds = list(head["by_kind"])
+        bottom = [0] * len(kinds)
+        for outcome, label in (("rejected", "rejected (detected)"), ("accepted_equivalent", "accepted, no difference found"),
+                               ("accepted_but_different", "accepted but different (missed)")):
+            vals = [head["by_kind"][k].get(outcome, 0) for k in kinds]
+            ax.bar(range(len(kinds)), vals, 0.6, bottom=bottom, color=STATUS[outcome], label=label,
+                   edgecolor="white", linewidth=1.5)
+            bottom = [b + v for b, v in zip(bottom, vals)]
+        for i, k in enumerate(kinds):
+            miss = head["by_kind"][k].get("accepted_but_different", 0)
+            ax.text(i, bottom[i] + max(bottom) * 0.015, f"{miss} missed", ha="center", va="bottom", fontsize=7,
+                    color="#b42727" if miss else MUTED)
+        ax.set_xticks(range(len(kinds)), kinds, rotation=25, fontsize=7.5)
+        ax.legend(fontsize=7, loc="upper left")
+        ax.set_title(f"{head.get('protocol', 'v3')}, {head.get('oracle', '').replace('_', ' ')}: outcome by fault kind",
+                     fontsize=9)
+        suptitle(fig, "Validator self-test (injected faults)")
+        caption(fig, y=-0.16, text=f"{head['mutants']} mutants on {veval.get('programs')} programs. Oracles are finite; "
+                                   "'no difference found' is not proven equivalence. Source: validator_eval.json.")
+        p.save(fig, "10_validator_selftest.png", ["validator_eval.json"], "validator fault-injection outcomes")
 
     # 11. dataset composition
     if dstats:

@@ -55,7 +55,7 @@ from optimizer.strategies import FIXED_ORDER, STRATEGIES  # noqa: E402
 DEFAULT_MANIFEST = os.path.join(ROOT, "dataset", "miniarith-v1", "manifest.jsonl")
 STRATEGY_NAMES = ("unoptimized", "fixed", "greedy", "beam")
 METRICS = ("instructions", "arith_ops", "temps", "cycles")
-SEARCH_CONFIG = {"validation_cases": 25, "validation_seed": 42, "validation_protocol": "v2 (structured vectors)",
+SEARCH_CONFIG = {"validation_cases": 25, "validation_seed": 42, "validation_protocol": "v3",
                  "beam_width": 4, "beam_patience": 3,
                  "time_limit_seconds": 120, "fixed_order": list(FIXED_ORDER)}
 NO_M8 = [(op, fn) for op, fn in OPERATORS if op != "M8"]
@@ -112,7 +112,7 @@ def run_one(task):
     ast = parse(rec["source"])
     fresh = fresh_inputs(rec["n_inputs"], fresh_n, seed)
     common = dict(n_cases=SEARCH_CONFIG["validation_cases"], seed=SEARCH_CONFIG["validation_seed"],
-                  time_limit=SEARCH_CONFIG["time_limit_seconds"], structured=True)
+                  time_limit=SEARCH_CONFIG["time_limit_seconds"], protocol="v3")
     rows, steps, sens, programs = [], [], [], {}
     variants = [(name, STRATEGIES[name], {}) for name in STRATEGY_NAMES]
     variants.append(("greedy_noM8", STRATEGIES["greedy"], {"operators": NO_M8}))

@@ -52,6 +52,13 @@ def sh(args, timeout=None):
     return proc.returncode, tail
 
 
+def rel(path):
+    try:
+        return os.path.relpath(path, ROOT)
+    except ValueError:  # different drive on Windows
+        return path
+
+
 def git_info():
     try:
         commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
@@ -241,7 +248,7 @@ def main(argv=None):
 
     passed = all(s.status in ("passed", "skipped") for s in steps)
     summary = {
-        "passed": passed, "mode": "quick" if args.quick else "full", "results_dir": os.path.relpath(args.out, ROOT),
+        "passed": passed, "mode": "quick" if args.quick else "full", "results_dir": rel(args.out),
         "started_unix": round(started), "seconds": round(time.time() - started, 1),
         "python": platform.python_version(), "platform": platform.platform(), "gcc": shutil.which("gcc") is not None,
         **git_info(),
@@ -253,7 +260,7 @@ def main(argv=None):
         json.dump(summary, fh, indent=2)
         fh.write("\n")
     print(f"\n{'ALL STEPS PASSED' if passed else 'SOME STEPS FAILED'} - "
-          f"{os.path.relpath(os.path.join(args.out, 'verification_summary.json'), ROOT)}")
+          f"{rel(os.path.join(args.out, 'verification_summary.json'))}")
     return 0 if passed else 1
 
 

@@ -47,8 +47,8 @@ class Evaluation:
 class Evaluator:
     """Memoised validation + costing of candidate programs for one original."""
 
-    def __init__(self, original, n_cases=25, seed=42, weights=None, structured=False):
-        self.validator = Validator(original, n_cases=n_cases, seed=seed, structured=structured)
+    def __init__(self, original, n_cases=25, seed=42, weights=None, structured=False, protocol=None):
+        self.validator = Validator(original, n_cases=n_cases, seed=seed, structured=structured, protocol=protocol)
         self.base = measure(original, self.validator.reference)
         self.weights = weights
         self.cache = {}
@@ -96,28 +96,29 @@ class StrategyResult:
         return counts
 
 
-def run_unoptimized(program, n_cases=25, seed=42, weights=None, structured=False, **_):
+def run_unoptimized(program, n_cases=25, seed=42, weights=None, structured=False, protocol=None, **_):
     start = time.perf_counter()
-    ev = Evaluator(program, n_cases, seed, weights, structured)
+    ev = Evaluator(program, n_cases, seed, weights, structured, protocol)
     return StrategyResult("unoptimized", program, program, ev.base, ev.base, 1.0,
                           programs_executed=1, seconds=time.perf_counter() - start)
 
 
 def run_greedy(program, n_cases=25, seed=42, weights=None, operators=OPERATORS, time_limit=None,
-               structured=False, **_):
-    res = greedy_optimize(program, operators, n_cases=n_cases, seed=seed, weights=weights, structured=structured)
+               structured=False, protocol=None, **_):
+    res = greedy_optimize(program, operators, n_cases=n_cases, seed=seed, weights=weights, structured=structured,
+                          protocol=protocol)
     steps = [dict(op_id=s.op_id, description=s.description, cost=s.cost) for s in res.steps]
     return StrategyResult("greedy", program, res.optimized, res.base_metrics, res.final_metrics, res.final_cost,
                           steps, res.candidates_total, res.rejected_total, res.candidates_total + 1, res.seconds)
 
 
 def run_fixed(program, n_cases=25, seed=42, weights=None, order=FIXED_ORDER, max_rounds=50,
-              max_steps=5000, time_limit=None, structured=False, **_):
+              max_steps=5000, time_limit=None, structured=False, protocol=None, **_):
     """Apply each pass in `order` to a fixpoint (first valid candidate each time,
     regardless of cost - like a classical pass), repeat the sequence until a full
     round changes nothing, then schedule with M8 swaps that lower simulated cycles."""
     start = time.perf_counter()
-    ev = Evaluator(program, n_cases, seed, weights, structured)
+    ev = Evaluator(program, n_cases, seed, weights, structured, protocol)
     current = program
     res = StrategyResult("fixed", program, program, ev.base, ev.base, 1.0)
 
@@ -178,9 +179,9 @@ class _Node:
 
 
 def run_beam(program, n_cases=25, seed=42, weights=None, width=4, patience=3, max_depth=300,
-             max_evaluations=50000, operators=OPERATORS, time_limit=None, structured=False, **_):
+             max_evaluations=50000, operators=OPERATORS, time_limit=None, structured=False, protocol=None, **_):
     start = time.perf_counter()
-    ev = Evaluator(program, n_cases, seed, weights, structured)
+    ev = Evaluator(program, n_cases, seed, weights, structured, protocol)
     root = _Node(program, 1.0, ev.base)
     beam, best = [root], root
     visited = {program}

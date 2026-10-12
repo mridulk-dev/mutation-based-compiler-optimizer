@@ -53,6 +53,155 @@
       "description": "Review-1 validation vectors accepted a wrong mutant (operand swap) of SYN-CSE-006 that traps when exactly one input is 0; protocol v2 structured vectors reject it",
       "source": "# SYN-CSE-006 [common-subexpression, large, high redundancy] template v1.0\ninput a, b, c;\nu0 = (b + c) + (c + a) + b;\nu1 = (c + b) - (a + c) * 3;\nu2 = (a / b) - (a + c) * 3;\nu3 = (a + c) * (a / b) - b;\nb = b + 1;\nu4 = (b + c) + (c + a) + c;\nu5 = (a / b) + (c + a) + u4;\nu6 = (a / b) * (c + b) - a;\nu7 = (b + c) + (c + a) + a;\nu8 = (c + a) - (b + c) * 2;\nprint u6 + u7 + u8;\nprint u8;\n",
       "mutant_tac": "input a\ninput b\ninput c\nt1 = b + c\nt2 = c + a\nt3 = t1 + t2\nt4 = t3 + b\nu0 = t4\nt5 = c + b\nt6 = a + c\nt7 = t6 * 3\nt8 = t5 - t7\nu1 = t8\nt9 = b / a\nt10 = a + c\nt11 = t10 * 3\nt12 = t9 - t11\nu2 = t12\nt13 = a + c\nt14 = a / b\nt15 = t13 * t14\nt16 = t15 - b\nu3 = t16\nt17 = b + 1\nb = t17\nt18 = b + c\nt19 = c + a\nt20 = t18 + t19\nt21 = t20 + c\nu4 = t21\nt22 = a / b\nt23 = c + a\nt24 = t22 + t23\nt25 = t24 + u4\nu5 = t25\nt26 = a / b\nt27 = c + b\nt28 = t26 * t27\nt29 = t28 - a\nu6 = t29\nt30 = b + c\nt31 = c + a\nt32 = t30 + t31\nt33 = t32 + a\nu7 = t33\nt34 = c + a\nt35 = b + c\nt36 = t35 * 2\nt37 = t34 - t36\nu8 = t37\nt38 = u6 + u7\nt39 = t38 + u8\nprint t39\nprint u8"
+    },
+    {
+      "id": "REG-006",
+      "found_by": "experiments/validator_eval.py (final verification phase)",
+      "kind": "validator-false-acceptance",
+      "status": "fixed-by-v3",
+      "program_id": "RND-0168",
+      "fault": "wrong-var",
+      "changed": "t1 = i1 / 100 => t1 = i2 / 100",
+      "description": "Input-swap fault invisible: the Review-1 special vectors give every input the SAME value, and random vectors in [-100,100] are hidden by '/ 100'. v3 adds rotated (distinct) specials and large random vectors.",
+      "source": "# RND-0168 [random v1.0]\ninput i0, i1, i2;\nprint 0;\nprint (((i1 / 100) + (i2 + 2)) * (i1 / 100));\nw = i1;\np = (((i2 + w) + (7 / 1)) % 8);\nr = (i1 - (-10 - i0));\nprint 7;\nr = ((i2 - ((-10 - i0) + 2)) % 4);\nprint (i1 / 100);\n",
+      "mutant_tac": "input i0\ninput i1\ninput i2\nprint 0\nt1 = i2 / 100\nt2 = i2 + 2\nt3 = t1 + t2\nt4 = i1 / 100\nt5 = t3 * t4\nprint t5\nw = i1\nt6 = i2 + w\nt7 = 7 / 1\nt8 = t6 + t7\nt9 = t8 % 8\np = t9\nt10 = -(10)\nt11 = t10 - i0\nt12 = i1 - t11\nr = t12\nprint 7\nt13 = -(10)\nt14 = t13 - i0\nt15 = t14 + 2\nt16 = i2 - t15\nt17 = t16 % 4\nr = t17\nt18 = i1 / 100\nprint t18",
+      "witness_input": [
+        -92938,
+        -59355,
+        -94367
+      ],
+      "accepted_by": {
+        "review1": true,
+        "v2": true,
+        "v3": false
+      }
+    },
+    {
+      "id": "REG-007",
+      "found_by": "experiments/validator_eval.py (final verification phase)",
+      "kind": "validator-false-acceptance",
+      "status": "fixed-by-v3",
+      "program_id": "RND-0191",
+      "fault": "operand-swap",
+      "changed": "t10 = i0 % 2 => t10 = 2 % i0",
+      "description": "Difference masked for |i0| <= 100 by a later '/ 100'; visible on 236 of 300 held-out inputs. v3 large random vectors expose it.",
+      "source": "# RND-0191 [random v1.0]\ninput i0;\nz = (i0 + (i0 / 4));\nprint (((z - 2) - (i0 / 4)) + (i0 % 2));\ni0 = ((i0 / 4) / 100);\nprint ((i0 % 2) % i0);\nprint 4;\nq = ((i0 / 4) * ((i0 / z) % (i0 - 16)));\nprint (i0 % 2);\n",
+      "mutant_tac": "input i0\nt1 = i0 / 4\nt2 = i0 + t1\nz = t2\nt3 = z - 2\nt4 = i0 / 4\nt5 = t3 - t4\nt6 = i0 % 2\nt7 = t5 + t6\nprint t7\nt8 = i0 / 4\nt9 = t8 / 100\ni0 = t9\nt10 = 2 % i0\nt11 = t10 % i0\nprint t11\nprint 4\nt12 = i0 / 4\nt13 = i0 / z\nt14 = i0 - 16\nt15 = t13 % t14\nt16 = t12 * t15\nq = t16\nt17 = i0 % 2\nprint t17",
+      "witness_input": [
+        -46060
+      ],
+      "accepted_by": {
+        "review1": true,
+        "v2": true,
+        "v3": false
+      }
+    },
+    {
+      "id": "REG-008",
+      "found_by": "experiments/validator_eval.py (final verification phase)",
+      "kind": "validator-false-acceptance",
+      "status": "fixed-by-v3",
+      "program_id": "RND-0009",
+      "fault": "const-change",
+      "changed": "t2 = 3 / 1 => t2 = 4 / 1",
+      "description": "One-input program whose original traps only at i0 == 3, a value no Review-1/v2 vector uses. v3 enumerates [-16, 16] for one-input programs.",
+      "source": "# RND-0009 [random v1.0]\ninput i0;\ni0 = (7 / ((i0 + 8) * (i0 - (3 / 1))));\nr = ((i0 - (i0 + 100)) + ((i0 + 1) + (i0 % 3)));\nr = (((i0 + (10 * i0)) - (i0 - 0)) / r);\np = -(((i0 * 16) + (10 * i0)));\ny = (i0 * 16);\nprint -((i0 * 16));\n",
+      "mutant_tac": "input i0\nt1 = i0 + 8\nt2 = 4 / 1\nt3 = i0 - t2\nt4 = t1 * t3\nt5 = 7 / t4\ni0 = t5\nt6 = i0 + 100\nt7 = i0 - t6\nt8 = i0 + 1\nt9 = i0 % 3\nt10 = t8 + t9\nt11 = t7 + t10\nr = t11\nt12 = 10 * i0\nt13 = i0 + t12\nt14 = i0 - 0\nt15 = t13 - t14\nt16 = t15 / r\nr = t16\nt17 = i0 * 16\nt18 = 10 * i0\nt19 = t17 + t18\nt20 = -t19\np = t20\nt21 = i0 * 16\ny = t21\nt22 = i0 * 16\nt23 = -t22\nprint t23",
+      "witness_input": [
+        3
+      ],
+      "accepted_by": {
+        "review1": true,
+        "v2": true,
+        "v3": false
+      }
+    },
+    {
+      "id": "REG-009",
+      "found_by": "experiments/validator_eval.py (final verification phase)",
+      "kind": "validator-false-acceptance",
+      "status": "fixed-by-v3",
+      "program_id": "RND-0214",
+      "fault": "const-change",
+      "changed": "t3 = i1 * 2 => t3 = i1 * 3",
+      "description": "Mutant traps only on a thin set of small inputs (e.g. [1, -2]). v3 enumerates [-3, 3]^2 for two-input programs.",
+      "source": "# RND-0214 [random v1.0]\ninput i0, i1;\ni1 = ((-(4) - ((7 - i0) + (i1 * 2))) - (i1 * 2));\ns = (100 + (i1 * 2));\nq = (-10 * ((7 % i0) * 2));\ni0 = ((((7 - i0) - 5) + (q * s)) + ((i1 * 16) - (s - q)));\ni1 = (q + i1);\ni0 = (0 * ((q / i1) - (5 % 16)));\nprint i0;\nprint -3;\nq = (7 - i0);\np = ((7 - i0) + (7 - i0));\np = ((7 - i0) + (i1 * 2));\nprint (7 - i0);\n",
+      "mutant_tac": "input i0\ninput i1\nt1 = -(4)\nt2 = 7 - i0\nt3 = i1 * 3\nt4 = t2 + t3\nt5 = t1 - t4\nt6 = i1 * 2\nt7 = t5 - t6\ni1 = t7\nt8 = i1 * 2\nt9 = 100 + t8\ns = t9\nt10 = -(10)\nt11 = 7 % i0\nt12 = t11 * 2\nt13 = t10 * t12\nq = t13\nt14 = 7 - i0\nt15 = t14 - 5\nt16 = q * s\nt17 = t15 + t16\nt18 = i1 * 16\nt19 = s - q\nt20 = t18 - t19\nt21 = t17 + t20\ni0 = t21\nt22 = q + i1\ni1 = t22\nt23 = q / i1\nt24 = 5 % 16\nt25 = t23 - t24\nt26 = 0 * t25\ni0 = t26\nprint i0\nt27 = -(3)\nprint t27\nt28 = 7 - i0\nq = t28\nt29 = 7 - i0\nt30 = 7 - i0\nt31 = t29 + t30\np = t31\nt32 = 7 - i0\nt33 = i1 * 2\nt34 = t32 + t33\np = t34\nt35 = 7 - i0\nprint t35",
+      "witness_input": [
+        1,
+        -2
+      ],
+      "accepted_by": {
+        "review1": true,
+        "v2": true,
+        "v3": false
+      }
+    },
+    {
+      "id": "REG-010",
+      "found_by": "experiments/validator_eval.py (final verification phase)",
+      "kind": "validator-false-acceptance",
+      "status": "remains-accepted-by-v3",
+      "program_id": "RND-0157",
+      "fault": "op-swap",
+      "changed": "t2 = i1 * i1 => t2 = i1 + i1",
+      "description": "Thin zero set: the original's modulo divisor is zero only on sparse points such as (i0, 1, -1); the mutant moves that set. 24 of the 46 remaining v3 misses are mutants of this one program.",
+      "source": "# RND-0157 [random v1.0]\ninput i0, i1, i2;\nprint i1;\ni2 = (i2 + i2);\nr = ((i1 * i1) + ((4 - i1) - (i1 - i2)));\ns = i1;\nx = i1;\nprint i0;\ny = (((10 / (i1 * i1)) - (2 - x)) % (((i2 + i2) + 7) + (r + (i2 + i2))));\nprint ((x - (i2 + i2)) - (i2 + i2));\n",
+      "mutant_tac": "input i0\ninput i1\ninput i2\nprint i1\nt1 = i2 + i2\ni2 = t1\nt2 = i1 + i1\nt3 = 4 - i1\nt4 = i1 - i2\nt5 = t3 - t4\nt6 = t2 + t5\nr = t6\ns = i1\nx = i1\nprint i0\nt7 = i1 * i1\nt8 = 10 / t7\nt9 = 2 - x\nt10 = t8 - t9\nt11 = i2 + i2\nt12 = t11 + 7\nt13 = i2 + i2\nt14 = r + t13\nt15 = t12 + t14\nt16 = t10 % t15\ny = t16\nt17 = i2 + i2\nt18 = x - t17\nt19 = i2 + i2\nt20 = t18 - t19\nprint t20",
+      "witness_input": [
+        -1,
+        1,
+        -1
+      ],
+      "accepted_by": {
+        "review1": true,
+        "v2": true,
+        "v3": true
+      }
+    },
+    {
+      "id": "REG-011",
+      "found_by": "experiments/validator_eval.py (final verification phase)",
+      "kind": "validator-false-acceptance",
+      "status": "remains-accepted-by-v3",
+      "program_id": "SYN-CSE-006",
+      "fault": "wrong-var",
+      "changed": "t9 = a / b => t9 = a / u1",
+      "description": "Mutant divides by an intermediate u1 that is zero only on a thin set ([-2, -2, 2]) not covered by any finite vector set used.",
+      "source": "# SYN-CSE-006 [common-subexpression, large, high redundancy] template v1.0\ninput a, b, c;\nu0 = (b + c) + (c + a) + b;\nu1 = (c + b) - (a + c) * 3;\nu2 = (a / b) - (a + c) * 3;\nu3 = (a + c) * (a / b) - b;\nb = b + 1;\nu4 = (b + c) + (c + a) + c;\nu5 = (a / b) + (c + a) + u4;\nu6 = (a / b) * (c + b) - a;\nu7 = (b + c) + (c + a) + a;\nu8 = (c + a) - (b + c) * 2;\nprint u6 + u7 + u8;\nprint u8;\n",
+      "mutant_tac": "input a\ninput b\ninput c\nt1 = b + c\nt2 = c + a\nt3 = t1 + t2\nt4 = t3 + b\nu0 = t4\nt5 = c + b\nt6 = a + c\nt7 = t6 * 3\nt8 = t5 - t7\nu1 = t8\nt9 = a / u1\nt10 = a + c\nt11 = t10 * 3\nt12 = t9 - t11\nu2 = t12\nt13 = a + c\nt14 = a / b\nt15 = t13 * t14\nt16 = t15 - b\nu3 = t16\nt17 = b + 1\nb = t17\nt18 = b + c\nt19 = c + a\nt20 = t18 + t19\nt21 = t20 + c\nu4 = t21\nt22 = a / b\nt23 = c + a\nt24 = t22 + t23\nt25 = t24 + u4\nu5 = t25\nt26 = a / b\nt27 = c + b\nt28 = t26 * t27\nt29 = t28 - a\nu6 = t29\nt30 = b + c\nt31 = c + a\nt32 = t30 + t31\nt33 = t32 + a\nu7 = t33\nt34 = c + a\nt35 = b + c\nt36 = t35 * 2\nt37 = t34 - t36\nu8 = t37\nt38 = u6 + u7\nt39 = t38 + u8\nprint t39\nprint u8",
+      "witness_input": [
+        -2,
+        -2,
+        2
+      ],
+      "accepted_by": {
+        "review1": true,
+        "v2": true,
+        "v3": true
+      }
+    },
+    {
+      "id": "REG-012",
+      "found_by": "experiments/validator_eval.py (final verification phase)",
+      "kind": "validator-false-acceptance",
+      "status": "remains-accepted-by-v3",
+      "program_id": "RND-0194",
+      "fault": "op-swap",
+      "changed": "t7 = t5 * t6 => t7 = t5 + t6",
+      "description": "Value difference confined to a narrow region of large inputs (later integer division masks it elsewhere).",
+      "source": "# RND-0194 [random v1.0]\ninput i0, i1, i2;\ni2 = i2;\nz = ((1 + 0) + (3 - -3));\ns = (((i1 / 1) * (1 + 0)) / 100);\ny = (((s + i1) + (3 - -3)) % (3 - -3));\ny = y;\nprint ((1 + 0) * (3 - -3));\nprint (((y * i2) * (3 - -3)) - ((i0 / i1) * (i1 % (1 + 0))));\nx = (2 - ((3 - -3) - ((1 + 0) - y)));\nq = (3 - -3);\nprint (1 + 0);\n",
+      "mutant_tac": "input i0\ninput i1\ninput i2\ni2 = i2\nt1 = 1 + 0\nt2 = -(3)\nt3 = 3 - t2\nt4 = t1 + t3\nz = t4\nt5 = i1 / 1\nt6 = 1 + 0\nt7 = t5 + t6\nt8 = t7 / 100\ns = t8\nt9 = s + i1\nt10 = -(3)\nt11 = 3 - t10\nt12 = t9 + t11\nt13 = -(3)\nt14 = 3 - t13\nt15 = t12 % t14\ny = t15\ny = y\nt16 = 1 + 0\nt17 = -(3)\nt18 = 3 - t17\nt19 = t16 * t18\nprint t19\nt20 = y * i2\nt21 = -(3)\nt22 = 3 - t21\nt23 = t20 * t22\nt24 = i0 / i1\nt25 = 1 + 0\nt26 = i1 % t25\nt27 = t24 * t26\nt28 = t23 - t27\nprint t28\nt29 = -(3)\nt30 = 3 - t29\nt31 = 1 + 0\nt32 = t31 - y\nt33 = t30 - t32\nt34 = 2 - t33\nx = t34\nt35 = -(3)\nt36 = 3 - t35\nq = t36\nt37 = 1 + 0\nprint t37",
+      "witness_input": [
+        65848,
+        91299,
+        71507
+      ],
+      "accepted_by": {
+        "review1": true,
+        "v2": true,
+        "v3": true
+      }
     }
   ]
 }

@@ -197,7 +197,7 @@ def compile_request(body):
         raise BadRequest(f"program compiles to {len(program)} TAC instructions (limit {MAX_TAC})")
     n_in = sum(1 for i in program if i.op == "input")
     user_vectors = parse_inputs(body.get("inputs"), n_in)
-    validator = Validator(program, structured=True)
+    validator = Validator(program, protocol="v3")
     check_vectors = [list(v) for v in user_vectors] + [list(c) for c in validator.cases[:12]
                                                        if list(c) not in user_vectors]
     operators = OPERATORS + (UNSAFE_OPERATORS if unsafe else [])
@@ -208,13 +208,13 @@ def compile_request(body):
     results = {}
     with COMPILE_LOCK:
         for name in strategies:
-            kw = dict(weights=weights, structured=True, time_limit=STRATEGY_TIME_LIMIT, operators=operators)
+            kw = dict(weights=weights, protocol="v3", time_limit=STRATEGY_TIME_LIMIT, operators=operators)
             if name == "beam":
                 kw.update(width=4, patience=3, max_evaluations=20000)
             trace = None
             if name == "greedy":  # same search as STRATEGIES["greedy"], traced candidate by candidate
                 trace = []
-                gres = greedy_optimize(program, operators, weights=weights, structured=True,
+                gres = greedy_optimize(program, operators, weights=weights, protocol="v3",
                                        on_candidate=trace.append)
                 res = StrategyResult("greedy", program, gres.optimized, gres.base_metrics, gres.final_metrics,
                                      gres.final_cost,
@@ -296,9 +296,19 @@ def overview():
     validator_eval = load_cached(os.path.join(RESULTS_DIR, "validator_eval.json"), _read_json)
     verification = load_cached(os.path.join(RESULTS_DIR, "verification_summary.json"), _read_json)
     return {"dataset_statistics": stats, "dataset_build": info, "experiments": head, "plots": plots,
-            "validator_eval": {k: validator_eval[k] for k in ("review1", "v2", "blind_spot_demo")}
-            if validator_eval else None,
+            "validator_eval": _validator_view(validator_eval),
             "verification": verification, "operator_names": OPERATOR_NAMES, "cost_weights": WEIGHTS}
+
+
+def _validator_view(ve):
+    """Slim view of results/final/validator_eval.json (no per-miss lists)."""
+    if not ve:
+        return None
+    evals = ve.get("evaluations") or {f"{k}|oracle300": ve[k] for k in ("review1", "v2") if k in ve}
+    slim_evals = {k: {f: v[f] for f in ("protocol", "oracle", "mutants", "totals", "detection_rate_on_nonequivalent")
+                      if f in v} for k, v in evals.items()}
+    head = slim_evals.get("v3|oracle_strong") or slim_evals.get("v2|oracle300")
+    return {"evaluations": slim_evals, "headline": head, "blind_spot_demo": ve.get("blind_spot_demo")}
 
 
 def program_detail(pid):

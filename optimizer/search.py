@@ -56,11 +56,11 @@ class SearchResult:
 
 
 def optimize(program, operators=OPERATORS, max_iters=500, n_cases=25, seed=42, log=None, on_candidate=None,
-             weights=None, structured=False):
+             weights=None, structured=False, protocol=None):
     """on_candidate, if given, is called once per evaluated candidate with a dict
     (iteration, index, mutation, valid, metrics, cost, improves) for logging."""
     start = time.perf_counter()
-    validator = Validator(program, n_cases=n_cases, seed=seed, structured=structured)
+    validator = Validator(program, n_cases=n_cases, seed=seed, structured=structured, protocol=protocol)
     base_metrics = measure(program, validator.reference)
     result = SearchResult(program, program, base_metrics, base_metrics, cost(base_metrics, base_metrics, weights))
     current, current_cost = program, result.final_cost

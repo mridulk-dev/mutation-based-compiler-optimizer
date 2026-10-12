@@ -220,8 +220,9 @@ async function pageOverview(el) {
         <dt>Validation</dt><dd>${esc(ex.config.validation_cases)} seeded vectors + structured vectors (${esc(ex.config.validation_protocol)})</dd>
         <dt>Wall time</dt><dd>${fmt(ex.seconds.total, 0)} s total</dd>
       </dl>
-      ${ve ? `<div class="callout section">Validator self-test: ${fmtInt(ve.v2.totals.rejected)} of ${fmtInt(ve.v2.totals.rejected + (ve.v2.totals.accepted_but_different || 0))}
-        non-equivalent mutants rejected (${pct(100 * ve.v2.detection_rate_on_nonequivalent, 2)}); ${fmtInt(ve.v2.totals.accepted_but_different || 0)} missed.
+      ${ve && ve.headline ? `<div class="callout section">Validator self-test (protocol ${esc(ve.headline.protocol)}, ${esc(ve.headline.oracle.replace("_", " "))}):
+        ${fmtInt(ve.headline.totals.rejected)} of ${fmtInt(ve.headline.totals.rejected + (ve.headline.totals.accepted_but_different || 0))}
+        non-equivalent mutants rejected (${pct(100 * ve.headline.detection_rate_on_nonequivalent, 2)}); ${fmtInt(ve.headline.totals.accepted_but_different || 0)} still accepted.
         Differential testing is not a proof.</div>` : ""}
       </div></div>`;
   }
@@ -643,10 +644,14 @@ async function pageMethodology(el) {
     </div>
     <div class="grid g2 section">
       <div class="card"><h2>Correctness protocol</h2><ol class="small">
-        <li><b>During search:</b> every candidate runs on 25 seeded vectors plus structured vectors (one input zero, equal pairs). Printed values and the error kind must equal the original's.</li>
+        <li><b>During search (protocol v3):</b> every candidate runs on the 25 Review-1 vectors, structured vectors (one input zero, equal pairs) and coverage vectors (distinct-value specials, large random values, small-range enumeration). Printed values and the error kind must equal the original's.</li>
         <li><b>After search (independent):</b> each final program is compared to the AST reference interpreter, which has its own arithmetic, on the dataset fixture tests and ${ex ? ex.config.heldout_inputs : 200} held-out inputs. It is also compared through a second backend (TAC compiled to Python).</li>
         <li><b>Operator soundness:</b> unit tests enumerate all inputs in [−4, 4]ⁿ for every candidate of every operator on hazard programs. Fuzzing covers straight-line and if/else programs.</li>
-        <li><b>Validator self-test:</b> injected faults; ${ov.validator_eval ? `${pct(100 * ov.validator_eval.v2.detection_rate_on_nonequivalent, 2)} of non-equivalent mutants rejected, ${ov.validator_eval.v2.totals.accepted_but_different} missed` : "run experiments.validator_eval"}.</li>
+        <li><b>Validator self-test:</b> injected faults judged by each protocol and checked by two oracles.
+          ${ov.validator_eval ? table([{ label: "Protocol", get: (r) => r.protocol }, { label: "Oracle", get: (r) => r.oracle.replace("_", " ") },
+            { label: "Detection", get: (r) => pct(100 * r.detection_rate_on_nonequivalent, 2), num: true },
+            { label: "Still accepted", get: (r) => fmtInt(r.totals.accepted_but_different || 0), num: true }],
+            Object.values(ov.validator_eval.evaluations)) : "run experiments.validator_eval"}</li>
         </ol><div class="callout warn small">Finite differential testing is not a proof of equivalence. No formal verification was implemented.</div></div>
       <div class="card"><h2>Dataset methodology</h2><ol class="small">
         <li><b>A. Controlled:</b> the 15 Review-1 programs, unchanged, plus template programs in 6 categories with recorded size and redundancy knobs.</li>

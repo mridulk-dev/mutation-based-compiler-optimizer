@@ -1,0 +1,10 @@
+flowchart TD
+    S(["naive TAC"]) --> SET["validator: run original on test vectors<br/>baseline metrics → cost 1.0"]
+    SET --> GENM["generate every single-site mutation<br/>(per basic block for if/else programs)"]
+    GENM --> DEDUP["drop duplicates / unchanged"]
+    DEDUP --> V{"same outputs + error kind<br/>on every vector?"}
+    V -- no --> REJ["reject (logged)"]
+    V -- yes --> SC["measure + weighted cost"]
+    SC --> PICK{"strictly cheaper than current?"}
+    PICK -- "yes (best of iteration)" --> ACC["accept → current"] --> GENM
+    PICK -- "none" --> OUT(["optimised TAC"])

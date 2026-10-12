@@ -1,0 +1,71 @@
+{
+  "01_cost_distribution_by_group.png": {
+    "sources": [
+      "per_program.csv"
+    ],
+    "description": "final cost box plots per group"
+  },
+  "02_metric_changes.png": {
+    "sources": [
+      "per_program.csv"
+    ],
+    "description": "mean % change of each metric per strategy"
+  },
+  "03_category_costs.png": {
+    "sources": [
+      "summary.json"
+    ],
+    "description": "mean final cost by category"
+  },
+  "04_pairwise_scatter.png": {
+    "sources": [
+      "per_program.csv"
+    ],
+    "description": "per-program cost scatter between strategies"
+  },
+  "05_search_effort.png": {
+    "sources": [
+      "per_program.csv"
+    ],
+    "description": "candidate evaluations per strategy"
+  },
+  "06_weight_sensitivity.png": {
+    "sources": [
+      "sensitivity.csv"
+    ],
+    "description": "metric changes under each weight config"
+  },
+  "07_measured_speedup.png": {
+    "sources": [
+      "timing.csv",
+      "timing_raw.csv"
+    ],
+    "description": "measured speed-up distributions"
+  },
+  "08_cycles_vs_time.png": {
+    "sources": [
+      "per_program.csv",
+      "timing.csv"
+    ],
+    "description": "simulated cycles vs measured time"
+  },
+  "09_reordering_effect.png": {
+    "sources": [
+      "per_program.csv",
+      "timing.csv"
+    ],
+    "description": "M8 effect: simulated vs measured"
+  },
+  "10_validator_selftest.png": {
+    "sources": [
+      "validator_eval.json"
+    ],
+    "description": "validator fault-injection outcomes"
+  },
+  "11_dataset_composition.png": {
+    "sources": [
+      "../../dataset/miniarith-v1/statistics.json"
+    ],
+    "description": "dataset composition"
+  }
+}

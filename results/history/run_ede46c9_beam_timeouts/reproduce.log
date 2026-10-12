@@ -1,0 +1,18 @@
+[....] environment
+[  ok] environment (0s): Python 3.13.3; gcc found
+[....] dataset
+[  ok] dataset (10s): OK: rebuilt dataset is identical to dataset\miniarith-v1\manifest.jsonl (795 records); Review-1 file reproduces: True; independent audit passed {"records": 795, "by_status": {"accepted": 454, "rejected": 48, "incompatible": 288, "duplicate": 5}, "accepted_by_group": {"controlled": 252, "randomized": 195, "external": 7}, "tests": 4487}
+[....] dedup
+[  ok] dedup (0s): 5 duplicate records in 4 groups; matches committed report: True
+[....] unit tests
+[  ok] unit tests (1762s): Ran 120 tests in 1761.644s OK
+[....] fuzzing
+[  ok] fuzzing (330s): straight-line: 1300 random programs x 1 strategies, 20903 accepted mutations -> unsound 0, wrong 0; straight-line fixed+beam: 130 random programs x 2 strategies, 4127 accepted mutations -> unsound 0, wrong 0; control-flow: 260 random control-flow programs x 2 strategies, 10151 accepted mutations -> unsound 0, wrong 0
+[....] experiments
+[  ok] experiments (1869s): correctness: 2270/2270 (program, strategy) results correct; crashes 0; timeouts 2; validator: [v3|oracle_strong      ] 25889 mutants: rejected 14826, accepted-equivalent 11017, MISSED 46; detection 0.996907
+[....] plots
+[  ok] plots (5s): 11 plots written
+[....] dashboard/data agreement
+[  ok] dashboard/data agreement (1s): API numbers match artifact files; live compile OK
+
+ALL STEPS PASSED - results\final\verification_summary.json

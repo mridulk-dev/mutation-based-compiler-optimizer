@@ -1,0 +1,310 @@
+{
+  "totals": {
+    "candidates": 795,
+    "accepted": 454,
+    "rejected": 48,
+    "duplicate": 5,
+    "incompatible": 288
+  },
+  "by_group": {
+    "controlled": {
+      "accepted": 252,
+      "rejected": 3,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    "randomized": {
+      "accepted": 195,
+      "rejected": 45,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    "external": {
+      "accepted": 7,
+      "rejected": 0,
+      "duplicate": 5,
+      "incompatible": 288
+    }
+  },
+  "by_category": [
+    {
+      "group": "controlled",
+      "subgroup": "review1",
+      "category": "arithmetic",
+      "accepted": 2,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "review1",
+      "category": "constant-heavy",
+      "accepted": 2,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "review1",
+      "category": "dead-code",
+      "accepted": 3,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "review1",
+      "category": "common-subexpression",
+      "accepted": 3,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "review1",
+      "category": "strength-reduction",
+      "accepted": 2,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "review1",
+      "category": "mixed",
+      "accepted": 3,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "synthetic-template",
+      "category": "arithmetic",
+      "accepted": 40,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "synthetic-template",
+      "category": "constant-heavy",
+      "accepted": 37,
+      "rejected": 3,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "synthetic-template",
+      "category": "common-subexpression",
+      "accepted": 40,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "synthetic-template",
+      "category": "dead-code",
+      "accepted": 40,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "synthetic-template",
+      "category": "mixed",
+      "accepted": 40,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "controlled",
+      "subgroup": "synthetic-template",
+      "category": "strength-reduction",
+      "accepted": 40,
+      "rejected": 0,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "randomized",
+      "subgroup": "random-grammar",
+      "category": "random",
+      "accepted": 195,
+      "rejected": 45,
+      "duplicate": 0,
+      "incompatible": 0
+    },
+    {
+      "group": "external",
+      "subgroup": "jotai-anghaleaves",
+      "category": "external-c",
+      "accepted": 7,
+      "rejected": 0,
+      "duplicate": 5,
+      "incompatible": 288
+    }
+  ],
+  "review1_members_accepted": 15,
+  "rejection_reasons": {
+    "controlled": {
+      "always-fails": 3
+    },
+    "randomized": {
+      "always-fails": 36,
+      "magnitude-exceeds-int64": 9
+    },
+    "external": {
+      "unsigned type": 166,
+      "char type": 3,
+      "loop": 3,
+      "pointer/struct access": 21,
+      "bitwise/address-of": 3,
+      "struct": 2,
+      "void type": 1,
+      "branch": 39,
+      "parameter type other than int": 5,
+      "shift": 2,
+      "duplicate-normalized-source": 4,
+      "comparison": 9,
+      "duplicate-canonical-tac": 1,
+      "qualifier": 8,
+      "return type void (only int supported)": 2,
+      "array access": 3,
+      "unsupported character '#' in function": 12,
+      "floating point": 8,
+      "struct access": 1
+    }
+  },
+  "license_status": {
+    "controlled": {
+      "project-generated": 255
+    },
+    "randomized": {
+      "project-generated": 240
+    },
+    "external": {
+      "unverified": 300
+    }
+  },
+  "tac_length_bins_accepted": {
+    "controlled": {
+      "21-40": 150,
+      "11-20": 39,
+      "41-80": 61,
+      ">80": 2
+    },
+    "randomized": {
+      "41-80": 64,
+      "21-40": 101,
+      "11-20": 29,
+      "0-10": 1
+    },
+    "external": {
+      "0-10": 7
+    }
+  },
+  "tac_length_accepted": {
+    "min": 3,
+    "median": 31,
+    "max": 83,
+    "mean": 33.66
+  },
+  "operator_opportunity_programs": {
+    "controlled": {
+      "M1": 83,
+      "M2": 87,
+      "M3": 162,
+      "M4": 147,
+      "M5": 215,
+      "M6": 127,
+      "M7": 50,
+      "M8": 252,
+      "M9": 251,
+      "M10": 0
+    },
+    "randomized": {
+      "M1": 27,
+      "M2": 39,
+      "M3": 140,
+      "M4": 51,
+      "M5": 186,
+      "M6": 181,
+      "M7": 36,
+      "M8": 195,
+      "M9": 182,
+      "M10": 0
+    },
+    "external": {
+      "M1": 0,
+      "M2": 0,
+      "M3": 0,
+      "M4": 1,
+      "M5": 0,
+      "M6": 0,
+      "M7": 0,
+      "M8": 1,
+      "M9": 0,
+      "M10": 0
+    }
+  },
+  "operator_opportunity_sites": {
+    "controlled": {
+      "M1": 288,
+      "M2": 266,
+      "M3": 281,
+      "M4": 425,
+      "M5": 603,
+      "M6": 1381,
+      "M7": 56,
+      "M8": 2396,
+      "M9": 1352,
+      "M10": 0
+    },
+    "randomized": {
+      "M1": 32,
+      "M2": 86,
+      "M3": 461,
+      "M4": 92,
+      "M5": 690,
+      "M6": 3851,
+      "M7": 38,
+      "M8": 2446,
+      "M9": 505,
+      "M10": 0
+    },
+    "external": {
+      "M1": 0,
+      "M2": 0,
+      "M3": 0,
+      "M4": 1,
+      "M5": 0,
+      "M6": 0,
+      "M7": 0,
+      "M8": 1,
+      "M9": 0,
+      "M10": 0
+    }
+  },
+  "uniqueness": {
+    "accepted_unique_source_hashes": 454,
+    "accepted_unique_canonical_tac": 454,
+    "duplicate_records": 5
+  },
+  "tests": {
+    "accepted_programs": 454,
+    "tests": 4487,
+    "tests_expecting_error": 199,
+    "programs_with_error_tests": 126,
+    "int32_safe_programs": 393
+  }
+}

@@ -1,51 +1,50 @@
 flowchart TB
-    subgraph FE["Frontend"]
-        direction TB
-        SRC["Source program<br/>.src (MiniArith)"]
-        PAR["Parser<br/>frontend/lexer.py + parser.py<br/>tokens → AST"]
-        TAC["TAC Generator<br/>frontend/tac.py<br/>naive three-address code"]
+    subgraph FE["Compiler frontend (frontend/)"]
+        SRC["MiniArith source (.src)"] --> LEX["lexer.py<br/>tokens"] --> PAR["parser.py<br/>AST + definite assignment"]
+        PAR --> GEN["tac.py: TACGenerator<br/>naive TAC"]
+        GEN --> CFG["tac.py: basic_blocks()<br/>CFG (if/else extension)"]
     end
-
-    subgraph OPTZ["Optimizer (iterative loop)"]
-        direction TB
-        ME["Mutation Engine<br/>optimizer/mutations.py<br/>operators M1–M9"]
-        POOL["Candidate Pool<br/>one program per mutation site<br/>duplicates removed"]
-        VAL["Correctness Validator<br/>execution/validator.py<br/>differential testing"]
-        COST["Cost Evaluator<br/>optimizer/cost.py<br/>0.4·I + 0.3·A + 0.2·T + 0.1·C"]
-        SEL["Search / Selection<br/>optimizer/search.py<br/>greedy best-improvement"]
+    subgraph OPT["Optimizer (optimizer/)"]
+        MUT["mutations.py<br/>M1–M9 local, per basic block<br/>M10 branch folding (CFG)"]
+        EVAL["strategies.py: Evaluator<br/>memoised validate + cost"]
+        COST["cost.py<br/>weighted, normalised cost<br/>WEIGHT_CONFIGS"]
+        STRAT["Strategies<br/>fixed · greedy (search.py) · beam"]
     end
-
-    subgraph EXE["Execution support"]
-        direction TB
-        INPUTS["Test input vectors<br/>+ original program's outputs"]
-        INT["TAC Interpreter<br/>execution/interpreter.py<br/>outputs + simulated cycles"]
+    subgraph EXE["Execution (execution/)"]
+        VAL["validator.py<br/>differential testing<br/>protocols review1 · v2 · v3"]
+        INT["interpreter.py<br/>TAC interpreter + cycle model"]
+        PYC["pycodegen.py<br/>TAC → Python function"]
+        REF["reference.py<br/>AST interpreter<br/>(independent arithmetic)"]
+        TIM["timing.py<br/>wall-clock harness"]
     end
-
-    subgraph OUTS["Output"]
-        direction TB
-        OPT["Optimized TAC"]
-        RES["Results<br/>results.csv · candidate_log.csv<br/>summary.json · plots"]
-        REF["Reference AST interpreter<br/>execution/reference.py"]
+    subgraph DATA["Dataset (benchmarks/ → dataset/)"]
+        TPL["templates.py · randomgen.py<br/>external.py (Jotai C subset)"]
+        BLD["build.py · dedup.py · stats.py"]
+        MAN[("manifest.jsonl<br/>statistics · dedup report")]
     end
+    subgraph EXP["Experiments (experiments/)"]
+        RUN["run_experiments.py<br/>parallel search + checks<br/>sequential timing"]
+        VE["validator_eval.py"]
+        PLT["plots.py · summarize.py · report.py"]
+        RES[("results/final/<br/>CSV · JSONL · JSON · PNG")]
+    end
+    DASH["dashboard/server.py + static/<br/>local web UI"]
 
-    SRC --> PAR -->|AST| TAC -->|baseline TAC| ME
-    ME --> POOL --> VAL -->|valid candidates| COST -->|scored candidates| SEL
-    SEL -->|no improving candidate| OPT --> RES
-    SEL -. "improving candidate becomes<br/>current program" .-> ME
-    VAL -.-> REJ["Rejected: outputs differ<br/>from original (logged, discarded)"]
-
-    INPUTS --> VAL
-    INT --- VAL
-    INT -. "cycle counts" .-> COST
-    REF -. "independent final check" .-> RES
-
-    classDef core fill:#e8f1fc,stroke:#2a78d6,color:#1f1f1e
-    classDef support fill:#f4f3ee,stroke:#b4b2a7,color:#1f1f1e
-    classDef reject fill:#fdeee8,stroke:#eb6834,color:#1f1f1e
-    class SRC,PAR,TAC,ME,POOL,VAL,COST,SEL,OPT,RES core
-    class INT,INPUTS,REF support
-    class REJ reject
-    style FE fill:#fafaf8,stroke:#d6d4cb,color:#1f1f1e
-    style OPTZ fill:#fafaf8,stroke:#d6d4cb,color:#1f1f1e
-    style EXE fill:#fafaf8,stroke:#d6d4cb,color:#1f1f1e
-    style OUTS fill:#fafaf8,stroke:#d6d4cb,color:#1f1f1e
+    CFG --> STRAT
+    STRAT --> MUT --> EVAL
+    EVAL --> VAL --> INT
+    EVAL --> COST
+    TPL --> BLD --> MAN
+    REF --> BLD
+    INT --> BLD
+    PYC --> BLD
+    MAN --> RUN --> STRAT
+    RUN --> REF
+    RUN --> PYC
+    RUN --> TIM
+    RUN --> RES
+    VE --> RES
+    RES --> PLT --> RES
+    MAN --> DASH
+    RES --> DASH
+    DASH -- "POST /api/compile" --> PAR

@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "mode": "full",
+  "results_dir": "results\\final",
+  "started_unix": 1791773486,
+  "seconds": 2125.3,
+  "python": "3.13.3",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "gcc": true,
+  "commit": "de6cdc5d3e0d7e8b70475b54a12e702e14d1b8f0",
+  "dirty_worktree": false,
+  "steps": [
+    {
+      "name": "environment",
+      "status": "passed",
+      "seconds": 0.8,
+      "detail": "Python 3.13.3; gcc found"
+    },
+    {
+      "name": "dataset",
+      "status": "passed",
+      "seconds": 18.2,
+      "detail": "OK: rebuilt dataset is identical to dataset\\miniarith-v1\\manifest.jsonl (795 records); Review-1 file reproduces: True; independent audit passed {\"records\": 795, \"by_status\": {\"accepted\": 454, \"rejected\": 48, \"incompatible\": 288, \"duplicate\": 5}, \"accepted_by_group\": {\"controlled\": 252, \"randomized\": 195, \"external\": 7}, \"tests\": 4487}"
+    },
+    {
+      "name": "dedup",
+      "status": "passed",
+      "seconds": 0.1,
+      "detail": "5 duplicate records in 4 groups; matches committed report: True"
+    },
+    {
+      "name": "unit tests",
+      "status": "passed",
+      "seconds": 122.1,
+      "detail": "Ran 121 tests in 121.479s OK"
+    },
+    {
+      "name": "fuzzing",
+      "status": "passed",
+      "seconds": 441.1,
+      "detail": "straight-line: 1300 random programs x 1 strategies, 20903 accepted mutations -> unsound 0, wrong 0; straight-line fixed+beam: 130 random programs x 2 strategies, 4127 accepted mutations -> unsound 0, wrong 0; control-flow: 260 random control-flow programs x 2 strategies, 10151 accepted mutations -> unsound 0, wrong 0"
+    },
+    {
+      "name": "experiments",
+      "status": "passed",
+      "seconds": 1537.7,
+      "detail": "correctness: 2270/2270 (program, strategy) results correct; crashes 0; timeouts 0; validator: [v3|oracle_strong      ] 25889 mutants: rejected 14826, accepted-equivalent 11017, MISSED 46; detection 0.996907"
+    },
+    {
+      "name": "plots",
+      "status": "passed",
+      "seconds": 4.4,
+      "detail": "11 plots written"
+    },
+    {
+      "name": "dashboard/data agreement",
+      "status": "passed",
+      "seconds": 1.0,
+      "detail": "API numbers match artifact files; live compile OK"
+    }
+  ],
+  "note": "Timing measurements and *_seconds fields are the only nondeterministic outputs."
+}

@@ -3,12 +3,23 @@
 Each operator takes a program (tuple of Instr) and returns a list of Mutation
 candidates, one per site where the rewrite applies. Operators only propose
 rewrites; the search accepts a candidate only after differential validation.
+
+Control flow (staged extension): for programs containing labels/jumps,
+`generate_mutations` applies every local operator to one basic block at a time.
+The operator sees the block body plus its terminating jump (never a label) and a
+conservative `live_out` set = every variable read anywhere outside that slice.
+Because if/else code is acyclic, that set over-approximates true liveness, so
+dead-code decisions stay sound. Straight-line programs are a single block with
+an empty live_out set, i.e. exactly the Review-1 behaviour.
 """
 
 from dataclasses import dataclass
 
 from execution.interpreter import ExecutionError, apply_op
-from frontend.tac import COMMUTATIVE_OPS, IO_OPS, Instr, is_const, is_var
+from frontend.tac import (BRANCH_OPS, COMMUTATIVE_OPS, CONTROL_OPS, IO_OPS, Instr, basic_blocks,
+                          has_control_flow, is_const, is_var)
+
+NO_LIVE = frozenset()
 
 
 @dataclass(frozen=True)
@@ -42,7 +53,7 @@ def may_trap(ins):
 
 
 # M1 ---------------------------------------------------------------------------
-def zero_add_removal(program):
+def zero_add_removal(program, live_out=NO_LIVE):
     """x = a + 0 | x = 0 + a | x = a - 0   ->   x = a"""
     out = []
     for i, ins in enumerate(program):
@@ -60,7 +71,7 @@ def zero_add_removal(program):
 
 
 # M2 ---------------------------------------------------------------------------
-def one_mul_removal(program):
+def one_mul_removal(program, live_out=NO_LIVE):
     """x = a * 1 | x = 1 * a | x = a / 1   ->   x = a"""
     out = []
     for i, ins in enumerate(program):
@@ -78,11 +89,11 @@ def one_mul_removal(program):
 
 
 # M3 ---------------------------------------------------------------------------
-def constant_folding(program):
+def constant_folding(program, live_out=NO_LIVE):
     """x = c1 OP c2   ->   x = c   (skipped when evaluation would fail)"""
     out = []
     for i, ins in enumerate(program):
-        if ins.op in IO_OPS or ins.op == "copy":
+        if ins.op in IO_OPS or ins.op in CONTROL_OPS or ins.op == "copy":
             continue
         operands = [ins.a] if ins.op == "neg" else [ins.a, ins.b]
         if not all(is_const(x) for x in operands):
@@ -97,7 +108,7 @@ def constant_folding(program):
 
 
 # M4 ---------------------------------------------------------------------------
-def strength_reduction(program):
+def strength_reduction(program, live_out=NO_LIVE):
     """x = a * 2 -> x = a + a ;  x = a * 2^k (k >= 2) -> x = a << k"""
     out = []
     for i, ins in enumerate(program):
@@ -120,12 +131,12 @@ def strength_reduction(program):
 
 
 # M5 ---------------------------------------------------------------------------
-def dead_assignment_removal(program):
+def dead_assignment_removal(program, live_out=NO_LIVE):
     """Remove an assignment whose value is never read (backward liveness).
     'input' is never removed: it consumes a value from the input stream.
     A possibly-trapping division is never removed: its error is observable."""
     out = []
-    live = set()
+    live = set(live_out)
     dead = []
     for i in range(len(program) - 1, -1, -1):
         ins = program[i]
@@ -147,11 +158,11 @@ def _expr_key(ins):
     return (ins.op, ins.a, ins.b)
 
 
-def common_subexpression_elimination(program):
+def common_subexpression_elimination(program, live_out=NO_LIVE):
     """t_j = a OP b, where t_i = a OP b is still available  ->  t_j = t_i"""
     out = []
     for i, first in enumerate(program):
-        if first.op in IO_OPS or first.op == "copy":
+        if first.op in IO_OPS or first.op in CONTROL_OPS or first.op == "copy":
             continue
         if first.dest in first.uses():  # x = x + 1: expression changes immediately
             continue
@@ -168,7 +179,7 @@ def common_subexpression_elimination(program):
 
 
 # M7 / M9 ----------------------------------------------------------------------
-def _is_dead_after(program, i):
+def _is_dead_after(program, i, live_out=NO_LIVE):
     """True if the value defined at program[i] is never read afterwards."""
     dest = program[i].dest
     for ins in program[i + 1:]:
@@ -176,10 +187,10 @@ def _is_dead_after(program, i):
             return False
         if ins.dest == dest:
             return True
-    return True  # only printed values are observable at program exit
+    return dest not in live_out  # straight-line: only printed values are observable at exit
 
 
-def _propagate(program, i, op_id):
+def _propagate(program, i, op_id, live_out=NO_LIVE):
     """Forward-substitute the source of copy program[i] into later uses of its
     destination, until either side is redefined. If that leaves the copy dead it
     is deleted in the same step: on its own, propagation does not change the
@@ -199,29 +210,29 @@ def _propagate(program, i, op_id):
         return None
     description = f"[{i}] {src_ins}: substituted {src} for {dest} in {replaced} use(s)"
     new_program = tuple(new_program)
-    if _is_dead_after(new_program, i):
+    if _is_dead_after(new_program, i, live_out):
         new_program = _delete_at(new_program, i)
         description += ", copy removed"
     return Mutation(op_id, description, new_program)
 
 
-def constant_propagation(program):
+def constant_propagation(program, live_out=NO_LIVE):
     """x = c ; ... use x ...   ->   ... use c ..."""
     out = []
     for i, ins in enumerate(program):
         if ins.op == "copy" and is_const(ins.a):
-            mutation = _propagate(program, i, "M7")
+            mutation = _propagate(program, i, "M7", live_out)
             if mutation:
                 out.append(mutation)
     return out
 
 
-def copy_propagation(program):
+def copy_propagation(program, live_out=NO_LIVE):
     """x = y ; ... use x ...   ->   ... use y ...   (helper operator, see README)"""
     out = []
     for i, ins in enumerate(program):
         if ins.op == "copy" and is_var(ins.a) and ins.a != ins.dest:
-            mutation = _propagate(program, i, "M9")
+            mutation = _propagate(program, i, "M9", live_out)
             if mutation:
                 out.append(mutation)
     return out
@@ -229,6 +240,8 @@ def copy_propagation(program):
 
 # M8 ---------------------------------------------------------------------------
 def _independent(x, y):
+    if x.op in CONTROL_OPS or y.op in CONTROL_OPS:
+        return False  # never move code across a label or a jump
     if (x.op in IO_OPS or may_trap(x)) and (y.op in IO_OPS or may_trap(y)):
         return False  # keep the order of observable events: I/O and runtime errors
     x_def, y_def = x.defines(), y.defines()
@@ -239,7 +252,7 @@ def _independent(x, y):
     return True
 
 
-def instruction_reordering(program):
+def instruction_reordering(program, live_out=NO_LIVE):
     """Swap adjacent independent instructions (useful for hiding RAW stalls)."""
     out = []
     for i in range(len(program) - 1):
@@ -250,14 +263,65 @@ def instruction_reordering(program):
     return out
 
 
+# M10 (control-flow extension) ---------------------------------------------------
+def _drop_unreferenced_labels(program):
+    refs = {ins.target for ins in program if ins.op in BRANCH_OPS}
+    return tuple(ins for ins in program if not (ins.op == "label" and ins.target not in refs))
+
+
+def _reachable_code(program):
+    if not program:
+        return program
+    blocks = basic_blocks(program)
+    reach, stack = set(), [0]
+    while stack:
+        b = stack.pop()
+        if b not in reach:
+            reach.add(b)
+            stack.extend(blocks[b].successors)
+    return tuple(ins for blk in blocks if blk.index in reach for ins in program[blk.start:blk.end])
+
+
+def cleanup_cfg(program):
+    """Semantics-preserving CFG clean-up, repeated to a fixpoint: drop labels no
+    jump refers to, drop a goto that jumps to the immediately following label,
+    and delete basic blocks unreachable from the entry block."""
+    while True:
+        new = _drop_unreferenced_labels(program)
+        new = tuple(ins for k, ins in enumerate(new)
+                    if not (ins.op == "goto" and k + 1 < len(new) and new[k + 1].op == "label"
+                            and new[k + 1].target == ins.target))
+        new = _reachable_code(new)
+        if new == program:
+            return new
+        program = new
+
+
+def branch_folding(program, live_out=NO_LIVE):
+    """ifz c goto L with a constant c: c == 0 -> goto L, c != 0 -> fall through.
+    The dead branch, redundant jumps and unused labels are removed in the same
+    step (cleanup_cfg); the rewrite alone would not lower the cost."""
+    out = []
+    for i, ins in enumerate(program):
+        if ins.op == "ifz" and is_const(ins.a):
+            if ins.a == 0:
+                new = _replace_at(program, i, Instr("goto", target=ins.target))
+                what = f"always jumps -> goto {ins.target}"
+            else:
+                new = _delete_at(program, i)
+                what = "never jumps -> removed"
+            out.append(Mutation("M10", f"[{i}] {ins}: {what}, unreachable code removed", cleanup_cfg(new)))
+    return out
+
+
 # MX (unsafe, demo only) --------------------------------------------------------
-def unchecked_reordering(program):
+def unchecked_reordering(program, live_out=NO_LIVE):
     """Swaps ANY adjacent pair with no dependence check. Used with --unsafe to
     demonstrate that the validator rejects semantically wrong candidates."""
     out = []
     for i in range(len(program) - 1):
         x, y = program[i], program[i + 1]
-        if not _independent(x, y):
+        if not _independent(x, y) and x.op not in CONTROL_OPS and y.op not in CONTROL_OPS:
             swapped = program[:i] + (y, x) + program[i + 2:]
             out.append(Mutation("MX", f"unchecked swap [{i}] <-> [{i + 1}]", swapped))
     return out
@@ -273,6 +337,7 @@ OPERATOR_NAMES = {
     "M7": "Constant Propagation",
     "M8": "Instruction Reordering",
     "M9": "Copy Propagation",
+    "M10": "Branch Folding (CFG)",
     "MX": "Unchecked Reordering (unsafe)",
 }
 
@@ -286,12 +351,33 @@ OPERATORS = [
     ("M7", constant_propagation),
     ("M8", instruction_reordering),
     ("M9", copy_propagation),
+    ("M10", branch_folding),
 ]
 UNSAFE_OPERATORS = [("MX", unchecked_reordering)]
+GLOBAL_OPERATORS = frozenset({"M10"})  # operate on the whole CFG, not on one block
 
 
 def generate_mutations(program, operators=OPERATORS):
+    if not has_control_flow(program):
+        candidates = []
+        for op_id, fn in operators:
+            if op_id not in GLOBAL_OPERATORS:
+                candidates.extend(fn(program))
+        return candidates
     candidates = []
-    for _, fn in operators:
-        candidates.extend(fn(program))
+    for blk in basic_blocks(program):
+        lo, hi = blk.body_start, blk.end  # body + terminator, label excluded
+        if lo >= hi:
+            continue
+        prefix, body, suffix = program[:lo], program[lo:hi], program[hi:]
+        live_out = frozenset(v for ins in prefix + suffix for v in ins.uses())
+        for op_id, fn in operators:
+            if op_id in GLOBAL_OPERATORS:
+                continue
+            for m in fn(body, live_out):
+                candidates.append(Mutation(m.op_id, f"B{blk.index}: {m.description}",
+                                           prefix + m.program + suffix))
+    for op_id, fn in operators:
+        if op_id in GLOBAL_OPERATORS:
+            candidates.extend(fn(program))
     return candidates

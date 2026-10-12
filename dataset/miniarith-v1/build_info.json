@@ -1,0 +1,11 @@
+{
+  "dataset": "miniarith-v1",
+  "builder_version": "1.0",
+  "config_path": "benchmarks/configs/miniarith-v1.json",
+  "config_sha256": "d87f470992230f0623a0e847257dd10c8a55743d920b08cc7896e2bbe6ac6245",
+  "manifest_sha256": "d55650234f413de3dca9834ac58888b0491274d7cf2f55034c80cd307b0b6c25",
+  "python": "3.13.3",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "gcc": "gcc.exe (MinGW.org GCC-6.3.0-1) 6.3.0",
+  "note": "This file records the build environment and is the only non-deterministic output."
+}

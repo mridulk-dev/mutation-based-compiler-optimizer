@@ -1,0 +1,169 @@
+{
+  "passed": true,
+  "problems": [],
+  "checks": {
+    "ids unique": {
+      "ok": true,
+      "detail": "795 records"
+    },
+    "status counts match statistics.json": {
+      "ok": true,
+      "detail": {
+        "accepted": 454,
+        "rejected": 48,
+        "incompatible": 288,
+        "duplicate": 5
+      }
+    },
+    "accepted counts per group match statistics.json": {
+      "ok": true,
+      "detail": {
+        "controlled": 252,
+        "randomized": 195,
+        "external": 7
+      }
+    },
+    "hashes recompute": {
+      "ok": true,
+      "detail": []
+    },
+    "stored TAC recompiles identically": {
+      "ok": true,
+      "detail": []
+    },
+    "expected outputs equal AST reference": {
+      "ok": true,
+      "detail": "4487 tests; bad: []"
+    },
+    "no duplicates among accepted (canonical TAC, normalised source)": {
+      "ok": true,
+      "detail": {}
+    },
+    "every duplicate points to an accepted record with the same hash": {
+      "ok": true,
+      "detail": []
+    },
+    "Review-1 15 programs identical to benchmarks/dataset/review1_dataset.json": {
+      "ok": true,
+      "detail": 15
+    },
+    "review1_dataset.json unchanged since pre-project commit 8dfe1e5": {
+      "ok": true,
+      "detail": ""
+    },
+    "external: 300 records, file hashes, verbatim function text, licence unverified/GPL-3.0 collection": {
+      "ok": true,
+      "detail": []
+    },
+    "external accepted records cross-checked with gcc": {
+      "ok": true,
+      "detail": [
+        "EXT-JOTAI-158",
+        "EXT-JOTAI-176",
+        "EXT-JOTAI-181",
+        "EXT-JOTAI-182",
+        "EXT-JOTAI-183",
+        "EXT-JOTAI-185",
+        "EXT-JOTAI-186"
+      ]
+    },
+    "incompatible external records are never accepted": {
+      "ok": true,
+      "detail": ""
+    }
+  },
+  "counts": {
+    "records": 795,
+    "by_status": {
+      "accepted": 454,
+      "rejected": 48,
+      "incompatible": 288,
+      "duplicate": 5
+    },
+    "accepted_by_group": {
+      "controlled": 252,
+      "randomized": 195,
+      "external": 7
+    },
+    "tests": 4487
+  },
+  "external_accepted": [
+    {
+      "id": "EXT-JOTAI-158",
+      "function": "byte_col_normal",
+      "file": "extr_BGAQRCode-Androidzbarsrcmainjnilibiconv-1.15toolscjk_tab_to_h.c_byte_col_normal_Final.c",
+      "file_sha256_ok": true,
+      "function_text_verbatim_in_file": true,
+      "license_status": "unverified",
+      "gcc_crosscheck": "passed",
+      "vectors_crosschecked": 15,
+      "source": "input byte; print byte - 33;"
+    },
+    {
+      "id": "EXT-JOTAI-176",
+      "function": "col_byte_normal",
+      "file": "extr_BGAQRCode-Androidzbarsrcmainjnilibiconv-1.15toolscjk_tab_to_h.c_col_byte_normal_Final.c",
+      "file_sha256_ok": true,
+      "function_text_verbatim_in_file": true,
+      "license_status": "unverified",
+      "gcc_crosscheck": "passed",
+      "vectors_crosschecked": 15,
+      "source": "input col; print 33 + col;"
+    },
+    {
+      "id": "EXT-JOTAI-181",
+      "function": "row_byte_big5",
+      "file": "extr_BGAQRCode-Androidzbarsrcmainjnilibiconv-1.15toolscjk_tab_to_h.c_row_byte_big5_Final.c",
+      "file_sha256_ok": true,
+      "function_text_verbatim_in_file": true,
+      "license_status": "unverified",
+      "gcc_crosscheck": "passed",
+      "vectors_crosschecked": 15,
+      "source": "input row; print 161 + row;"
+    },
+    {
+      "id": "EXT-JOTAI-182",
+      "function": "row_byte_cns11643",
+      "file": "extr_BGAQRCode-Androidzbarsrcmainjnilibiconv-1.15toolscjk_tab_to_h.c_row_byte_cns11643_Final.c",
+      "file_sha256_ok": true,
+      "function_text_verbatim_in_file": true,
+      "license_status": "unverified",
+      "gcc_crosscheck": "passed",
+      "vectors_crosschecked": 15,
+      "source": "input row; print 256 * (row / 94) + (row % 94) + 33;"
+    },
+    {
+      "id": "EXT-JOTAI-183",
+      "function": "row_byte_gbk1",
+      "file": "extr_BGAQRCode-Androidzbarsrcmainjnilibiconv-1.15toolscjk_tab_to_h.c_row_byte_gbk1_Final.c",
+      "file_sha256_ok": true,
+      "function_text_verbatim_in_file": true,
+      "license_status": "unverified",
+      "gcc_crosscheck": "passed",
+      "vectors_crosschecked": 15,
+      "source": "input row; print 129 + row;"
+    },
+    {
+      "id": "EXT-JOTAI-185",
+      "function": "row_byte_hkscs",
+      "file": "extr_BGAQRCode-Androidzbarsrcmainjnilibiconv-1.15toolscjk_tab_to_h.c_row_byte_hkscs_Final.c",
+      "file_sha256_ok": true,
+      "function_text_verbatim_in_file": true,
+      "license_status": "unverified",
+      "gcc_crosscheck": "passed",
+      "vectors_crosschecked": 15,
+      "source": "input row; print 128 + row;"
+    },
+    {
+      "id": "EXT-JOTAI-186",
+      "function": "row_byte_johab_hangul",
+      "file": "extr_BGAQRCode-Androidzbarsrcmainjnilibiconv-1.15toolscjk_tab_to_h.c_row_byte_johab_hangul_Final.c",
+      "file_sha256_ok": true,
+      "function_text_verbatim_in_file": true,
+      "license_status": "unverified",
+      "gcc_crosscheck": "passed",
+      "vectors_crosschecked": 15,
+      "source": "input row; print 132 + row;"
+    }
+  ]
+}

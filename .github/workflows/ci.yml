@@ -1,0 +1,49 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      full:
+        description: "Run the quick reproducibility pipeline (subset experiments) as well"
+        type: boolean
+        default: false
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -r requirements.txt
+      - name: Unit, property, regression and dataset tests
+        run: python -m unittest discover -s tests -t .
+      - name: Dataset rebuild matches committed manifest
+        run: python -m benchmarks.build --check
+      - name: Review-1 pipeline verification
+        run: python verify_pipeline.py
+      - name: Fuzzing (small, deterministic seeds)
+        run: |
+          python -m tests.fuzz 200 77
+          python -m tests.fuzz 60 11 --cf --strategies greedy,fixed
+
+  reproduce-quick:
+    if: github.event_name == 'workflow_dispatch' && inputs.full
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements.txt
+      - run: python reproduce.py --quick
+      - uses: actions/upload-artifact@v4
+        with:
+          name: quick-results
+          path: results/quick

@@ -105,7 +105,9 @@ def main(argv=None):
                         help="add an unsafe operator to demonstrate validator rejections")
     parser.add_argument("--quiet", action="store_true", help="hide per-iteration trace")
     parser.add_argument("--no-plots", action="store_true")
-    parser.add_argument("--out", default=os.path.join(ROOT, "results"))
+    parser.add_argument("--out", default=os.path.join(ROOT, "results", "local"),
+                        help="output directory (default results/local/, git-ignored; "
+                             "use --out results to regenerate the committed Review-1 artifacts)")
     args = parser.parse_args(argv)
 
     operators = OPERATORS + (UNSAFE_OPERATORS if args.unsafe else [])

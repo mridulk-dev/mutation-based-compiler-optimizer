@@ -183,7 +183,9 @@ def build_summary(dataset, digest, reproducible, rows, cand_rows, args, wall):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Optimise every program in the Review-1 dataset")
     parser.add_argument("--dataset", default=DATASET_PATH)
-    parser.add_argument("--out", default=os.path.join(ROOT, "results"))
+    parser.add_argument("--out", default=os.path.join(ROOT, "results", "local"),
+                        help="output directory (default results/local/, git-ignored; "
+                             "use --out results to regenerate the committed Review-1 artifacts)")
     parser.add_argument("--cases", type=int, default=25, help="validation inputs per candidate")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--fresh", type=int, default=300, help="extra unseen inputs checked against the oracle")

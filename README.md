@@ -55,6 +55,10 @@ into a short path.
 | Fuzzing (separate correctness workload) | `python -m tests.fuzz 1300 77` · `python -m tests.fuzz 300 11 --cf --strategies greedy,fixed,beam` |
 | Review-1 artifacts (unchanged) | `python -m benchmarks.generate_dataset` · `python run_dataset.py` · `python verify_pipeline.py` |
 
+`python main.py` and `python run_dataset.py` write to `results/local/` by default. That folder is
+git-ignored, so demo runs never modify the committed Review-1 artifacts in `results/`. To regenerate
+those artifacts deliberately, pass `--out results`.
+
 ## Source language (MiniArith)
 
 ```

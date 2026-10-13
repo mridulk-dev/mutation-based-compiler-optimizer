@@ -8,3 +8,4 @@ tests/regressions/found/
 results/smoke/
 node_modules/
 results/quick/
+results/local/
